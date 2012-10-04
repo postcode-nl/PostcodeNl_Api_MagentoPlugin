@@ -1,0 +1,112 @@
+/* Frontend styles */
+
+input.pcnl-readonly {
+	background-color: #EEE;
+}
+
+label.pcnl-info-label {
+	display: block;
+	background: url(../images/postcode-logo-mini.png) left center no-repeat;
+	padding-left: 110px;
+	margin-bottom: 0px;
+	float: none;
+}
+
+.form-list input.pcnl-input-text-half {
+	width: 45%;
+	margin-right:5px;
+}
+.form-list select.pcnl-input-text-half {
+	width: 45%;
+}
+
+input.pcnl-readonly,
+select.pcnl-readonly {
+	color: grey;
+	font-style: italic;
+}
+
+
+.pcnl-info-text {
+	font-size: 90%;
+}
+
+.pcnl-address-text {
+	font-style: italic;
+	clear: both;
+	padding-left: 4px;
+	padding-right: 4px;
+	width: 90%;
+}
+
+/* excessive hidey-stuff? yes. blame IE (6, 7 & 9) */
+.pcnl-hidden-field {
+	visibility: hidden;
+	display: block;
+	height: 0px !important;
+	width: 0px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	position: absolute;
+}
+
+/* Showcase styles */
+
+h4.pcnl-showcase {
+	background: url(../images/postcode-logo.png) left center no-repeat;
+	padding-left: 146px;
+	height: 22px;
+	line-height: 25px;
+	margin-bottom: 0px;
+}
+
+dl.pcnl-showcase {
+	padding: 4px;
+	border: 1px solid grey;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	background: white;
+	position: relative;
+}
+
+dl.pcnl-showcase iframe {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 300px;
+	height: 300px;
+	border: 1px solid grey;
+}
+
+dl.pcnl-showcase dt {
+	font-weight: bold;
+}
+dl.pcnl-showcase dd {
+	margin-left: 20px;
+}
+
+/* OneStepCheckout styling */
+div.checkoutcontainer div.pcnl-input-housenumber {
+	width: 60%;
+}
+div.checkoutcontainer div.pcnl-input-housenumber .input-text {
+	width: 74%;
+}
+div.checkoutcontainer .pcnl-with-addition div.pcnl-input-housenumber .input-text {
+	width: 22%;
+}
+div.checkoutcontainer div.pcnl-input-housenumber select.pcnl-input-text-half {
+	margin-left: 4px;
+	width: 50%;
+}
+div.checkoutcontainer .pcnl-info-text {
+	width: 85%;
+}
+div.checkoutcontainer dl.pcnl-showcase iframe {
+	position: relative;
+	float: right;
+	width: 260px;
+	height: 260px;
+	margin-bottom: 15px;
+	border: 1px solid grey;
+}

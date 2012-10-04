@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PostcodeNl_Api>
+            <active>true</active>
+            <codePool>community</codePool>
+        </PostcodeNl_Api>
+    </modules>
+</config>

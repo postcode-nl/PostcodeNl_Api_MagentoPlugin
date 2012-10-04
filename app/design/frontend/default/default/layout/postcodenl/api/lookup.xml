@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<checkout_onepage_index>
+		<reference name="head">
+            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+		</reference>
+        <reference name="content">
+            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+        </reference>
+	</checkout_onepage_index>
+	<onestepcheckout_index_index>
+		<reference name="head">
+            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+		</reference>
+        <reference name="content">
+            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+        </reference>
+	</onestepcheckout_index_index>
+	<customer_address_form>
+		<reference name="head">
+            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+		</reference>
+        <reference name="content">
+            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+        </reference>
+	</customer_address_form>
+</layout>
