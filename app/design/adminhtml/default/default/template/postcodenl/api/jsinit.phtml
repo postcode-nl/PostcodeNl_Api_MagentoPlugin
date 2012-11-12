@@ -3,6 +3,7 @@
 	var PCNLAPI_CONFIG = {
 		baseUrl: "<?php echo htmlspecialchars(Mage::getUrl('', array('_secure' => true))) ?>",
 		showcase: <?php echo Mage::getStoreConfig('postcodenl/config/api_showcase') ? 'true' : 'false' ?>,
+		debug: <?php echo Mage::getStoreConfig('postcodenl/config/api_debug') ? 'true' : 'false' ?>,
 		useStreet2AsHouseNumber: <?php echo Mage::getStoreConfig('postcodenl/config/use_street2_as_housenumber') ? 'true' : 'false' ?>,
 		adminValidationDisabled: <?php echo Mage::getStoreConfig('postcodenl/config/admin_validation_disabled') ? 'true' : 'false' ?>,
 		translations: {
@@ -20,8 +21,9 @@
 			noAdditionSelectCustom: "<?php echo htmlspecialchars($this->__('`No addition`')) ?>",
 			additionSelectCustom: "<?php echo htmlspecialchars($this->__('`{addition}`')) ?>",
 			apiShowcase: "<?php echo htmlspecialchars($this->__('API Showcase')) ?>",
+			apiDebug: "<?php echo htmlspecialchars($this->__('API Debug')) ?>",
 			disabledText: "<?php echo htmlspecialchars($this->__('- disabled -')) ?>",
-			infoLabel: "<?php echo htmlspecialchars($this->__('Validation')) ?>",
+			infoLabel: "<?php echo htmlspecialchars($this->__('Address validation')) ?>",
 			infoText: "<?php echo htmlspecialchars($this->__('Fill out your postcode and housenumber to auto-complete your address. You can also manually set your address information.')) ?>",
 			manualInputLabel: "<?php echo htmlspecialchars($this->__('Manual input')) ?>",
 			manualInputText: "<?php echo htmlspecialchars($this->__('Fill out address information manually')) ?>",

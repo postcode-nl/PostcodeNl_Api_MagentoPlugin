@@ -1,5 +1,5 @@
 <_>
-   <form_key>cZmiuvPGIq66eRwi</form_key>
+   <form_key>jifzeX8MuAG2QcI3</form_key>
    <_create/>
    <name>PostcodeNl_Api</name>
    <channel>community</channel>
@@ -18,10 +18,22 @@
 The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-Use policy. The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions.</description>
    <license>Simplified BSD License</license>
    <license_uri/>
-   <version>1.0.3.0</version>
+   <version>1.0.4.0</version>
    <stability>stable</stability>
-   <notes>- Improved &amp; simplified checkout interface
-- Compatibility with OneStepCheckout</notes>
+   <notes>Changes:
+- Added support for standard &apos;multi-shipping&apos; checkout
+- Added &apos;debug&apos; configuration option for better support &amp; feedback
+- Clarified error messages if service is unavailable
+- Removed Postcode.nl logo image from checkout page
+- Fixed some of the generated HTML
+
+Added provisional support for the following checkout extensions:
+- GoMage LightCheckout
+- Fire Checkout 2.0
+- FME One Step Checkout
+- Quick One Page Checkout
+- MageStore One Step Checkout
+</notes>
    <authors>
       <name>
          <name>Postcode.nl Technical Support</name>
@@ -50,7 +62,7 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
             <max/>
          </max>
          <files>
-            <files>                                           </files>
+            <files>                                               </files>
          </files>
       </package>
       <extension>
@@ -140,8 +152,4 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
          <ignore/>
       </ignore>
    </contents>
-   <page>1</page>
-   <limit>200</limit>
-   <folder/>
-   <package/>
 </_>

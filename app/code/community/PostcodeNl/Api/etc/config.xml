@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<PostcodeNl_Api>
-			<version>1.0.3.0</version>
+			<version>1.0.4.0</version>
 		</PostcodeNl_Api>
 	</modules>
 	<frontend>
@@ -92,6 +92,7 @@
 				<api_url>https://api.postcode.nl</api_url>
 				<api_key></api_key>
 				<api_showcase>0</api_showcase>
+				<api_debug>0</api_debug>
 			</config>
 		</postcodenl>
 	</default>

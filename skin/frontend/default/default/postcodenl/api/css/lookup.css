@@ -4,14 +4,6 @@ input.pcnl-readonly {
 	background-color: #EEE;
 }
 
-label.pcnl-info-label {
-	display: block;
-	background: url(../images/postcode-logo-mini.png) left center no-repeat;
-	padding-left: 110px;
-	margin-bottom: 0px;
-	float: none;
-}
-
 .form-list input.pcnl-input-text-half {
 	width: 45%;
 	margin-right:5px;
@@ -26,9 +18,12 @@ select.pcnl-readonly {
 	font-style: italic;
 }
 
-
 .pcnl-info-text {
 	font-size: 90%;
+}
+
+.pcnl-info-label {
+	float: none !important;
 }
 
 .pcnl-address-text {
@@ -52,7 +47,7 @@ select.pcnl-readonly {
 
 /* Showcase styles */
 
-h4.pcnl-showcase {
+h4.pcnl-showcase, h4.pcnl-debug {
 	background: url(../images/postcode-logo.png) left center no-repeat;
 	padding-left: 146px;
 	height: 22px;
@@ -60,7 +55,7 @@ h4.pcnl-showcase {
 	margin-bottom: 0px;
 }
 
-dl.pcnl-showcase {
+dl.pcnl-showcase, dl.pcnl-debug {
 	padding: 4px;
 	border: 1px solid grey;
 	border-radius: 4px;
@@ -78,10 +73,10 @@ dl.pcnl-showcase iframe {
 	border: 1px solid grey;
 }
 
-dl.pcnl-showcase dt {
+dl.pcnl-showcase dt, dl.pcnl-debug dt {
 	font-weight: bold;
 }
-dl.pcnl-showcase dd {
+dl.pcnl-showcase dd, dl.pcnl-debug dd {
 	margin-left: 20px;
 }
 
@@ -109,4 +104,28 @@ div.checkoutcontainer dl.pcnl-showcase iframe {
 	height: 260px;
 	margin-bottom: 15px;
 	border: 1px solid grey;
+}
+
+/* GoMage LightCheckout */
+body.gomage-checkout-onepage-index dl.pcnl-debug {
+	width: 260px;
+	overflow: hidden;
+}
+
+body.gomage-checkout-onepage-index dl.pcnl-debug:hover {
+	width: auto;
+	overflow: normal;
+}
+
+body.gomage-checkout-onepage-index .pcnl-manual-checkbox label,
+body.gomage-checkout-onepage-index .pcnl-info label {
+	float: none;
+}
+body.gomage-checkout-onepage-index .pcnl-info-text {
+	width: 90%;
+}
+
+/* MageStore One Step Checkout */
+body.onestepcheckout-index-index #one-step-checkout-form .pcnl-info-text {
+	width: 78%;
 }

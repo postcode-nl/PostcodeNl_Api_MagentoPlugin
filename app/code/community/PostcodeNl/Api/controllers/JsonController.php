@@ -47,9 +47,10 @@ class PostcodeNl_Api_JsonController extends Mage_Core_Controller_Front_Action
 		$serviceKey = trim(Mage::getStoreConfig('postcodenl/config/api_key'));
 		$serviceSecret = trim(Mage::getStoreConfig('postcodenl/config/api_secret'));
 		$serviceShowcase = Mage::getStoreConfig('postcodenl/config/api_showcase');
+		$serviceDebug = Mage::getStoreConfig('postcodenl/config/api_debug');
 
 		$extensionInfo = $this->_getModuleInfo('PostcodeNl_Api');
-		$extensionVersion = $extensionInfo ? $extensionInfo->version : 'unknown';
+		$extensionVersion = $extensionInfo ? (string)$extensionInfo->version : 'unknown';
 
 		if (!$serviceUrl || !$serviceKey || !$serviceSecret)
 		{
@@ -63,7 +64,7 @@ class PostcodeNl_Api_JsonController extends Mage_Core_Controller_Front_Action
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::API_TIMEOUT);
 		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-		curl_setopt($ch, CURLOPT_USERPWD, $serviceKey .':'.$serviceSecret);
+		curl_setopt($ch, CURLOPT_USERPWD, $serviceKey .':'. $serviceSecret);
 		curl_setopt($ch, CURLOPT_USERAGENT, 'PostcodeNl_Api_MagentoPlugin/' . $extensionVersion .' '. $this->_getMagentoVersion());
 		$jsonResponse = curl_exec($ch);
 		curl_close($ch);
@@ -73,6 +74,39 @@ class PostcodeNl_Api_JsonController extends Mage_Core_Controller_Front_Action
 		$sendResponse = array();
 		if ($serviceShowcase)
 			$sendResponse['showcaseResponse'] = $response;
+
+		if ($serviceDebug)
+		{
+			$modules = array();
+			foreach (Mage::getConfig()->getNode('modules')->children() as $name => $module)
+			{
+				$modules[$name] = array();
+				foreach ($module as $key => $value)
+				{
+					if (in_array((string)$key, array('active')))
+						$modules[$name][$key] = (string)$value == 'true' ? true : false;
+					else if (in_array((string)$key, array('codePool', 'version')))
+						$modules[$name][$key] = (string)$value;
+				}
+			}
+
+			$sendResponse['debugInfo'] = array(
+				'requestUrl' => $url,
+				'rawResponse' => $jsonResponse,
+				'parsedResponse' => $response,
+				'curlError' => curl_error($ch),
+				'configuration' => array(
+					'url' => $serviceUrl,
+					'key' => $serviceKey,
+					'secret' => substr($serviceSecret, 0, 6) .'[hidden]',
+					'showcase' => $serviceShowcase,
+					'debug' => $serviceDebug,
+				),
+				'magentoVersion' => $this->_getMagentoVersion(),
+				'extensionVersion' => $extensionVersion,
+				'modules' => $modules,
+			);
+		}
 
 		if (is_array($response) && isset($response['exceptionId']))
 		{
@@ -87,7 +121,7 @@ class PostcodeNl_Api_JsonController extends Mage_Core_Controller_Front_Action
 					$sendResponse['messageTarget'] = 'housenumber';
 					break;
 				default:
-					$sendResponse['message'] = $this->__('Validation failed.');
+					$sendResponse['message'] = $this->__('Validation error, please use manual input.');
 					$sendResponse['messageTarget'] = 'housenumber';
 					break;
 			}
@@ -98,7 +132,7 @@ class PostcodeNl_Api_JsonController extends Mage_Core_Controller_Front_Action
 		}
 		else
 		{
-			$sendResponse['message'] = $this->__('Validation failed.');
+			$sendResponse['message'] = $this->__('Validation unavailable, please use manual input.');
 			$sendResponse['messageTarget'] = 'housenumber';
 		}
 		echo json_encode($sendResponse);
