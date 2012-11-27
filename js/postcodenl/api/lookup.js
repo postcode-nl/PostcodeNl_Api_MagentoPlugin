@@ -631,7 +631,7 @@ document.observe("dom:loaded", function()
 
 			values.each(function(value)
 			{
-				options += '<option value="'+ value.escapeHTML() +'">'+ (value == '' ? PCNLAPI_CONFIG.translations.noAdditionSelect : value ).escapeHTML() +'</option>';
+				options += '<option value="'+ (value == '' ? '__none__' : value.escapeHTML()) +'">'+ (value == '' ? PCNLAPI_CONFIG.translations.noAdditionSelect : value ).escapeHTML() +'</option>';
 			});
 
 			if ($(prefix + countryFieldId).parentNode.tagName == 'TD')
