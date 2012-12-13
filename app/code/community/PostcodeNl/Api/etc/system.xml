@@ -69,6 +69,20 @@
                                 If you use the second 'street' field as a separate house-number field, enable this option.
                             ]]></comment>
                         </use_street2_as_housenumber>
+                        <never_hide_country translate="label">
+                            <label>Never hide country selector</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                            <![CDATA[
+                            	For webshops with a more international audience, do not hide the country selector when in validation mode.
+                                <b>Note</b>: This only works for checkout pages / extensions, which have the country selector in a seperate row. (does not work with the default Magento checkout page)
+                            ]]></comment>
+                        </never_hide_country>
                         <api_showcase translate="label">
                             <label>Enable API Showcase</label>
                             <frontend_type>select</frontend_type>
@@ -79,8 +93,8 @@
                             <show_in_store>1</show_in_store>
                             <comment>
                             <![CDATA[
-                                By enabling this option, you will see what additional information the Postcode.nl API has to offer, every time your information is enriched.
-                                (this is not recommended in production environments)
+                                By enabling this option, you will see what additional information the Postcode.nl API has to offer, every time your information is enriched.<br />
+                                <em>(this is not recommended in production environments!)</em>
                             ]]></comment>
                         </api_showcase>
                         <api_debug translate="label">
@@ -93,8 +107,8 @@
                             <show_in_store>1</show_in_store>
                             <comment>
                             <![CDATA[
-                                Additional debug information used for trouble-shooting will be sent by the Postcode.nl API extension.
-                                (this is not recommended in production environments!)
+                                Additional debug information used for trouble-shooting will be sent by the Postcode.nl API extension.<br />
+                                <em>(this is not recommended in production environments!)</em>
                             ]]></comment>
                         </api_debug>
                     </fields>

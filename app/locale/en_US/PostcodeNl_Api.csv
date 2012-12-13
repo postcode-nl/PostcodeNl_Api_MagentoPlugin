@@ -4,6 +4,7 @@
 "Invalid postcode format, use `1234AB` format.","Invalid postcode format, use `1234AB` format."
 "Validation error, please use manual input.","Validation error, please use manual input."
 "Validation unavailable, please use manual input.","Validation unavailable, please use manual input."
+"Cannot connect to Postcode.nl API: Server is missing SSL (https) support for CURL.","Cannot connect to Postcode.nl API: Server is missing SSL (https) support for CURL."
 "Postcode","Postcode"
 "Postcode (auto-validating)","Postcode (auto-validating)"
 "Housenumber","Housenumber"

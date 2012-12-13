@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<PostcodeNl_Api>
-			<version>1.0.4.1</version>
+			<version>1.0.5.0</version>
 		</PostcodeNl_Api>
 	</modules>
 	<frontend>
@@ -32,6 +32,17 @@
 			</modules>
 		</translate>
 	</frontend>
+	<admin>
+		<routers>
+			<adminhtml>
+				<args>
+                    <modules>
+                    	<postcodenlnl before="Mage_Adminhtml">PostcodeNl_Api_Adminhtml</postcodenlnl>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
 	<global>
 		<helpers>
 			<postcodenl>
@@ -88,6 +99,7 @@
 		<postcodenl>
 			<config>
 				<enabled>1</enabled>
+				<never_hide_country>0</never_hide_country>
 				<api_secret></api_secret>
 				<api_url>https://api.postcode.nl</api_url>
 				<api_key></api_key>
