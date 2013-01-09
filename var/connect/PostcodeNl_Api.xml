@@ -1,6 +1,5 @@
 <_>
-   <form_key>GXBEn6P1n8yCgcWH</form_key>
-   <_create/>
+   <form_key>cX6wU1qJNxsGAWaG</form_key>
    <name>PostcodeNl_Api</name>
    <channel>community</channel>
    <version_ids>
@@ -18,15 +17,14 @@
 The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-Use policy. The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions.</description>
    <license>Simplified BSD License</license>
    <license_uri/>
-   <version>1.0.5.0</version>
+   <version>1.0.6.0</version>
    <stability>stable</stability>
    <notes>Changes:
-- Better debug feedback for CURL errors
-- Do not fail when shipping or billing input elements are not present
-- Better Javascript exception handling in admin
-- Added support for `IDW Free One Page / Step Checkout`
-- Added option to always show country-selector
-- Fix admin functionality to support multi-shops
+- Improved support for non-standard/non-default templates
+- Fixed bug when switching from non-NL country to non-NL country
+- Improved Billing to Shipping synchronization
+- Added support for `Apptha One Page Checkout`
+- Added support for `Ecommerce Three-Step Checkout`
 </notes>
    <authors>
       <name>
@@ -56,7 +54,7 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
             <max/>
          </max>
          <files>
-            <files>                                                  </files>
+            <files>                                                     </files>
          </files>
       </package>
       <extension>
@@ -82,9 +80,15 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
          <target>magedesign</target>
          <target>magedesign</target>
          <target>magedesign</target>
+         <target>magedesign</target>
+         <target>magedesign</target>
+         <target>magedesign</target>
+         <target>magedesign</target>
          <target>magelocale</target>
          <target>magelocale</target>
          <target>mageweb</target>
+         <target>mageskin</target>
+         <target>mageskin</target>
          <target>mageskin</target>
          <target>mageskin</target>
          <target>mageetc</target>
@@ -94,13 +98,19 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
          <path>PostcodeNl/Api</path>
          <path>adminhtml/default/default/layout/postcodenl</path>
          <path>adminhtml/default/default/template/postcodenl</path>
+         <path>adminhtml/base/default/layout/postcodenl</path>
+         <path>adminhtml/base/default/template/postcodenl</path>
          <path>frontend/default/default/layout/postcodenl/api</path>
          <path>frontend/default/default/template/postcodenl/api</path>
+         <path>frontend/base/default/layout/postcodenl/api</path>
+         <path>frontend/base/default/template/postcodenl/api</path>
          <path>en_US/PostcodeNl_Api.csv</path>
          <path>nl_NL/PostcodeNl_Api.csv</path>
          <path>js/postcodenl/api</path>
          <path>adminhtml/default/default/postcodenl/api</path>
          <path>frontend/default/default/postcodenl/api</path>
+         <path>adminhtml/base/default/postcodenl/api</path>
+         <path>frontend/base/default/postcodenl/api</path>
          <path>modules/PostcodeNl_Api.xml</path>
       </path>
       <type>
@@ -110,8 +120,14 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
          <type>dir</type>
          <type>dir</type>
          <type>dir</type>
+         <type>dir</type>
+         <type>dir</type>
+         <type>dir</type>
+         <type>dir</type>
          <type>file</type>
          <type>file</type>
+         <type>dir</type>
+         <type>dir</type>
          <type>dir</type>
          <type>dir</type>
          <type>dir</type>
@@ -130,8 +146,20 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
          <include/>
          <include/>
          <include/>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
       </include>
       <ignore>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+         <ignore/>
          <ignore/>
          <ignore/>
          <ignore/>

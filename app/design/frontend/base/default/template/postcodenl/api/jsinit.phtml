@@ -1,0 +1,35 @@
+<script type="text/javascript">
+//<![CDATA[
+	var PCNLAPI_CONFIG = {
+		baseUrl: "<?php echo htmlspecialchars(Mage::getUrl('postcodenl/json', array('_secure' => true))) ?>",
+		showcase: <?php echo Mage::getStoreConfig('postcodenl/config/api_showcase') ? 'true' : 'false' ?>,
+		debug: <?php echo Mage::getStoreConfig('postcodenl/config/api_debug') ? 'true' : 'false' ?>,
+		useStreet2AsHouseNumber: <?php echo Mage::getStoreConfig('postcodenl/config/use_street2_as_housenumber') ? 'true' : 'false' ?>,
+		adminValidationDisabled: <?php echo Mage::getStoreConfig('postcodenl/config/admin_validation_disabled') ? 'true' : 'false' ?>,
+		neverHideCountry: <?php echo Mage::getStoreConfig('postcodenl/config/never_hide_country') ? 'true' : 'false' ?>,
+		translations: {
+			defaultError: "<?php echo htmlspecialchars($this->__('Unknown postcode + housenumber combination.')) ?>",
+			postcodeInputLabel: "<?php echo htmlspecialchars($this->__('Postcode')) ?>",
+			postcodeInputTitle: "<?php echo htmlspecialchars($this->__('Postcode')) ?>",
+			houseNumberAdditionUnknown: "<?php echo htmlspecialchars($this->__('Housenumber addition `{addition}` is unknown.')) ?>",
+			houseNumberAdditionRequired: "<?php echo htmlspecialchars($this->__('Housenumber addition required.')) ?>",
+			houseNumberLabel: "<?php echo htmlspecialchars($this->__('Housenumber')) ?>",
+			houseNumberTitle: "<?php echo htmlspecialchars($this->__('Housenumber')) ?>",
+			houseNumberAdditionLabel: "<?php echo htmlspecialchars($this->__('Housenumber addition')) ?>",
+			houseNumberAdditionTitle: "<?php echo htmlspecialchars($this->__('Housenumber addition')) ?>",
+			selectAddition: "<?php echo htmlspecialchars($this->__('Select...')) ?>",
+			noAdditionSelect: "<?php echo htmlspecialchars($this->__('No addition.')) ?>",
+			noAdditionSelectCustom: "<?php echo htmlspecialchars($this->__('`No addition`')) ?>",
+			additionSelectCustom: "<?php echo htmlspecialchars($this->__('`{addition}`')) ?>",
+			apiShowcase: "<?php echo htmlspecialchars($this->__('API Showcase')) ?>",
+			apiDebug: "<?php echo htmlspecialchars($this->__('API Debug')) ?>",
+			disabledText: "<?php echo htmlspecialchars($this->__('- disabled -')) ?>",
+			infoLabel: "<?php echo htmlspecialchars($this->__('Address validation')) ?>",
+			infoText: "<?php echo htmlspecialchars($this->__('Fill out your postcode and housenumber to auto-complete your address. You can also manually set your address information.')) ?>",
+			manualInputLabel: "<?php echo htmlspecialchars($this->__('Manual input')) ?>",
+			manualInputText: "<?php echo htmlspecialchars($this->__('Fill out address information manually')) ?>",
+			outputLabel: "<?php echo htmlspecialchars($this->__('Validated address')) ?>"
+		}
+	};
+//]]>
+</script>

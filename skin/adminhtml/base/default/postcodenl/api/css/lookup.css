@@ -1,0 +1,32 @@
+/* Backend styles */
+
+h4.pcnl-showcase, h4.pcnl-debug {
+	background: url(../images/postcode-logo.png) left center no-repeat;
+	padding-left: 146px;
+	height: 22px;
+	line-height: 25px;
+	margin-top: 5px;
+	margin-bottom: 0px;
+}
+
+dl.pcnl-showcase, dl.pcnl-debug {
+	padding: 4px;
+	border: 1px solid grey;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	background: white;
+}
+
+dl.pcnl-showcase dt, dl.pcnl-debug dt {
+	font-weight: bold;
+}
+dl.pcnl-showcase dd, dl.pcnl-debug dd {
+	margin-left: 20px;
+}
+
+input.pcnl-readonly,
+select.pcnl-readonly {
+	color: grey;
+	font-style: italic;
+	background-color: #eee;
+}
