@@ -1,5 +1,5 @@
 <_>
-   <form_key>cX6wU1qJNxsGAWaG</form_key>
+   <form_key>uMZO2ZwLFSIgFcAC</form_key>
    <name>PostcodeNl_Api</name>
    <channel>community</channel>
    <version_ids>
@@ -17,7 +17,7 @@
 The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-Use policy. The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions.</description>
    <license>Simplified BSD License</license>
    <license_uri/>
-   <version>1.0.6.0</version>
+   <version>1.0.6.1</version>
    <stability>stable</stability>
    <notes>Changes:
 - Improved support for non-standard/non-default templates
@@ -25,6 +25,7 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
 - Improved Billing to Shipping synchronization
 - Added support for `Apptha One Page Checkout`
 - Added support for `Ecommerce Three-Step Checkout`
+- Fixed issue where not all templates were added in 1.0.6.0 release
 </notes>
    <authors>
       <name>
@@ -54,7 +55,7 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
             <max/>
          </max>
          <files>
-            <files>                                                     </files>
+            <files>                                                          </files>
          </files>
       </package>
       <extension>
@@ -81,9 +82,6 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
          <target>magedesign</target>
          <target>magedesign</target>
          <target>magedesign</target>
-         <target>magedesign</target>
-         <target>magedesign</target>
-         <target>magedesign</target>
          <target>magelocale</target>
          <target>magelocale</target>
          <target>mageweb</target>
@@ -98,8 +96,6 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
          <path>PostcodeNl/Api</path>
          <path>adminhtml/default/default/layout/postcodenl</path>
          <path>adminhtml/default/default/template/postcodenl</path>
-         <path>adminhtml/base/default/layout/postcodenl</path>
-         <path>adminhtml/base/default/template/postcodenl</path>
          <path>frontend/default/default/layout/postcodenl/api</path>
          <path>frontend/default/default/template/postcodenl/api</path>
          <path>frontend/base/default/layout/postcodenl/api</path>
@@ -109,15 +105,11 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
          <path>js/postcodenl/api</path>
          <path>adminhtml/default/default/postcodenl/api</path>
          <path>frontend/default/default/postcodenl/api</path>
-         <path>adminhtml/base/default/postcodenl/api</path>
          <path>frontend/base/default/postcodenl/api</path>
          <path>modules/PostcodeNl_Api.xml</path>
       </path>
       <type>
          <type>file</type>
-         <type>dir</type>
-         <type>dir</type>
-         <type>dir</type>
          <type>dir</type>
          <type>dir</type>
          <type>dir</type>
@@ -149,14 +141,8 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
          <include/>
          <include/>
          <include/>
-         <include/>
-         <include/>
-         <include/>
       </include>
       <ignore>
-         <ignore/>
-         <ignore/>
-         <ignore/>
          <ignore/>
          <ignore/>
          <ignore/>
