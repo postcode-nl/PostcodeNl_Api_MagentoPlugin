@@ -14,11 +14,6 @@ document.observe("dom:loaded", function()
 
 	var PostcodeNl_Api = {
 		/**
-		 * Cache requests to improve multiple identical requests (billing / shipping, etc)
-		 */
-		requestCache: {},
-
-		/**
 		 * Hide multiple field-rows in forms
 		 */
 		hideFields: function (fields)
@@ -249,190 +244,160 @@ document.observe("dom:loaded", function()
 			if ($(prefix + countryFieldId).getValue() != 'NL' || postcode == '' || housenumber_mixed == '')
 				return;
 
-			// Make uppercase to prevent double, but identical, requests
-			postcode = postcode.toUpperCase();
-
 			var url = PCNLAPI_CONFIG.baseUrl +'lookup?postcode=' + postcode + '&houseNumber=' + housenumber + '&houseNumberAddition=' + housenumber_addition;
-			if (typeof this.requestCache[url] === 'undefined')
+			new Ajax.Request(url,
 			{
-				new Ajax.Request(url,
+				method: 'get',
+				onException: function(transport, e)
 				{
-					method: 'get',
-					onException: function(transport, e)
+					throw e;
+				},
+				onComplete: function(transport)
+				{
+					var json = transport.responseText.evalJSON();
+
+					if (PCNLAPI_CONFIG.showcase)
 					{
-						throw e;
-					},
-					onComplete: function(transport)
-					{
-						var json = transport.responseText.evalJSON();
-						if (!PCNLAPI_CONFIG.debug) {
-							pcnlapi.requestCache[url] = json;
+						if ($(prefix +'showcase'))
+							$(prefix +'showcase').remove();
+
+						var info = pcnlapi.getFieldListHtml(json.showcaseResponse, 'pcnl-showcase');
+
+						var map = '';
+						if (json.showcaseResponse.longitude && json.showcaseResponse.latitude)
+						{
+							map = '<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" class="map" src="http://maps.google.com/maps?t=h&amp;q='+ json.showcaseResponse.latitude +','+ json.showcaseResponse.longitude +'+(Location found)&amp;z=19&amp;output=embed&amp;iwloc=near"></iframe>';
 						}
-						pcnlapi.updatePostcodeLookup(json, housenumber_addition, housenumber_addition_select, prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, event);
+
+						if ($(prefix + countryFieldId).parentNode.tagName == 'TD')
+						{
+							// We're probably in the admin
+							$(prefix + street1).up('tr').insert({before: '<tr id="' + prefix + 'showcase"><td class="label">'+ PCNLAPI_CONFIG.translations.apiShowcase.escapeHTML() +'</label></td><td class="value"><h4 class="pcnl-showcase">'+ PCNLAPI_CONFIG.translations.apiShowcase.escapeHTML() +'</h4>'+ info + '</td></tr>'});
+						}
+						else if ($(prefix + street1).up('div.full'))
+						{
+							// For `IWD Free One Page / Step Checkout`
+							$(prefix + street1).up('div.full').insert({before: '<div id="' + prefix + 'showcase"><h4 class="pcnl-showcase">'+ PCNLAPI_CONFIG.translations.apiShowcase.escapeHTML() +'</h4>'+ info + '</div>'});
+						}
+						else
+						{
+							$(prefix + street1).up('li').insert({before: '<li id="' + prefix +'showcase" class="wide"><div class="input-box"><h4 class="pcnl-showcase">'+ PCNLAPI_CONFIG.translations.apiShowcase.escapeHTML() +'</h4>'+ map + info + '</div></li>'});
+						}
 					}
-				});
-			}
-			else
-			{
-				this.updatePostcodeLookup(this.requestCache[url], housenumber_addition, housenumber_addition_select, prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, event);
-			}
-		},
-
-		/**
-		 * Update the address fields, given the validated data.
-		 */
-		updatePostcodeLookup: function(data, housenumber_addition, housenumber_addition_select, prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, event)
-		{
-			if (PCNLAPI_CONFIG.showcase)
-			{
-				if ($(prefix +'showcase'))
-					$(prefix +'showcase').remove();
-
-				var info = this.getFieldListHtml(data.showcaseResponse, 'pcnl-showcase');
-
-				var map = '';
-				if (data.showcaseResponse.longitude && data.showcaseResponse.latitude)
-				{
-					map = '<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" class="map" src="http://maps.google.com/maps?t=h&amp;q='+ data.showcaseResponse.latitude +','+ data.showcaseResponse.longitude +'+(Location found)&amp;z=19&amp;output=embed&amp;iwloc=near"></iframe>';
-				}
-
-				if ($(prefix + countryFieldId).parentNode.tagName == 'TD')
-				{
-					// We're probably in the admin
-					$(prefix + street1).up('tr').insert({before: '<tr id="' + prefix + 'showcase"><td class="label">'+ PCNLAPI_CONFIG.translations.apiShowcase.escapeHTML() +'</label></td><td class="value"><h4 class="pcnl-showcase">'+ PCNLAPI_CONFIG.translations.apiShowcase.escapeHTML() +'</h4>'+ info + '</td></tr>'});
-				}
-				else if ($(prefix + street1).up('div.full'))
-				{
-					// For `IWD Free One Page / Step Checkout`
-					$(prefix + street1).up('div.full').insert({before: '<div id="' + prefix + 'showcase"><h4 class="pcnl-showcase">'+ PCNLAPI_CONFIG.translations.apiShowcase.escapeHTML() +'</h4>'+ info + '</div>'});
-				}
-				else
-				{
-					$(prefix + street1).up('li').insert({before: '<li id="' + prefix +'showcase" class="wide"><div class="input-box"><h4 class="pcnl-showcase">'+ PCNLAPI_CONFIG.translations.apiShowcase.escapeHTML() +'</h4>'+ map + info + '</div></li>'});
-				}
-			}
-			if (PCNLAPI_CONFIG.debug)
-			{
-				if ($(prefix +'debug'))
-					$(prefix +'debug').remove();
-
-				var info = this.getFieldListHtml(data.debugInfo, 'pcnl-debug');
-
-				if ($(prefix + countryFieldId).parentNode.tagName == 'TD')
-				{
-					// We're probably in the admin
-					$(prefix + street1).up('tr').insert({before: '<tr id="' + prefix + 'debug"><td class="label">'+ PCNLAPI_CONFIG.translations.apiDebug.escapeHTML() +'</label></td><td class="value"><h4 class="pcnl-debug">'+ PCNLAPI_CONFIG.translations.apiDebug.escapeHTML() +'</h4>'+ info + '</td></tr>'});
-				}
-				else if ($(prefix + street1).up('div.full'))
-				{
-					// For `IWD Free One Page / Step Checkout`
-					$(prefix + street1).up('div.full').insert({before: '<div id="' + prefix +'debug" class="full"><div class="input-box"><h4 class="pcnl-debug">'+ PCNLAPI_CONFIG.translations.apiDebug.escapeHTML() +'</h4>'+ info + '</div></div>'});
-				}
-				else
-				{
-					$(prefix + street1).up('li').insert({before: '<li id="' + prefix +'debug" class="wide"><div class="input-box"><h4 class="pcnl-debug">'+ PCNLAPI_CONFIG.translations.apiDebug.escapeHTML() +'</h4>'+ info + '</div></li>'});
-				}
-			}
-
-			// Remove any existing error messages
-			this.removeValidationMessages(prefix);
-
-			if (data.postcode != undefined)
-			{
-				// Set data from request on form fields
-				$(prefix + postcodeFieldId).setValue(data.postcode);
-				$(prefix + 'postcode_input').setValue(data.postcode);
-				if (PCNLAPI_CONFIG.useStreet2AsHouseNumber && $(prefix + street2))
-				{
-					$(prefix + street1).setValue((data.street).trim());
-					$(prefix + street2).setValue((data.houseNumber +' '+ (data.houseNumberAddition ? data.houseNumberAddition : housenumber_addition)).trim());
-				}
-				else
-				{
-					$(prefix + street1).setValue((data.street +' '+ data.houseNumber +' '+ (data.houseNumberAddition ? data.houseNumberAddition : housenumber_addition)).trim());
-				}
-				$(prefix +'city').setValue(data.city);
-				if ($(prefix +'region'))
-				{
-					$(prefix +'region').setValue(data.province);
-				}
-				$(prefix +'postcode_housenumber').setValue(data.houseNumber);
-
-				// Update address result text block
-				if ($(prefix + 'postcode_output'))
-				{
-					this.showFields([prefix +'postcode_output']);
-					$(prefix + 'postcode_output').update((data.street +' '+ data.houseNumber +' '+ (data.houseNumberAddition ? data.houseNumberAddition : housenumber_addition)).trim() + "<br>" + data.postcode + " " + data.city);
-				}
-
-				// Handle all housenumber addition possiblities
-				if (data.houseNumberAddition == null && (housenumber_addition_select == housenumber_addition || (housenumber_addition_select == '__none__' && housenumber_addition == '')))
-				{
-					// Selected housenumber addition is not known, and the select dropdown already contains that value
-
-					var additionSelect = this.createPostcodeHouseNumberAddition(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, data.houseNumberAdditions, housenumber_addition_select);
-
-					// Re-select value if it was selected through the selectbox
-					if (event && event.element().id == prefix +'postcode_housenumber_addition')
-						additionSelect.setValue(housenumber_addition_select);
-
-					if (additionSelect.getValue() != housenumber_addition_select)
+					if (PCNLAPI_CONFIG.debug)
 					{
-						newAdvice = Validation.createAdvice('invalid-addition', $(prefix +'postcode_housenumber_addition'), false, (housenumber_addition != '' ? PCNLAPI_CONFIG.translations.houseNumberAdditionUnknown.replace('{addition}', housenumber_addition) : PCNLAPI_CONFIG.translations.houseNumberAdditionRequired));
-						Validation.showAdvice($(prefix +'postcode_housenumber_addition'), newAdvice, 'invalid-addition');
+						if ($(prefix +'debug'))
+							$(prefix +'debug').remove();
+
+						var info = pcnlapi.getFieldListHtml(json.debugInfo, 'pcnl-debug');
+
+						if ($(prefix + countryFieldId).parentNode.tagName == 'TD')
+						{
+							// We're probably in the admin
+							$(prefix + street1).up('tr').insert({before: '<tr id="' + prefix + 'debug"><td class="label">'+ PCNLAPI_CONFIG.translations.apiDebug.escapeHTML() +'</label></td><td class="value"><h4 class="pcnl-debug">'+ PCNLAPI_CONFIG.translations.apiDebug.escapeHTML() +'</h4>'+ info + '</td></tr>'});
+						}
+						else if ($(prefix + street1).up('div.full'))
+						{
+							// For `IWD Free One Page / Step Checkout`
+							$(prefix + street1).up('div.full').insert({before: '<div id="' + prefix +'debug" class="full"><div class="input-box"><h4 class="pcnl-debug">'+ PCNLAPI_CONFIG.translations.apiDebug.escapeHTML() +'</h4>'+ info + '</div></div>'});
+						}
+						else
+						{
+							$(prefix + street1).up('li').insert({before: '<li id="' + prefix +'debug" class="wide"><div class="input-box"><h4 class="pcnl-debug">'+ PCNLAPI_CONFIG.translations.apiDebug.escapeHTML() +'</h4>'+ info + '</div></li>'});
+						}
 					}
-				}
-				else if (data.houseNumberAddition == null)
-				{
-					// Selected housenumber addition is not known, and the select dropdown does not contain that value
 
-					var additionSelect = this.createPostcodeHouseNumberAddition(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, data.houseNumberAdditions, housenumber_addition);
+					// Remove any existing error messages
+					pcnlapi.removeValidationMessages(prefix);
 
-					newAdvice = Validation.createAdvice('invalid-addition', $(prefix +'postcode_housenumber_addition'), false, (housenumber_addition != '' ? PCNLAPI_CONFIG.translations.houseNumberAdditionUnknown.replace('{addition}', housenumber_addition) : PCNLAPI_CONFIG.translations.houseNumberAdditionRequired));
-					Validation.showAdvice($(prefix +'postcode_housenumber_addition'), newAdvice, 'invalid-addition');
-				}
-				else if (data.houseNumberAdditions.length > 1 || (data.houseNumberAdditions.length == 1 && data.houseNumberAdditions[0] != ''))
-				{
-					// Address has multiple housenumber additions
-					var additionSelect = this.createPostcodeHouseNumberAddition(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, data.houseNumberAdditions);
-					additionSelect.setValue(data.houseNumberAddition);
-				}
-				else
-				{
-					// Address has only one valid addition, and it is the 'no addition' option
-					this.removeHousenumberAddition(prefix);
-				}
-			}
-			else if (data.message != undefined)
-			{
-				// Address check returned an error
+					if (json.postcode != undefined)
+					{
+						// Set data from request on form fields
+						$(prefix + postcodeFieldId).setValue(json.postcode);
+						$(prefix + 'postcode_input').setValue(json.postcode);
+						if (PCNLAPI_CONFIG.useStreet2AsHouseNumber && $(prefix + street2))
+						{
+							$(prefix + street1).setValue((json.street).trim());
+							$(prefix + street2).setValue((json.houseNumber +' '+ (json.houseNumberAddition ? json.houseNumberAddition : housenumber_addition)).trim());
+						}
+						else
+						{
+							$(prefix + street1).setValue((json.street +' '+ json.houseNumber +' '+ (json.houseNumberAddition ? json.houseNumberAddition : housenumber_addition)).trim());
+						}
+						$(prefix +'city').setValue(json.city);
+						if ($(prefix +'region'))
+						{
+							$(prefix +'region').setValue(json.province);
+						}
+						$(prefix +'postcode_housenumber').setValue(json.houseNumber);
 
-				newAdvice = Validation.createAdvice('invalid-postcode', $(prefix + (data.messageTarget == 'postcode' ? 'postcode_input' : 'postcode_housenumber')), false, data.message);
-				Validation.showAdvice($(prefix +'postcode_housenumber'), newAdvice, 'invalid-postcode');
+						// Update address result text block
+						if ($(prefix + 'postcode_output'))
+						{
+							pcnlapi.showFields([prefix +'postcode_output']);
+							$(prefix + 'postcode_output').update((json.street +' '+ json.houseNumber +' '+ (json.houseNumberAddition ? json.houseNumberAddition : housenumber_addition)).trim() + "<br>" + json.postcode + " " + json.city);
+						}
 
-				this.removeHousenumberAddition(prefix);
-			}
-			else
-			{
-				// Address check did not return an error or a postcode result (something else wrong)
+						// Handle all housenumber addition possiblities
+						if (json.houseNumberAddition == null && (housenumber_addition_select == housenumber_addition || (housenumber_addition_select == '__none__' && housenumber_addition == '')))
+						{
+							// Selected housenumber addition is not known, and the select dropdown already contains that value
 
-				newAdvice = Validation.createAdvice('invalid-postcode', $(prefix + (data.messageTarget == 'postcode' ? 'postcode_input' : 'postcode_housenumber')), false, '');
-				Validation.showAdvice($(prefix +'postcode_housenumber'), newAdvice, 'invalid-postcode');
+							var additionSelect = pcnlapi.createPostcodeHouseNumberAddition(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, json.houseNumberAdditions, housenumber_addition_select);
 
-				this.removeHousenumberAddition(prefix);
-			}
+							// Re-select value if it was selected through the selectbox
+							if (event && event.element().id == prefix +'postcode_housenumber_addition')
+								additionSelect.setValue(housenumber_addition_select);
 
-			$(prefix + postcodeFieldId).fire('postcode:updated');
+							if (additionSelect.getValue() != housenumber_addition_select)
+							{
+								newAdvice = Validation.createAdvice('invalid-addition', $(prefix +'postcode_housenumber_addition'), false, (housenumber_addition != '' ? PCNLAPI_CONFIG.translations.houseNumberAdditionUnknown.replace('{addition}', housenumber_addition) : PCNLAPI_CONFIG.translations.houseNumberAdditionRequired));
+								Validation.showAdvice($(prefix +'postcode_housenumber_addition'), newAdvice, 'invalid-addition');
+							}
+						}
+						else if (json.houseNumberAddition == null)
+						{
+							// Selected housenumber addition is not known, and the select dropdown does not contain that value
 
-			// Add support for syncing Billing & Shipping
-			if (prefix == 'billing:' && $('shipping:' + postcodeFieldId)) {
-				if (typeof shipping != 'undefined') {
-					if ($('shipping:same_as_billing') && $('shipping:same_as_billing').checked) {
-		                shipping.syncWithBilling();
+							var additionSelect = pcnlapi.createPostcodeHouseNumberAddition(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, json.houseNumberAdditions, housenumber_addition);
+
+							newAdvice = Validation.createAdvice('invalid-addition', $(prefix +'postcode_housenumber_addition'), false, (housenumber_addition != '' ? PCNLAPI_CONFIG.translations.houseNumberAdditionUnknown.replace('{addition}', housenumber_addition) : PCNLAPI_CONFIG.translations.houseNumberAdditionRequired));
+							Validation.showAdvice($(prefix +'postcode_housenumber_addition'), newAdvice, 'invalid-addition');
+						}
+						else if (json.houseNumberAdditions.length > 1 || (json.houseNumberAdditions.length == 1 && json.houseNumberAdditions[0] != ''))
+						{
+							// Address has multiple housenumber additions
+							var additionSelect = pcnlapi.createPostcodeHouseNumberAddition(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, json.houseNumberAdditions);
+							additionSelect.setValue(json.houseNumberAddition);
+						}
+						else
+						{
+							// Address has only one valid addition, and it is the 'no addition' option
+							pcnlapi.removeHousenumberAddition(prefix);
+						}
 					}
+					else if (json.message != undefined)
+					{
+						// Address check returned an error
+
+						newAdvice = Validation.createAdvice('invalid-postcode', $(prefix + (json.messageTarget == 'postcode' ? 'postcode_input' : 'postcode_housenumber')), false, json.message);
+						Validation.showAdvice($(prefix +'postcode_housenumber'), newAdvice, 'invalid-postcode');
+
+						pcnlapi.removeHousenumberAddition(prefix);
+					}
+					else
+					{
+						// Address check did not return an error or a postcode result (something else wrong)
+
+						newAdvice = Validation.createAdvice('invalid-postcode', $(prefix + (json.messageTarget == 'postcode' ? 'postcode_input' : 'postcode_housenumber')), false, '');
+						Validation.showAdvice($(prefix +'postcode_housenumber'), newAdvice, 'invalid-postcode');
+
+						pcnlapi.removeHousenumberAddition(prefix);
+					}
+
+					$(prefix + postcodeFieldId).fire('postcode:updated');
 				}
-				this.lookupPostcode('shipping:', postcodeFieldId, countryFieldId, street1, street2, street3, street4);
-			}
+			});
 		},
 
 		/**
@@ -810,20 +775,9 @@ document.observe("dom:loaded", function()
 			{
 				if ($('billing:country_id'))
 				{
-					$('billing:country_id').observe('change', function () {
-						pcnlapi.toggleCountryPostcode('billing:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
-						// Also toggle shipping, because it may be synced 'silently' with billing
-						if ($('shipping:country_id')) {
-							pcnlapi.toggleCountryPostcode('shipping:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
-						}
-					});
-					if (!$('billing:country_id') || $('billing:country_id').getValue() == 'NL') {
+					$('billing:country_id').observe('change', function () { pcnlapi.toggleCountryPostcode('billing:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4'); });
+					if (!$('billing:country_id') || $('billing:country_id').getValue() == 'NL')
 						this.toggleCountryPostcode('billing:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
-						if ($('shipping:country_id')) {
-							// Also toggle shipping, because it may be synced 'silently' with billing
-							this.toggleCountryPostcode('shipping:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
-						}
-					}
 				}
 				if ($('shipping:country_id'))
 				{
