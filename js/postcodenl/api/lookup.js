@@ -12,6 +12,20 @@ document.observe("dom:loaded", function()
 		}
 	}
 
+	function pcnlFireEvent(element,event){
+	    if (document.createEventObject){
+	        // dispatch for IE
+	        var evt = document.createEventObject();
+	        return element.fireEvent('on'+event,evt)
+	    }
+	    else{
+	        // dispatch for firefox + others
+	        var evt = document.createEvent("HTMLEvents");
+	        evt.initEvent(event, true, true ); // event type,bubbling,cancelable
+	        return !element.dispatchEvent(evt);
+	    }
+	}
+
 	var PostcodeNl_Api = {
 		/**
 		 * Cache requests to improve multiple identical requests (billing / shipping, etc)
@@ -340,7 +354,13 @@ document.observe("dom:loaded", function()
 			if (data.postcode != undefined)
 			{
 				// Set data from request on form fields
+				var postcodeChange = false;
+				if ($(prefix + postcodeFieldId).getValue() != data.postcode)
+					postcodeChange = true;
 				$(prefix + postcodeFieldId).setValue(data.postcode);
+				if (postcodeChange)
+					pcnlFireEvent($(prefix + postcodeFieldId), 'change');
+
 				$(prefix + 'postcode_input').setValue(data.postcode);
 				if (PCNLAPI_CONFIG.useStreet2AsHouseNumber && $(prefix + street2))
 				{
