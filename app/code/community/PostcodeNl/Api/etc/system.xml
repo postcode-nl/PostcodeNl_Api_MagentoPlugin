@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <config>
 	<sections>
-		<postcodenl translate="label" module="postcodenl">
+		<!-- Note: Config name is 'postcode' instead of 'postcode_api' -->
+		<postcodenl translate="label">
 			<label>Postcode.nl API</label>
 			<tab>sales</tab>
 			<frontend_type>text</frontend_type>
@@ -10,109 +11,109 @@
 			<show_in_website>1</show_in_website>
 			<show_in_store>1</show_in_store>
 			<groups>
-                <config translate="label">
-                    <label>Configuration</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>10</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <enabled translate="label">
-                            <label>Enabled?</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </enabled>
-                        <api_url translate="label">
-                            <label>API URL</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>validate-url</validate>
-                        </api_url>
-                        <api_key translate="label">
-                            <label>API key</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </api_key>
-                        <api_secret translate="label">
-                            <label>API secret</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>
-                            <![CDATA[
-                                To get your Postcode.nl API key and secret, please register at <a href="https://api.postcode.nl">Postcode.nl API</a>.
-                            ]]></comment>
-                        </api_secret>
-                        <use_street2_as_housenumber translate="label">
-                            <label>Separate housenumber</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>45</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>
-                            <![CDATA[
-                                If you use the second 'street' field as a separate house-number field, enable this option.
-                            ]]></comment>
-                        </use_street2_as_housenumber>
-                        <never_hide_country translate="label">
-                            <label>Never hide country selector</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>47</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>
-                            <![CDATA[
-                            	For webshops with a more international audience, do not hide the country selector when in validation mode.
-                                <b>Note</b>: This only works for checkout pages / extensions, which have the country selector in a seperate row. (does not work with the default Magento checkout page)
-                            ]]></comment>
-                        </never_hide_country>
-                        <api_showcase translate="label">
-                            <label>Enable API Showcase</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>
-                            <![CDATA[
-                                By enabling this option, you will see what additional information the Postcode.nl API has to offer, every time your information is enriched.<br />
-                                <em>(this is not recommended in production environments!)</em>
-                            ]]></comment>
-                        </api_showcase>
-                        <api_debug translate="label">
-                            <label>Show API Debug info</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>
-                            <![CDATA[
-                                Additional debug information used for trouble-shooting will be sent by the Postcode.nl API extension.<br />
-                                <em>(this is not recommended in production environments!)</em>
-                            ]]></comment>
-                        </api_debug>
-                    </fields>
-                </config>
+				<config translate="label">
+					<label>Configuration</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>10</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<enabled translate="label">
+							<label>Enabled?</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</enabled>
+						<api_url translate="label">
+							<label>API URL</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>validate-url</validate>
+						</api_url>
+						<api_key translate="label">
+							<label>API key</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</api_key>
+						<api_secret translate="label">
+							<label>API secret</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>
+							<![CDATA[
+								To get your Postcode.nl API key and secret, please register at <a href="https://api.postcode.nl">Postcode.nl API</a>.
+							]]></comment>
+						</api_secret>
+						<use_street2_as_housenumber translate="label">
+							<label>Separate housenumber</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>45</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>
+							<![CDATA[
+								If you use the second 'street' field as a separate house-number field, enable this option.
+							]]></comment>
+						</use_street2_as_housenumber>
+						<never_hide_country translate="label">
+							<label>Never hide country selector</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>47</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>
+							<![CDATA[
+								For webshops with a more international audience, do not hide the country selector when in validation mode.
+								<b>Note</b>: This only works for checkout pages / extensions, which have the country selector in a seperate row. (does not work with the default Magento checkout page)
+							]]></comment>
+						</never_hide_country>
+						<api_showcase translate="label">
+							<label>Enable API Showcase</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>50</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>
+							<![CDATA[
+								By enabling this option, you will see what additional information the Postcode.nl API has to offer, every time your information is enriched.<br />
+								<em>(this is not recommended in production environments!)</em>
+							]]></comment>
+						</api_showcase>
+						<api_debug translate="label">
+							<label>Show API Debug info</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>
+							<![CDATA[
+								Additional debug information used for trouble-shooting will be sent by the Postcode.nl API extension.<br />
+								<em>(this is not recommended in production environments!)</em>
+							]]></comment>
+						</api_debug>
+					</fields>
+				</config>
 			</groups>
 		</postcodenl>
 	</sections>

@@ -17,10 +17,11 @@
 The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-Use policy. The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions.</description>
    <license>Simplified BSD License</license>
    <license_uri/>
-   <version>1.0.6.3</version>
+   <version>1.0.6.4</version>
    <stability>stable</stability>
    <notes>Changes:
-- Improved support for transport-method updates for various checkout extensions (e.g. IWD Free One Page / Step Checkout)
+- Improved housenumber/addition splitting
+- Fixed compatibility with MageGo LightCheckout
 </notes>
    <authors>
       <name>

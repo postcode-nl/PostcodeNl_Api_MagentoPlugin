@@ -32,6 +32,13 @@ document.observe("dom:loaded", function()
 		 */
 		requestCache: {},
 
+		/*
+		 * Regular expressions for matching address parts
+		 */
+		REGEXP_STREET: '[^0-9].*?|.*?[^0-9]',
+		REGEXP_HOUSENUMBER: '[0-9]+',
+		REGEXP_HOUSENUMBER_ADDITION: '[^\s]+|[^\s]\s+[^\s]{1,4}',
+
 		/**
 		 * Hide multiple field-rows in forms
 		 */
@@ -243,7 +250,8 @@ document.observe("dom:loaded", function()
 			var housenumber_mixed = $(prefix + 'postcode_housenumber').getValue().trim();
 			// Number, followed by non alphanumberic chars, and then additional number ("123 A", "123-rood", etc)
 			// or: Number, followed directly by a letter and then alphanumeric/space charcters ("123b3", "123berk 23", etc)
-			var housenumber_match = housenumber_mixed.match(/^([0-9]+)([^0-9a-zA-Z]+([0-9a-zA-Z ]+)|([a-zA-Z]([0-9a-zA-Z ]*)))?$/);
+			var housenumber_match = housenumber_mixed.match('/^('+ this.REGEXP_HOUSENUMBER +')([^0-9a-z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?$/i');
+
 			var housenumber_addition_select = $(prefix +'postcode_housenumber_addition') ? $(prefix +'postcode_housenumber_addition').getValue() : null;
 
 			var housenumber = housenumber_match ? housenumber_match[1].trim() : '';
@@ -254,8 +262,6 @@ document.observe("dom:loaded", function()
 				housenumber_addition = '';
 			else if (housenumber_match[3])
 				housenumber_addition = housenumber_match[3].trim();
-			else if (housenumber_match[4])
-				housenumber_addition = housenumber_match[4].trim();
 
 			if (housenumber_addition == '' && housenumber_addition_select != '__none__' && housenumber_addition_select != '__select__' && housenumber_addition_select != null)
 				housenumber_addition = housenumber_addition_select;
@@ -634,25 +640,26 @@ document.observe("dom:loaded", function()
 					$(prefix +'postcode_input').setValue($(prefix + postcodeFieldId).getValue());
 
 					var housenumber_match;
+					var housenumber = '';
+					var housenumber_addition = '';
 					if (PCNLAPI_CONFIG.useStreet2AsHouseNumber && $(prefix + street2))
 					{
-						housenumber_match = $(prefix + street2).getValue().match(/([0-9]+)([^0-9a-zA-Z]+([0-9a-zA-Z ]+)|([a-zA-Z]([0-9a-zA-Z ]+)))?$/);
+						housenumber_match = $(prefix + street2).getValue().match(('/^('+ this.REGEXP_HOUSENUMBER +')([^0-9a-z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?$/i'));
+						if (housenumber_match)
+						{
+							housenumber = housenumber_match[1].trim();
+							housenumber_addition = housenumber_match[3].trim();
+						}
 					}
 					else
 					{
-						housenumber_match = $(prefix + street1).getValue().match(/([0-9]+)([^0-9a-zA-Z]+([0-9a-zA-Z ]+)|([a-zA-Z]([0-9a-zA-Z ]+)))?$/);
+						housenumber_match = $(prefix + street1).getValue().match('/^('+ this.REGEXP_STREET +')\s+('+ this.REGEXP_HOUSENUMBER +')([^0-9a-z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?$/i');
+						if (housenumber_match)
+						{
+							housenumber = housenumber_match[2].trim();
+							housenumber_addition = housenumber_match[4].trim();
+						}
 					}
-
-					var housenumber = housenumber_match ? housenumber_match[1].trim() : '';
-
-					var housenumber_addition = '';
-
-					if (!housenumber_match)
-						housenumber_addition = '';
-					else if (housenumber_match[3])
-						housenumber_addition = housenumber_match[3].trim();
-					else if (housenumber_match[4])
-						housenumber_addition = housenumber_match[4].trim();
 
 					$(prefix +'postcode_housenumber').setValue((housenumber +' '+ housenumber_addition).trim());
 					this.lookupPostcode(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4);
@@ -855,13 +862,13 @@ document.observe("dom:loaded", function()
 			// GoMage LightCheckout
 			if ($('billing_postcode'))
 			{
-				if ($('billing:country_id'))
+				if ($('billing_country_id'))
 				{
 					$('billing_country_id').observe('change', function () { pcnlapi.toggleCountryPostcode('billing_', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4'); });
 					if (!$('billing_country_id') || $('billing_country_id').getValue() == 'NL')
 						this.toggleCountryPostcode('billing_', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
 				}
-				if  ($('shipping:country_id'))
+				if ($('shipping_country_id'))
 				{
 					$('shipping_country_id').observe('change', function () { pcnlapi.toggleCountryPostcode('shipping_', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4'); });
 					if (!$('shipping_country_id') || $('shipping_country_id').getValue() == 'NL')

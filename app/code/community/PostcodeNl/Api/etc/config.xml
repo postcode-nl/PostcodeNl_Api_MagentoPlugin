@@ -2,33 +2,33 @@
 <config>
 	<modules>
 		<PostcodeNl_Api>
-			<version>1.0.6.3</version>
+			<version>1.0.6.4</version>
 		</PostcodeNl_Api>
 	</modules>
 	<frontend>
 		<routers>
-			<postcodenl>
+			<postcodenl_api>
 				<use>standard</use>
 				<args>
 					<module>PostcodeNl_Api</module>
 					<frontName>postcodenl</frontName>
 				</args>
-			</postcodenl>
+			</postcodenl_api>
 		</routers>
 		<layout>
 			<updates>
-				<postcodenl>
+				<postcodenl_api>
 					<file>postcodenl/api/lookup.xml</file>
-				</postcodenl>
+				</postcodenl_api>
 			</updates>
 		</layout>
 		<translate>
 			<modules>
-				<postcodenl>
+				<postcodenl_api>
 					<files>
 						<default>PostcodeNl_Api.csv</default>
 					</files>
-				</postcodenl>
+				</postcodenl_api>
 			</modules>
 		</translate>
 	</frontend>
@@ -36,8 +36,8 @@
 		<routers>
 			<adminhtml>
 				<args>
-                    <modules>
-                    	<postcodenlnl before="Mage_Adminhtml">PostcodeNl_Api_Adminhtml</postcodenlnl>
+					<modules>
+						<postcodenl before="Mage_Adminhtml">PostcodeNl_Api_Adminhtml</postcodenl>
 					</modules>
 				</args>
 			</adminhtml>
@@ -45,57 +45,36 @@
 	</admin>
 	<global>
 		<helpers>
-			<postcodenl>
+			<postcodenl_api>
 				<class>PostcodeNl_Api_Helper</class>
-			</postcodenl>
+			</postcodenl_api>
 		</helpers>
 	   <blocks>
-			<postcodenl>
-			   	<class>PostcodeNl_Api_Block</class>
-			</postcodenl>
+			<postcodenl_api>
+				<class>PostcodeNl_Api_Block</class>
+			</postcodenl_api>
 	   </blocks>
 	</global>
 	<adminhtml>
-		<acl>
-			<all>
-				<title>Allow Everything</title>
-			</all>
-			<resources>
-				<admin>
-					<children>
-						<system>
-							<children>
-								<config>
-									<children>
-										<postcodenl translate="title" module="postcodenl">
-											<title>Postcode.nl API</title>
-										</postcodenl>
-									</children>
-								</config>
-							</children>
-						</system>
-					</children>
-				</admin>
-			</resources>
-		</acl>
 		<layout>
 			<updates>
-				<postcodenl>
+				<postcodenl_api>
 					<file>postcodenl/api/lookup.xml</file>
-				</postcodenl>
+				</postcodenl_api>
 			</updates>
 		</layout>
 		<translate>
 			<modules>
-				<postcodenl>
+				<postcodenl_api>
 					<files>
 						<default>PostcodeNl_Api.csv</default>
 					</files>
-				</postcodenl>
+				</postcodenl_api>
 			</modules>
 		</translate>
 	</adminhtml>
 	<default>
+		<!-- Note: Config name is 'postcode' instead of 'postcode_api' -->
 		<postcodenl>
 			<config>
 				<enabled>1</enabled>

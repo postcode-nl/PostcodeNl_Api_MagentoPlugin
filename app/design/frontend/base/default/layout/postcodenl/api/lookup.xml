@@ -7,7 +7,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</checkout_onepage_index>
 	<customer_address_form>
@@ -16,7 +16,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</customer_address_form>
 	<checkout_multishipping_register>
@@ -25,7 +25,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</checkout_multishipping_register>
 	<checkout_multishipping_address_newshipping>
@@ -34,7 +34,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</checkout_multishipping_address_newshipping>
 	<checkout_multishipping_address_editshipping>
@@ -43,7 +43,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</checkout_multishipping_address_editshipping>
 	<checkout_multishipping_address_editbilling>
@@ -52,7 +52,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</checkout_multishipping_address_editbilling>
 	<!-- Used for `OneStepCheckout(.com)`, but also for `MageStore One Step Checkout` and `Apptha One Step Checkout` -->
@@ -62,7 +62,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</onestepcheckout_index_index>
 	<!-- For `GoMage LightCheckout` -->
@@ -72,7 +72,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</gomage_checkout_onepage_index>
 	<!-- For `Fire Checkout` -->
@@ -82,7 +82,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</firecheckout_onepage_index>
 	<!-- For `FME One Step Checkout` -->
@@ -92,7 +92,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</checkout_onestep_index>
 	<!-- For `IWD Free One Page / Step Checkout` -->
@@ -102,7 +102,7 @@
             <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
         <reference name="content">
-            <block type="postcodenl/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</onepagecheckout_index_index>
 </layout>
