@@ -129,6 +129,10 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 					$sendResponse['message'] = $this->__('Unknown postcode + housenumber combination.');
 					$sendResponse['messageTarget'] = 'housenumber';
 					break;
+				case 'PostcodeNl_Controller_Address_InvalidHouseNumberException':
+					$sendResponse['message'] = $this->__('Housenumber format is not valid.');
+					$sendResponse['messageTarget'] = 'housenumber';
+					break;
 				default:
 					$sendResponse['message'] = $this->__('Validation error, please use manual input.');
 					$sendResponse['messageTarget'] = 'housenumber';

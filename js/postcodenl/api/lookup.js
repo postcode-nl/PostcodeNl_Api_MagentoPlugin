@@ -250,11 +250,11 @@ document.observe("dom:loaded", function()
 			var housenumber_mixed = $(prefix + 'postcode_housenumber').getValue().trim();
 			// Number, followed by non alphanumberic chars, and then additional number ("123 A", "123-rood", etc)
 			// or: Number, followed directly by a letter and then alphanumeric/space charcters ("123b3", "123berk 23", etc)
-			var housenumber_match = housenumber_mixed.match('/^('+ this.REGEXP_HOUSENUMBER +')([^0-9a-z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?$/i');
+			var housenumber_match = housenumber_mixed.match('^('+ this.REGEXP_HOUSENUMBER +')([^0-9a-zA-Z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?$');
 
 			var housenumber_addition_select = $(prefix +'postcode_housenumber_addition') ? $(prefix +'postcode_housenumber_addition').getValue() : null;
 
-			var housenumber = housenumber_match ? housenumber_match[1].trim() : '';
+			var housenumber = housenumber_match ? housenumber_match[1].trim() : housenumber_mixed;
 
 			var housenumber_addition = '';
 
@@ -644,7 +644,7 @@ document.observe("dom:loaded", function()
 					var housenumber_addition = '';
 					if (PCNLAPI_CONFIG.useStreet2AsHouseNumber && $(prefix + street2))
 					{
-						housenumber_match = $(prefix + street2).getValue().match(('/^('+ this.REGEXP_HOUSENUMBER +')([^0-9a-z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?$/i'));
+						housenumber_match = $(prefix + street2).getValue().match('^('+ this.REGEXP_HOUSENUMBER +')([^0-9a-zA-Z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?$');
 						if (housenumber_match)
 						{
 							housenumber = housenumber_match[1].trim();
@@ -653,7 +653,7 @@ document.observe("dom:loaded", function()
 					}
 					else
 					{
-						housenumber_match = $(prefix + street1).getValue().match('/^('+ this.REGEXP_STREET +')\s+('+ this.REGEXP_HOUSENUMBER +')([^0-9a-z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?$/i');
+						housenumber_match = $(prefix + street1).getValue().match('^('+ this.REGEXP_STREET +')\s+('+ this.REGEXP_HOUSENUMBER +')([^0-9a-zA-Z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?$');
 						if (housenumber_match)
 						{
 							housenumber = housenumber_match[2].trim();

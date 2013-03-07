@@ -1,4 +1,5 @@
 "Unknown postcode + housenumber combination.","Onbekende postcode + huisnummer combinatie."
+"Housenumber format is not valid.","Onbekend huisnummer formaat."
 "Housenumber addition `{addition}` is unknown.","Huisnummer toevoeging `{addition}` is onbekend."
 "Housenumber addition required.","Huisnummer toevoeging vereist."
 "Invalid postcode format, use `1234AB` format.","Onbekend postcode formaat, gebruik het `1234AB` formaat."

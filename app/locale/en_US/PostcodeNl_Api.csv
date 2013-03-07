@@ -1,4 +1,5 @@
 "Unknown postcode + housenumber combination.","Unknown postcode + housenumber combination."
+"Housenumber format is not valid.","Housenumber format is not valid."
 "Housenumber addition `{addition}` is unknown.","Housenumber addition `{addition}` is unknown."
 "Housenumber addition required.","Housenumber addition required."
 "Invalid postcode format, use `1234AB` format.","Invalid postcode format, use `1234AB` format."
