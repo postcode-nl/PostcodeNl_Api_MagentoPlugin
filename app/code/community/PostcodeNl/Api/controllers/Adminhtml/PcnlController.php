@@ -3,9 +3,9 @@ class PostcodeNl_Api_Adminhtml_PcnlController extends Mage_Adminhtml_Controller_
 {
 	public function lookupAction()
 	{
-		$helper = new PostcodeNl_Api_Helper_Data();
+		$helper = Mage::helper('postcodenl_api');
 
 		$this->getResponse()->setHeader('Content-type', 'application/json');
-		$this->getResponse()->setBody(json_encode($helper->lookupAddress($_GET['postcode'], $_GET['houseNumber'], $_GET['houseNumberAddition'])));
+		$this->getResponse()->setBody(json_encode($helper->lookupAddress($this->getRequest()->getParam('postcode'), $this->getRequest()->getParam('houseNumber'), $this->getRequest()->getParam('houseNumberAddition'))));
 	}
 }
