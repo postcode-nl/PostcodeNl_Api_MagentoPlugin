@@ -80,7 +80,7 @@ dl.pcnl-showcase dd, dl.pcnl-debug dd {
 	margin-left: 20px;
 }
 
-/* OneStepCheckout styling */
+/* OneStepCheckout(.com) styling */
 div.checkoutcontainer div.pcnl-input-housenumber {
 	width: 60%;
 }
@@ -146,3 +146,7 @@ body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-checkbox label
 	padding-left: 6px;
 }
 
+/* IWD One Step Checkout */
+body.onepagecheckout-index-index .pcnl-manual-checkbox {
+	clear: both; /* IE 7/9 fix */
+}

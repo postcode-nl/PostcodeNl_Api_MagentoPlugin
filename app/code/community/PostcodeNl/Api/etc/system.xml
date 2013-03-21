@@ -80,8 +80,8 @@
 							<show_in_store>1</show_in_store>
 							<comment>
 							<![CDATA[
-								For webshops with a more international audience, do not hide the country selector when in validation mode.
-								<b>Note</b>: This only works for checkout pages / extensions, which have the country selector in a seperate row. (does not work with the default Magento checkout page)
+								For webshops with a more international audience, do not hide the country selection box.
+								<b>Note</b>: If there are other fields next to the country selector, they will be disabled.
 							]]></comment>
 						</never_hide_country>
 						<api_showcase translate="label">

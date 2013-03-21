@@ -85,7 +85,7 @@
             <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
         </reference>
 	</firecheckout_onepage_index>
-	<!-- For `FME One Step Checkout` -->
+	<!-- For `FME One Step Checkout` and `GrafischDirect One Step Checkout` -->
 	<checkout_onestep_index>
 		<reference name="head">
             <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
