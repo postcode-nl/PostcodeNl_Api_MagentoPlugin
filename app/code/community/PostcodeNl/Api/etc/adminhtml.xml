@@ -11,8 +11,8 @@
 						<children>
 							<config>
 								<children>
-									<!-- Note: Config name is 'postcode' instead of 'postcode_api' -->
-									<postcodenl translate="title" module="PostcodeNl_Api">
+									<!-- Note: Config name is 'postcodenl' instead of 'postcodenl_api' -->
+									<postcodenl translate="title" module="postcodenl_api">
 										<title>Postcode.nl API</title>
 									</postcodenl>
 								</children>

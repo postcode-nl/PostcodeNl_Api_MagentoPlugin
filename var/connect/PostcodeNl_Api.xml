@@ -17,13 +17,14 @@
 The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-Use policy. The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions.</description>
    <license>Simplified BSD License</license>
    <license_uri/>
-   <version>1.0.7.0</version>
+   <version>1.0.8.0</version>
    <stability>stable</stability>
-   <notes>Changes:
-- Improved 'Never hide country selector' option to also work for regular checkouts
-- Added provisional support for GrafischDirect One Step Checkout
-- Improved address housenumber addition user input matching
-- More Magento coding-standards compliant
+   <notes>Fixes:
+- Prevent error when changing admin roles       
+Changes:
+- Added provisional support for Fire Checkout 1.5
+- Added provisional support for EcommerceTeam Easy Checkout 2.0
+- Validation texts are hidden when the country is not the Netherlands
 </notes>
    <authors>
       <name>

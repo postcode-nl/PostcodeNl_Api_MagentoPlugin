@@ -447,6 +447,14 @@ document.observe("dom:loaded", function()
 		toggleCountryPostcode: function (prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4)
 		{
 			var pcnlapi = this;
+
+			// If we have no country set, change to NL (or forms may get confusing when 'reset')
+			if ($(prefix + countryFieldId).getValue() == '')
+			{
+				$(prefix + countryFieldId).setValue('NL');
+				pcnlFireEvent($(prefix + countryFieldId), 'change');
+			}
+
 			if ($(prefix + countryFieldId).getValue() == 'NL')
 			{
 				// The Netherlands is selected - add our own validated inputs.
@@ -474,7 +482,7 @@ document.observe("dom:loaded", function()
 
 						if (!$(prefix +'postcode_input:info'))
 						{
-							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="clearfix"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
+							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="clearfix"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
 						}
 						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:wrapper" class="clearfix"><div class="field input-postcode"><label for="' + prefix + 'postcode_input">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'<em class="required">*</em></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div></div><div class="field input-postcode pcnl-input-housenumber"><label for="' + prefix + 'postcode_housenumber">'+ PCNLAPI_CONFIG.translations.houseNumberLabel +' <em class="required">*</em></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="billing[postcode_housenumber]" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry" /></div></div></li>'});
 						if (!$(prefix +'postcode_input:checkbox'))
@@ -490,7 +498,7 @@ document.observe("dom:loaded", function()
 
 						if (!$(prefix +'postcode_input:info'))
 						{
-							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
+							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
 						}
 						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:wrapper" class="fields"><div class="pcnl-apptha-fields"><div class="field"><label for="' + prefix + 'postcode_input" class="required">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'<em>*</em></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div></div>'+
 							'<div class="field input-postcode pcnl-input-housenumber"><label for="' + prefix + 'postcode_housenumber" class="required">'+ PCNLAPI_CONFIG.translations.houseNumberLabel +' <em>*</em></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="billing[postcode_housenumber]" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry" /></div></div></div></li>'});
@@ -507,7 +515,7 @@ document.observe("dom:loaded", function()
 
 						if (!$(prefix +'postcode_input:info'))
 						{
-							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="wide"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></li>'});
+							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="wide"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></li>'});
 						}
 						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:wrapper" class="input-box"><div class="input-box input-postcode"><label for="' + prefix + 'postcode_input">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +' <span class="required">*</span></label><br>'+
 							'<input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div>'+
@@ -526,9 +534,9 @@ document.observe("dom:loaded", function()
 
 						if (!$(prefix +'postcode_input:info'))
 						{
-							$(prefix + 'country_id').up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="pcnl-info"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
+							$(prefix + 'country_id').up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="pcnl-info"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
 						}
-						$(prefix + 'country_id').up('li').insert({before: '<li id="' + prefix + 'postcode_input:wrapper" class="fields"><div class="field input-postcode"><label for="' + prefix + 'postcode_input" class="required">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'<em class="required">*</em></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div></div><div class="field input-postcode pcnl-input-housenumber"><label for="' + prefix + 'postcode_housenumber" class="required">'+ PCNLAPI_CONFIG.translations.houseNumberLabel +' <em class="required">*</em></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="billing[postcode_housenumber]" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry" /></div></div></li>'});
+						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:wrapper" class="fields"><div class="field input-postcode"><label for="' + prefix + 'postcode_input" class="required">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'<em class="required">*</em></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div></div><div class="field input-postcode pcnl-input-housenumber"><label for="' + prefix + 'postcode_housenumber" class="required">'+ PCNLAPI_CONFIG.translations.houseNumberLabel +' <em class="required">*</em></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="billing[postcode_housenumber]" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry" /></div></div></li>'});
 						if (!$(prefix +'postcode_input:checkbox'))
 						{
 							$(prefix + 'country_id').up('li').insert({before: '<li id="' + prefix + 'postcode_input:checkbox" class="pcnl-manual-checkbox"><div class="field"><div class="input-box"><input type="checkbox" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input_checkbox" value="" class="checkbox " /><label for="' + prefix + 'postcode_input_checkbox">'+ PCNLAPI_CONFIG.translations.manualInputText +'</label></div></div></li>'});
@@ -544,7 +552,7 @@ document.observe("dom:loaded", function()
 
 						if (!$(prefix +'postcode_input:info'))
 						{
-							$(prefix + street1).up('div.line').insert({before: '<div id="' + prefix + 'postcode_input:info" class="pcnl-info line"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></div>'});
+							$(prefix + street1).up('div.line').insert({before: '<div id="' + prefix + 'postcode_input:info" class="pcnl-info line"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></div>'});
 						}
 						$(prefix + street1).up('div.line').insert({before: '<div id="' + prefix + 'postcode_input:wrapper" class="line"><div class="input-postcode left"><label for="' + prefix + 'postcode_input" class="required">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'<span class="required">*</span></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div></div><div class="input-postcode pcnl-input-housenumber right"><label for="' + prefix + 'postcode_housenumber" class="required">'+ PCNLAPI_CONFIG.translations.houseNumberLabel +' <span class="required">*</span></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="billing[postcode_housenumber]" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry" /></div></div></div>'});
 						if (!$(prefix +'postcode_input:checkbox'))
@@ -560,7 +568,7 @@ document.observe("dom:loaded", function()
 
 						if (!$(prefix +'postcode_input:info'))
 						{
-							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="pcnl-info d_3"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
+							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="pcnl-info d_3"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
 						}
 						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:wrapper" class="d_2"><div class="input-postcode d_1"><label for="' + prefix + 'postcode_input" class="required">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'<em class="required">*</em></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div></div><div class="input-postcode pcnl-input-housenumber d_4"><label for="' + prefix + 'postcode_housenumber" class="required">'+ PCNLAPI_CONFIG.translations.houseNumberLabel +' <em class="required">*</em></label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="billing[postcode_housenumber]" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry" /></div></div></li>'});
 						if (!$(prefix +'postcode_input:checkbox'))
@@ -578,7 +586,7 @@ document.observe("dom:loaded", function()
 
 						if (!$(prefix +'postcode_input:info'))
 						{
-							$(prefix + street1).up('div.full').insert({before: '<div id="' + prefix + 'postcode_input:info" class="full"><div><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></div>'});
+							$(prefix + street1).up('div.full').insert({before: '<div id="' + prefix + 'postcode_input:info" class="full"><div><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></div>'});
 						}
 						$(prefix + street1).up('div.full').insert({before: '<div id="' + prefix + 'postcode_input:wrapper" class="two_fields"><div class="input-postcode short"><label for="' + prefix + 'postcode_input" class="required">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'</label> <sup>*</sup><div class="data_area"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="t1 required-entry" /></div></div>' +
 							'<div class="input-postcode pcnl-input-housenumber short"><label for="' + prefix + 'postcode_housenumber" class="required">'+ PCNLAPI_CONFIG.translations.houseNumberLabel +'</label> <sup>*</sup><div><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="billing[postcode_housenumber]" id="' + prefix + 'postcode_housenumber" value="" class="t1 pcnl-input-text-half required-entry" /></div></div></div>'});
@@ -607,7 +615,7 @@ document.observe("dom:loaded", function()
 
 						if (!$(prefix +'postcode_input:info'))
 						{
-							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="wide"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
+							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="wide"><div class="input-box"><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
 						}
 						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:wrapper" class="fields"><div class="field"><label for="' + prefix + 'postcode_input" class="required"><em>*</em>'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'</label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div></div><div class="field"><label for="' + prefix + 'postcode_housenumber" class="required"><em>*</em>'+ PCNLAPI_CONFIG.translations.houseNumberLabel +'</label><div class="input-box"><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="billing[postcode_housenumber]" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry" /></div></div></li>'});
 						if (!$(prefix +'postcode_input:checkbox'))
@@ -623,7 +631,7 @@ document.observe("dom:loaded", function()
 				}
 				else
 				{
-					this.showFields([prefix +'postcode_input', prefix +'postcode_housenumber', prefix +'postcode_housenumber_addition'])
+					this.showFields([prefix +'postcode_input', prefix +'postcode_housenumber', prefix +'postcode_housenumber_addition', prefix + 'postcode_input:info-text', prefix + 'postcode_input_checkbox']);
 				}
 
 				this.toggleAddressFields(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4);
@@ -690,7 +698,13 @@ document.observe("dom:loaded", function()
 					], false);
 
 					this.setFieldsReadonly([prefix +'postcode_input', prefix +'postcode_housenumber', prefix +'postcode_housenumber_addition'], true);
-					this.hideFields([prefix +'postcode_input', prefix +'postcode_housenumber', prefix +'postcode_housenumber_addition']);
+					this.hideFields([
+					    prefix +'postcode_input',
+					    prefix +'postcode_housenumber',
+					    prefix +'postcode_housenumber_addition',
+					    prefix +'postcode_input:info-text',
+					    prefix +'postcode_input_checkbox'
+					]);
 
 					this.showFields([prefix + countryFieldId]);
 
@@ -852,6 +866,21 @@ document.observe("dom:loaded", function()
 					if (!$('shipping:country_id') || $('shipping:country_id').getValue() == 'NL')
 						this.toggleCountryPostcode('shipping:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
 				}
+
+				// Address-book dropdown changes in checkout
+				// (some checkout extensions reset values in a strange way after selecting)
+				if ($('billing-address-select'))
+				{
+					$('billing-address-select').observe('change', function () {
+						pcnlapi.toggleCountryPostcode('billing:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
+					});
+				}
+				if ($('shipping-address-select'))
+				{
+					$('shipping-address-select').observe('change', function () {
+						pcnlapi.toggleCountryPostcode('shipping:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
+					});
+				}
 			}
 			// GoMage LightCheckout
 			if ($('billing_postcode'))
@@ -870,18 +899,19 @@ document.observe("dom:loaded", function()
 				}
 			}
 
-			// Misc. account address edits
-			if ($('zip') && $('street_1'))
+			// Misc. frontend account address edits
+			if ($('street_1') && ($('zip') || $('postcode')))
 			{
-				$('zip').observe('change', function(e)
+				var postcodefield = $('zip') ? 'zip' : 'postcode';
+				$(postcodefield).observe('change', function(e)
 				{
-					pcnlapi.lookupPostcode('', 'zip', 'country', 'street_1', 'street_2', 'street_3', 'street_4', e);
+					pcnlapi.lookupPostcode('', postcodefield, 'country', 'street_1', 'street_2', 'street_3', 'street_4', e);
 				});
 
-				$('country').observe('change', function () { pcnlapi.toggleCountryPostcode('', 'zip', 'country', 'street_1', 'street_2', 'street_3', 'street_4'); });
+				$('country').observe('change', function () { pcnlapi.toggleCountryPostcode('', postcodefield, 'country', 'street_1', 'street_2', 'street_3', 'street_4'); });
 
 				if ($('country').getValue() == 'NL')
-					this.toggleCountryPostcode('', 'zip', 'country', 'street_1', 'street_2', 'street_3', 'street_4');
+					this.toggleCountryPostcode('', postcodefield, 'country', 'street_1', 'street_2', 'street_3', 'street_4');
 			}
 
 			// Default admin address edits
