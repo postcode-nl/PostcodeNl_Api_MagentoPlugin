@@ -136,6 +136,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 				default:
 					$sendResponse['message'] = $this->__('Validation error, please use manual input.');
 					$sendResponse['messageTarget'] = 'housenumber';
+					$sendResponse['useManual'] = true;
 					break;
 			}
 		}
