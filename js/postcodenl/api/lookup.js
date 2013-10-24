@@ -411,6 +411,9 @@ document.observe("dom:loaded", function()
 			else if (data.message !== undefined)
 			{
 				// Address check returned an error
+				if (typeof data.useManual !== 'undefined' && data.useManual === true) {
+					$('billing:postcode_input_checkbox').click();
+				}
 
 				newAdvice = Validation.createAdvice('invalid-postcode', $(prefix + (data.messageTarget == 'postcode' ? 'postcode_input' : 'postcode_housenumber')), false, data.message);
 				Validation.showAdvice($(prefix +'postcode_housenumber'), newAdvice, 'invalid-postcode');
