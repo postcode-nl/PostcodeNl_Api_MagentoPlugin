@@ -2,38 +2,38 @@
 <layout version="0.1.0">
 	<adminhtml_sales_order_address>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</adminhtml_sales_order_address>
 	<adminhtml_sales_order_create_index>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="js">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="js">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</adminhtml_sales_order_create_index>
 	<adminhtml_sales_order_edit_index>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="js">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="js">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</adminhtml_sales_order_edit_index>
 	<adminhtml_customer_edit>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="js">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="js">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</adminhtml_customer_edit>
 </layout>

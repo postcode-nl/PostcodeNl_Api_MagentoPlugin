@@ -7,7 +7,6 @@
 "Validation unavailable, please use manual input.","Validation unavailable, please use manual input."
 "Cannot connect to Postcode.nl API: Server is missing SSL (https) support for CURL.","Cannot connect to Postcode.nl API: Server is missing SSL (https) support for CURL."
 "Postcode","Postcode"
-"Postcode (auto-validating)","Postcode (auto-validating)"
 "Housenumber","Housenumber"
 "Houseno addition","Houseno addition"
 "Housenumber addition","Housenumber addition"
@@ -26,3 +25,4 @@
 "Validated address","Validated address"
 "API Showcase","API Showcase"
 "API Debug Info","API Debug Info"
+"Post office box not allowed.","Post office box not allowed."

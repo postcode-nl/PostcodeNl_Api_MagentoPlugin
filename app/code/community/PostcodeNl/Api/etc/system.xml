@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <config>
 	<sections>
-		<!-- Note: Config name is 'postcode' instead of 'postcode_api' -->
-		<postcodenl translate="label">
+		<postcodenl_api translate="label">
 			<label>Postcode.nl API</label>
 			<tab>sales</tab>
 			<frontend_type>text</frontend_type>
@@ -18,6 +17,7 @@
 					<show_in_default>1</show_in_default>
 					<show_in_website>1</show_in_website>
 					<show_in_store>1</show_in_store>
+					<expanded>1</expanded>
 					<fields>
 						<enabled translate="label">
 							<label>Enabled?</label>
@@ -28,15 +28,6 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</enabled>
-						<api_url translate="label">
-							<label>API URL</label>
-							<frontend_type>text</frontend_type>
-							<sort_order>20</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<validate>validate-url</validate>
-						</api_url>
 						<api_key translate="label">
 							<label>API key</label>
 							<frontend_type>text</frontend_type>
@@ -44,6 +35,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
+							<validate>validate-length minimum-length-10</validate>
 						</api_key>
 						<api_secret translate="label">
 							<label>API secret</label>
@@ -52,16 +44,28 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
+							<validate>validate-length minimum-length-10</validate>
 							<comment>
 							<![CDATA[
 								To get your Postcode.nl API key and secret, please register at <a href="https://api.postcode.nl">Postcode.nl API</a>.
 							]]></comment>
 						</api_secret>
+					</fields>
+				</config>
+				<advanced_config translate="label">
+					<label>Advanced configuration</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>20</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<!-- Address options -->
 						<use_street2_as_housenumber translate="label">
 							<label>Separate housenumber</label>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>45</sort_order>
+							<sort_order>10</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
@@ -70,20 +74,66 @@
 								If you use the second 'street' field as a separate house-number field, enable this option.
 							]]></comment>
 						</use_street2_as_housenumber>
-						<never_hide_country translate="label">
-							<label>Never hide country selector</label>
+						<block_postofficeboxaddresses translate="label">
+							<label>Block post office box addresses</label>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>47</sort_order>
+							<sort_order>20</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<comment>
 							<![CDATA[
-								For webshops with a more international audience, do not hide the country selection box.
-								<b>Note</b>: If there are other fields next to the country selector, they will be disabled.
+								This will consider 'post office box' (postbus) addresses invalid for all validated address fields.<br />
+								<em>(though still allowed if address is added with 'manual' checkbox)</em>
+							]]></comment>
+						</block_postofficeboxaddresses>
+						<never_hide_country translate="label">
+							<label>Always show country selector</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>
+							<![CDATA[
+								For webshops with a more international audience, always show the country selection box.<br />
+								<b>Developer Note</b>: If there are other fields next to the country selector, they will be disabled.
 							]]></comment>
 						</never_hide_country>
+						<admin_validation_disabled translate="label">
+							<label>Disable validation in admin</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>
+							<![CDATA[
+								You can use this option if you encounter problems in the admin address validation, or want to allow all addresses in the admin.
+							]]></comment>
+						</admin_validation_disabled>
+					</fields>
+				</advanced_config>
+				<development_config translate="label">
+					<label>Development configuration</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>30</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<api_url translate="label">
+							<label>API URL</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>validate-url</validate>
+						</api_url>
 						<api_showcase translate="label">
 							<label>Enable API Showcase</label>
 							<frontend_type>select</frontend_type>
@@ -113,8 +163,8 @@
 							]]></comment>
 						</api_debug>
 					</fields>
-				</config>
+				</development_config>
 			</groups>
-		</postcodenl>
+		</postcodenl_api>
 	</sections>
 </config>

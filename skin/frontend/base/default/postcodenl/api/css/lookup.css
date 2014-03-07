@@ -132,7 +132,15 @@ body.onestepcheckout-index-index #one-step-checkout-form .pcnl-info-text {
 
 /* Apptha One Step Checkout */
 body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-fields .field {
-	margin-right: 14px;
+	margin-right: 8px;
+	float: left;
+	width: 120px !important;
+}
+body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-fields .pcnl-input-housenumber {
+	padding-left: 6px;
+}
+body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-fields .field .input-text {
+	width: 120px !important;
 }
 body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-checkbox .field {
 	width: 250px !important

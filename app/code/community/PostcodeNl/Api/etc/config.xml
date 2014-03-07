@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<PostcodeNl_Api>
-			<version>1.0.8.0</version>
+			<version>1.1.0.0</version>
 		</PostcodeNl_Api>
 	</modules>
 	<frontend>
@@ -11,7 +11,7 @@
 				<use>standard</use>
 				<args>
 					<module>PostcodeNl_Api</module>
-					<frontName>postcodenl</frontName>
+					<frontName>postcodenl_api</frontName>
 				</args>
 			</postcodenl_api>
 		</routers>
@@ -37,7 +37,7 @@
 			<adminhtml>
 				<args>
 					<modules>
-						<postcodenl before="Mage_Adminhtml">PostcodeNl_Api_Adminhtml</postcodenl>
+						<postcodenl_api before="Mage_Adminhtml">PostcodeNl_Api_Adminhtml</postcodenl_api>
 					</modules>
 				</args>
 			</adminhtml>
@@ -49,11 +49,18 @@
 				<class>PostcodeNl_Api_Helper</class>
 			</postcodenl_api>
 		</helpers>
-	   <blocks>
+		<blocks>
 			<postcodenl_api>
 				<class>PostcodeNl_Api_Block</class>
 			</postcodenl_api>
-	   </blocks>
+		</blocks>
+		<resources>
+			<postcodenl_api_setup>
+				<setup>
+					<module>PostcodeNl_Api</module>
+				</setup>
+			</postcodenl_api_setup>
+		</resources>
 	</global>
 	<adminhtml>
 		<layout>
@@ -74,17 +81,23 @@
 		</translate>
 	</adminhtml>
 	<default>
-		<!-- Note: Config name is 'postcode' instead of 'postcode_api' -->
-		<postcodenl>
+		<postcodenl_api>
 			<config>
 				<enabled>1</enabled>
-				<never_hide_country>0</never_hide_country>
-				<api_secret></api_secret>
-				<api_url>https://api.postcode.nl</api_url>
 				<api_key></api_key>
+				<api_secret></api_secret>
+			</config>
+			<advanced_config>
+				<use_street2_as_housenumber>0</use_street2_as_housenumber>
+				<block_postofficeboxaddresses>0</block_postofficeboxaddresses>
+				<never_hide_country>0</never_hide_country>
+				<admin_validation_disabled>0</admin_validation_disabled>
+			</advanced_config>
+			<development_config>
+				<api_url>https://api.postcode.nl</api_url>
 				<api_showcase>0</api_showcase>
 				<api_debug>0</api_debug>
-			</config>
-		</postcodenl>
+			</development_config>
+		</postcodenl_api>
 	</default>
 </config>

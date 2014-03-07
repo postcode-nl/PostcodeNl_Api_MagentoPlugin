@@ -80,7 +80,7 @@ dl.pcnl-showcase dd, dl.pcnl-debug dd {
 	margin-left: 20px;
 }
 
-/* OneStepCheckout styling */
+/* OneStepCheckout(.com) styling */
 div.checkoutcontainer div.pcnl-input-housenumber {
 	width: 60%;
 }
@@ -104,6 +104,11 @@ div.checkoutcontainer dl.pcnl-showcase iframe {
 	height: 260px;
 	margin-bottom: 15px;
 	border: 1px solid grey;
+}
+
+/* OneStepCheckout.com */
+.onestepcheckout-index-index  .group-select li .input-postcode .input-box {
+	width: auto;
 }
 
 /* GoMage LightCheckout */
@@ -132,7 +137,15 @@ body.onestepcheckout-index-index #one-step-checkout-form .pcnl-info-text {
 
 /* Apptha One Step Checkout */
 body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-fields .field {
-	margin-right: 14px;
+	margin-right: 8px;
+	float: left;
+	width: 120px !important;
+}
+body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-fields .pcnl-input-housenumber {
+	padding-left: 6px;
+}
+body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-fields .field .input-text {
+	width: 120px !important;
 }
 body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-checkbox .field {
 	width: 250px !important
@@ -150,4 +163,3 @@ body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-checkbox label
 body.onepagecheckout-index-index .pcnl-manual-checkbox {
 	clear: both; /* IE 7/9 fix */
 }
-

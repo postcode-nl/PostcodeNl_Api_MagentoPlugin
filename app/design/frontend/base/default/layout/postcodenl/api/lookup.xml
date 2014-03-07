@@ -1,118 +1,139 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
 	<!-- Regular Magento Checkout, and other checkout modules which use the same page -->
+	<!-- Also for: `J2T OneCheckout`, `Magento Templates - OnePage Magento Checkout`, `EcommerceTeam Easy Checkout 2`, `Quick One Page Checkout` -->
 	<checkout_onepage_index>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</checkout_onepage_index>
 	<customer_address_form>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</customer_address_form>
 	<checkout_multishipping_register>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</checkout_multishipping_register>
 	<checkout_multishipping_address_newshipping>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</checkout_multishipping_address_newshipping>
 	<checkout_multishipping_address_editshipping>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</checkout_multishipping_address_editshipping>
 	<checkout_multishipping_address_editbilling>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</checkout_multishipping_address_editbilling>
 	<!-- Used for `OneStepCheckout(.com)`, but also for `MageStore One Step Checkout` and `Apptha One Step Checkout` -->
 	<onestepcheckout_index_index>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</onestepcheckout_index_index>
 	<!-- For `GoMage LightCheckout` -->
 	<gomage_checkout_onepage_index>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</gomage_checkout_onepage_index>
 	<!-- For `Fire Checkout` 1.5 -->
 	<firecheckout_index_index>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</firecheckout_index_index>
 	<!-- For `Fire Checkout` 2.0 -->
 	<firecheckout_onepage_index>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</firecheckout_onepage_index>
-	<!-- For `FME One Step Checkout` and `GrafischDirect One Step Checkout` -->
+	<!-- For `FME One Step Checkout`, `MageWorld One Step Checkout Pro`, `GrafischDirect One Step Checkout` -->
 	<checkout_onestep_index>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</checkout_onestep_index>
 	<!-- For `IWD Free One Page / Step Checkout` -->
 	<onepagecheckout_index_index>
 		<reference name="head">
-            <action method="addCss" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
-            <action method="addJs" ifconfig="postcodenl/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
 		</reference>
-        <reference name="content">
-            <block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
-        </reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
 	</onepagecheckout_index_index>
+	<!-- For `AheadWorks One Step Checkout` -->
+	<aw_onestepcheckout_index_index>
+		<reference name="head">
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+		</reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
+	</aw_onestepcheckout_index_index>
+	<!-- For `Aitoc One Step Checkout Manager` -->
+	<aitcheckout_checkout_index>
+		<reference name="head">
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+		</reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
+	</aitcheckout_checkout_index>
 </layout>
