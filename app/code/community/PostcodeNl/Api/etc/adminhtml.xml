@@ -11,7 +11,7 @@
 						<children>
 							<config>
 								<children>
-									<postcodenl_api module="PostcodeNl_Api">
+									<postcodenl_api module="postcodenl_api">
 										<title>Postcode.nl API</title>
 									</postcodenl_api>
 								</children>

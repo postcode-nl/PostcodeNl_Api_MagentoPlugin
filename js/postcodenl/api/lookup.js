@@ -561,7 +561,7 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 							'</li>'
 						});
 					}
-					else if ($(document.body).hasClassName('onestepcheckout-index-index') && $('one-step-checkout-form'))
+					else if ($(document.body).hasClassName('onestepquickcheckout_index_index') || ($(document.body).hasClassName('onestepcheckout-index-index') && $('one-step-checkout-form')))
 					{
 						// Support for MageStore One Step Checkout extension
 
@@ -808,7 +808,7 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 					}
 					else if ($(document.body).hasClassName('onepagecheckout-index-index'))
 					{
-						// IWD Free One Page / Step Checkout
+						// IWD Free One Page / Step Checkout v2
 
 						this.parentElementType = 'div.full, div.two_fields, ul.pcnl-manual-checkbox';
 
@@ -840,6 +840,8 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 						// Support for regular Magento 'one page' checkout
 						// + Fire Checkout
 						// + Quick One Page Checkout (by KAM)
+						// + MAGExtended MasterCheckout
+						// + IWD Free One Page / Step Checkout v3
 
 						if (!$(prefix +'postcode_input:info'))
 						{
