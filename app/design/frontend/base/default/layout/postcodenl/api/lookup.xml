@@ -157,7 +157,7 @@
 		</reference>
 	</aitcheckout_checkout_index>
 	<!-- For `MAGExtended Master Checkout` -->
-	<mastercheckout_index_index>*
+	<mastercheckout_index_index>
 		<reference name="head">
 			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
 			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
