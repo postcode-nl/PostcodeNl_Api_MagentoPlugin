@@ -45,6 +45,12 @@ select.pcnl-readonly {
 	position: absolute;
 }
 
+/* Magento 1.9 styling 'float fix' for manual checkbox */
+.form-list .control.pcnl-manual-checkbox div.input-box {
+	display: block;
+	float: none;
+}
+
 /* Showcase styles */
 
 h4.pcnl-showcase, h4.pcnl-debug {

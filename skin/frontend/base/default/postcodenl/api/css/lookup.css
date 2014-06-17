@@ -45,6 +45,12 @@ select.pcnl-readonly {
 	position: absolute;
 }
 
+/* Magento 1.9 styling 'float fix' for manual checkbox */
+.form-list .control.pcnl-manual-checkbox div.input-box {
+	display: block;
+	float: none;
+}
+
 /* Showcase styles */
 
 h4.pcnl-showcase, h4.pcnl-debug {
@@ -104,6 +110,11 @@ div.checkoutcontainer dl.pcnl-showcase iframe {
 	height: 260px;
 	margin-bottom: 15px;
 	border: 1px solid grey;
+}
+
+/* OneStepCheckout.com */
+.onestepcheckout-index-index  .group-select li .input-postcode .input-box {
+	width: auto;
 }
 
 /* GoMage LightCheckout */
