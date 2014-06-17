@@ -875,8 +875,10 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 							this.enrichType = 'IWD Free One Page / Step Checkout v3';
 						else if ($(document.body).hasClassName('checkout-onepage-index'))
 							this.enrichType = 'Basic';
+						else if ($(document.body).hasClassName('customer-address-form'))
+							this.enrichType = 'Customer Address Form';
 						else
-							this.enrichType = 'Unknown: '+ $(document.body).classNames.join(' ');
+							this.enrichType = 'Unknown: Body class `'+ $(document.body).className +'`';
 
 						if (!$(prefix +'postcode_input:info'))
 						{
