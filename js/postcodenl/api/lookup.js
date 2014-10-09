@@ -53,6 +53,34 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 		 */
 		enrichType: 'Unknown',
 
+		/*
+		 * List of supported / recognized checkout extensions.
+		 */
+		enrichTypes: {
+			'Unknown': 0,
+			'Basic': 1,
+			'Admin': 2,
+			'OneStepCheckout.com': 3,
+			'Apptha One Step Checkout': 4,
+			'MageStore One Step Checkout': 5,
+			'GoMage LightCheckout': 6,
+			'MageWorld One Step Checkout Pro': 7,
+			'AheadWorks One Step Checkout': 8,
+			'J2T OneCheckout': 9,
+			'Aitoc One Step Checkout Manager': 10,
+			'Magento Templates - OnePage Magento Checkout': 11,
+			'EcommerceTeam Easy Checkout 2': 12,
+			'GrafischDirect One Step Checkout': 13,
+			'FME One Step Checkout': 14,
+			'IWD Free One Page / Step Checkout v2': 15,
+			'IWD Free One Page / Step Checkout v3': 16,
+			'Fire Checkout': 17,
+			'Quick One Page Checkout (by KAM)': 18,
+			'MAGExtended MasterCheckout': 19,
+			'Customer Address Form': 20,
+		},
+		enrichHint: null,
+
 		/**
 		 * Hide multiple field-rows in forms
 		 */
@@ -259,7 +287,9 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 			// Make uppercase to prevent double, but identical, requests
 			postcode = postcode.toUpperCase();
 
-			var url = PCNLAPI_CONFIG.baseUrl +'lookup?postcode=' + postcode + '&houseNumber=' + housenumber + '&houseNumberAddition=' + housenumber_addition;
+			var et = this.enrichTypes[this.enrichType] ? this.enrichTypes[this.enrichType] : this.enrichHint;
+
+			var url = PCNLAPI_CONFIG.baseUrl +'lookup?postcode=' + postcode + '&houseNumber=' + housenumber + '&houseNumberAddition=' + housenumber_addition + '&et=' + encodeURIComponent(et);
 			if (this.requestCache[url] === undefined)
 			{
 				new Ajax.Request(url,
@@ -457,8 +487,6 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 				this.removeHousenumberAddition(prefix);
 			}
 
-			$(prefix + postcodeFieldId).fire('postcode:updated');
-
 			// Add support for syncing Billing & Shipping
 			if (prefix == 'billing:' && $('shipping:' + postcodeFieldId)) {
 				// 'shipping' is a global object created on most checkout pages
@@ -488,6 +516,7 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 			if ($(prefix + countryFieldId).getValue() == 'NL')
 			{
 				// The Netherlands is selected - add our own validated inputs.
+				this.enrichHint = $(document.body).className.trim().replace(' ', ',');
 
 				if (!$(prefix +'postcode_input:wrapper'))
 				{
@@ -857,13 +886,30 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 							$(prefix + 'telephone-moved').insert(clone);
 						}
 					}
+					else if ($(document.body).hasClassName('opc-index-index'))
+					{
+						// IWD Free One Page / Step Checkout v3
+						this.enrichType = 'IWD Free One Page / Step Checkout v3';
+
+						if (!$(prefix +'postcode_input:info'))
+						{
+							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="wide pcnl-info"><div><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
+						}
+						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:wrapper" class="fields"><div class="field input-postcode"><label for="' + prefix + 'postcode_input" class="required">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'<em class="required">*</em></label><div class="input-box"><div class="field-wrapper"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" name="' + prefix + 'postcode_input" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div></div></div><div class="field input-postcode pcnl-input-housenumber"><label for="' + prefix + 'postcode_housenumber" class="required">'+ PCNLAPI_CONFIG.translations.houseNumberLabel +' <em class="required">*</em></label><div class="input-box"><div class="field-wrapper"><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="' + prefix + 'postcode_housenumber" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry" /></div></div></div></li>'});
+						if (!$(prefix +'postcode_input:checkbox'))
+						{
+							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:checkbox" class="wide control pcnl-manual-checkbox"><div class="fields"><div class="input-box"><input type="checkbox" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input_checkbox" value="" class="checkbox " /><label for="' + prefix + 'postcode_input_checkbox">'+ PCNLAPI_CONFIG.translations.manualInputText +'</label></div></div></li>'});
+
+							$(prefix + 'postcode_input_checkbox').observe('click', function () { pcnlapi.toggleCountryPostcode(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4); });
+						}
+						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:output" class="wide pcnl-hidden-field"><div><label>'+ PCNLAPI_CONFIG.translations.outputLabel +'</label><div id="' + prefix + 'postcode_output" class="pcnl-address-text"></div></div></li>'});
+					}
 					else
 					{
 						// Support for regular Magento 'one page' checkout
 						// + Fire Checkout
 						// + Quick One Page Checkout (by KAM)
 						// + MAGExtended MasterCheckout
-						// + IWD Free One Page / Step Checkout v3
 
 						if ($(document.body).hasClassName('firecheckout-index-index'))
 							this.enrichType = 'Fire Checkout';
@@ -871,20 +917,18 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 							this.enrichType = 'Quick One Page Checkout (by KAM)';
 						else if ($(document.body).hasClassName('mastercheckout-index-index'))
 							this.enrichType = 'MAGExtended MasterCheckout';
-						else if ($(document.body).hasClassName('opc-index-index'))
-							this.enrichType = 'IWD Free One Page / Step Checkout v3';
 						else if ($(document.body).hasClassName('checkout-onepage-index'))
 							this.enrichType = 'Basic';
 						else if ($(document.body).hasClassName('customer-address-form'))
 							this.enrichType = 'Customer Address Form';
 						else
-							this.enrichType = 'Unknown: Body class `'+ $(document.body).className +'`';
+							this.enrichType = 'Unknown';
 
 						if (!$(prefix +'postcode_input:info'))
 						{
 							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:info" class="wide pcnl-info"><div><label class="pcnl-info-label">'+ PCNLAPI_CONFIG.translations.infoLabel +'</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">'+ PCNLAPI_CONFIG.translations.infoText +'</div></div></li>'});
 						}
-						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:wrapper" class="fields"><div class="field input-postcode"><label for="' + prefix + 'postcode_input" class="required">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'<em class="required">*</em></label><div class="input-box"><div class="field-wrapper"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div></div></div><div class="field input-postcode pcnl-input-housenumber"><label for="' + prefix + 'postcode_housenumber" class="required">'+ PCNLAPI_CONFIG.translations.houseNumberLabel +' <em class="required">*</em></label><div class="input-box"><div class="field-wrapper"><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="billing[postcode_housenumber]" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry" /></div></div></div></li>'});
+						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:wrapper" class="fields"><div class="field input-postcode"><label for="' + prefix + 'postcode_input" class="required">'+ PCNLAPI_CONFIG.translations.postcodeInputLabel +'<em class="required">*</em></label><div class="input-box"><div class="field-wrapper"><input type="text" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input" value="" class="input-text required-entry" /></div></div></div><div class="field input-postcode pcnl-input-housenumber"><label for="' + prefix + 'postcode_housenumber" class="required">'+ PCNLAPI_CONFIG.translations.houseNumberLabel +' <em class="required">*</em></label><div class="input-box"><div class="field-wrapper"><input type="text" title="'+ PCNLAPI_CONFIG.translations.houseNumberTitle +'" name="' + prefix + 'postcode_housenumber" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry" /></div></div></div></li>'});
 						if (!$(prefix +'postcode_input:checkbox'))
 						{
 							$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:checkbox" class="wide control pcnl-manual-checkbox"><div class="fields"><div class="input-box"><input type="checkbox" title="'+ PCNLAPI_CONFIG.translations.postcodeInputTitle +'" id="' + prefix + 'postcode_input_checkbox" value="" class="checkbox " /><label for="' + prefix + 'postcode_input_checkbox">'+ PCNLAPI_CONFIG.translations.manualInputText +'</label></div></div></li>'});
@@ -990,6 +1034,10 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 		 */
 		toggleAddressFields: function(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, values)
 		{
+			// Should not happen, but may occur if things go half-awry
+			if (!$(prefix + 'postcode_input_checkbox'))
+				return;
+
 			if (!$(prefix + 'postcode_input_checkbox').checked)
 			{
 				this.setFieldsReadonly([
@@ -1130,6 +1178,25 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 							this.toggleCountryPostcode('shipping:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
 						}
 					}
+
+					// Some extensions evade 'observe' by setting directly on elements when toggling shipping
+					if ($('billing:country_id') && $('shipping:country_id'))
+					{
+						if ($('billing:use_for_shipping_yes'))
+						{
+							$('billing:use_for_shipping_yes').observe('click', function () {
+								pcnlapi.toggleCountryPostcode('billing:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
+								pcnlapi.toggleCountryPostcode('shipping:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
+							});
+						}
+						if ($('billing:use_for_shipping_no'))
+						{
+							$('billing:use_for_shipping_no').observe('click', function () {
+								pcnlapi.toggleCountryPostcode('billing:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
+								pcnlapi.toggleCountryPostcode('shipping:', 'postcode', 'country_id', 'street1', 'street2', 'street3', 'street4');
+							});
+						}
+					}
 				}
 				if ($('shipping:country_id'))
 				{
@@ -1210,14 +1277,25 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 			// Admin 'create order' & 'edit order' address editting
 			if ($('order-billing_address'))
 			{
-				this.observeBillingAddress();
-				this.observeShippingAddress();
+				var recursionDetection = false;
+				this.observeAdminBillingAddress();
+				this.observeAdminShippingAddress();
 
-				// Re-observe blocks after they have been changed
-				if ($('order-billing_address'))
-					$('order-billing_address').observe('DOMNodeInserted', function(e) { pcnlapi.observeBillingAddress(); });
-				if ($('order-shipping_address'))
-					$('order-shipping_address').observe('DOMNodeInserted', function(e) { pcnlapi.observeShippingAddress(); });
+				if ($('order-data'))
+				{
+					$('order-data').observe('DOMNodeInserted', function(e) {
+						if (event.target.nodeName == 'DIV')
+						{
+							if (!recursionDetection)
+							{
+								recursionDetection = true;
+								pcnlapi.observeAdminBillingAddress();
+								pcnlapi.observeAdminShippingAddress();
+								recursionDetection = false;
+							}
+						}
+					});
+				}
 			}
 		},
 		observeAdminCustomerAddress: function ()
@@ -1246,7 +1324,7 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 				}
 			}
 		},
-		observeBillingAddress: function ()
+		observeAdminBillingAddress: function ()
 		{
 			var pcnlapi = this;
 			// Billing
@@ -1262,19 +1340,15 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 				});
 				if ($('order-billing_address_country_id').getValue() == 'NL')
 					this.toggleCountryPostcode('order-billing_address_', 'postcode', 'country_id', 'street0', 'street1', 'street2', 'street3');
-				$('order-billing_address_postcode').observe('postcode:updated', function(e)
+
+				// Use custom Magento 'changeUpdater' hook as well, because 'change' observe sometimes is not called...
+				$('order-billing_address_country_id').changeUpdater = function ()
 				{
-					// Custom poke Magento billing-to-shipping copy order logic.
-					var event = {
-						type: e.type,
-						currentTarget: $('order-billing_address_street0'),
-						target: $('order-billing_address_street0')
-					};
-					order.changeAddressField(event);
-				});
+					pcnlapi.toggleCountryPostcode('order-billing_address_', 'postcode', 'country_id', 'street0', 'street1', 'street2', 'street3');
+				};
 			}
 		},
-		observeShippingAddress: function ()
+		observeAdminShippingAddress: function ()
 		{
 			var pcnlapi = this;
 			// Shipping
@@ -1287,6 +1361,12 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 				$('order-shipping_address_country_id').observe('change', function () { pcnlapi.toggleCountryPostcode('order-shipping_address_', 'postcode', 'country_id', 'street0', 'street1', 'street2', 'street3'); });
 				if ($('order-shipping_address_country_id').getValue() == 'NL')
 					pcnlapi.toggleCountryPostcode('order-shipping_address_', 'postcode', 'country_id', 'street0', 'street1', 'street2', 'street3');
+
+				// Use custom Magento 'changeUpdater' hook as well, because 'change' observe sometimes is not called...
+				$('order-shipping_address_country_id').changeUpdater = function ()
+				{
+					pcnlapi.toggleCountryPostcode('order-shipping_address_', 'postcode', 'country_id', 'street0', 'street1', 'street2', 'street3');
+				};
 			}
 		}
 	};

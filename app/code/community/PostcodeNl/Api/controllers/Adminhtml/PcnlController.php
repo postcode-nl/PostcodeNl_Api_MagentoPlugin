@@ -5,6 +5,9 @@ class PostcodeNl_Api_Adminhtml_PcnlController extends Mage_Adminhtml_Controller_
 	{
 		$helper = Mage::helper('postcodenl_api');
 
+		if ($this->getRequest()->getParam('et'))
+			$helper->setEnrichType($this->getRequest()->getParam('et'));
+
 		$this->getResponse()->setHeader('Content-type', 'application/json');
 		$this->getResponse()->setBody(json_encode($helper->lookupAddress(
 			$this->getRequest()->getParam('postcode'),

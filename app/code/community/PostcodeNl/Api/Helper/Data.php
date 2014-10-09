@@ -6,6 +6,8 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 
 	protected $_modules;
 
+	protected $_enrichType = 0;
+
 	protected function _getMagentoVersion()
 	{
 		if ($this->_getModuleInfo('Enterprise_CatalogPermissions') !== null)
@@ -100,6 +102,13 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		return $html;
 	}
 
+	public function setEnrichType($enrichType)
+	{
+		$this->_enrichType = preg_replace('~[^0-9a-z\-_,]~i', '', $enrichType);
+		if (strlen($this->_enrichType) > 40)
+			$this->_enrichType = substr($this->_enrichType, 0, 40);
+	}
+
 	public function lookupAddress($postcode, $houseNumber, $houseNumberAddition)
 	{
 		if (!Mage::getStoreConfig('postcodenl_api/config/enabled'))
@@ -148,14 +157,15 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			return $sendResponse;
 		}
 
-		$url = $serviceUrl . '/rest/addresses/' . urlencode($postcode). '/'. urlencode($houseNumber) . '/'. urlencode($houseNumberAddition);
+		$url = $serviceUrl . '/rest/addresses/' . rawurlencode($postcode). '/'. rawurlencode($houseNumber) . '/'. rawurlencode($houseNumberAddition);
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::API_TIMEOUT);
 		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		curl_setopt($ch, CURLOPT_USERPWD, $serviceKey .':'. $serviceSecret);
-		curl_setopt($ch, CURLOPT_USERAGENT, 'PostcodeNl_Api_MagentoPlugin/' . $extensionVersion .' '. $this->_getMagentoVersion() .' PHP/'. phpversion());
+		curl_setopt($ch, CURLOPT_USERAGENT, 'PostcodeNl_Api_MagentoPlugin/' . $extensionVersion .' '. $this->_getMagentoVersion() .' PHP/'. phpversion() .' EnrichType/'. $this->_enrichType);
 		$jsonResponse = curl_exec($ch);
 		$curlError = curl_error($ch);
 		curl_close($ch);

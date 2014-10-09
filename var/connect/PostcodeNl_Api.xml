@@ -1,5 +1,5 @@
 <_>
-   <form_key>mRGgnfaKImr4XJw1</form_key>
+   <form_key>JTu8bD68XHiNCaEu</form_key>
    <name>PostcodeNl_Api</name>
    <channel>community</channel>
    <version_ids>
@@ -16,18 +16,13 @@
 The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-Use policy. The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions.</description>
    <license>Simplified BSD License</license>
    <license_uri/>
-   <version>1.1.1.0</version>
+   <version>1.1.2.0</version>
    <stability>stable</stability>
    <notes>Fixes:
-- Support more MageStore OneStepCheckout versions
-- Support newest IWD One Step Checkout version
-- Corrected some checkout extension detection
-- Editing roles/rights in admin would fail
-Added provisional support for the following checkout modules:
-- MAGExtentended MasterCheckout
+- Better support IWD One Step Checkout
+- Better support for updates in admin
 Features:
-- If error message mentions &apos;use manual&apos;, manual checkbox is toggled automatically
-- Tweaked compatibility with Magento 1.9
+- Detection of checkout type, for better future checkout extension support
 </notes>
    <authors>
       <name>
@@ -57,7 +52,7 @@ Features:
             <max/>
          </max>
          <files>
-            <files>                                                                             </files>
+            <files>                                                                                </files>
          </files>
       </package>
       <extension>
@@ -162,8 +157,4 @@ Features:
          <ignore/>
       </ignore>
    </contents>
-   <page>1</page>
-   <limit>200</limit>
-   <folder/>
-   <package/>
 </_>
