@@ -1,0 +1,10 @@
+# PostcodeNl_Api
+app/code/community/PostcodeNl/Api/                         app/code/community/PostcodeNl/Api/
+app/etc/modules/*                                          app/etc/modules/
+app/design/frontend/base/default/layout/postcodenl/*       app/design/frontend/base/default/layout/postcodenl/
+app/design/frontend/base/default/template/postcodenl/*     app/design/frontend/base/default/template/postcodenl/
+app/design/adminhtml/default/default/layout/postcodenl/*   app/design/adminhtml/default/default/layout/postcodenl/
+app/design/adminhtml/default/default/template/postcodenl/* app/design/adminhtml/default/default/template/postcodenl/
+js/postcodenl/api/*                                        js/postcodenl/api/
+skin/adminhtml/default/default/postcodenl/*                skin/adminhtml/default/default/postcodenl/
+skin/frontend/base/default/postcodenl/*                    skin/frontend/base/default/postcodenl/
