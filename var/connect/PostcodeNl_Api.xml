@@ -1,5 +1,5 @@
 <_>
-   <form_key>JTu8bD68XHiNCaEu</form_key>
+   <form_key>xomDTvrj8Vw3vKjB</form_key>
    <name>PostcodeNl_Api</name>
    <channel>community</channel>
    <version_ids>
@@ -52,7 +52,7 @@ Features:
             <max/>
          </max>
          <files>
-            <files>                                                                                </files>
+            <files>                                                                                    </files>
          </files>
       </package>
       <extension>
@@ -78,12 +78,9 @@ Features:
          <target>magedesign</target>
          <target>magedesign</target>
          <target>magedesign</target>
-         <target>magedesign</target>
-         <target>magedesign</target>
          <target>magelocale</target>
          <target>magelocale</target>
          <target>mageweb</target>
-         <target>mageskin</target>
          <target>mageskin</target>
          <target>mageskin</target>
          <target>mageetc</target>
@@ -93,15 +90,12 @@ Features:
          <path>PostcodeNl/Api</path>
          <path>adminhtml/default/default/layout/postcodenl</path>
          <path>adminhtml/default/default/template/postcodenl</path>
-         <path>frontend/default/default/layout/postcodenl/api</path>
-         <path>frontend/default/default/template/postcodenl/api</path>
          <path>frontend/base/default/layout/postcodenl/api</path>
          <path>frontend/base/default/template/postcodenl/api</path>
          <path>en_US/PostcodeNl_Api.csv</path>
          <path>nl_NL/PostcodeNl_Api.csv</path>
          <path>js/postcodenl/api</path>
          <path>adminhtml/default/default/postcodenl/api</path>
-         <path>frontend/default/default/postcodenl/api</path>
          <path>frontend/base/default/postcodenl/api</path>
          <path>modules/PostcodeNl_Api.xml</path>
       </path>
@@ -112,15 +106,12 @@ Features:
          <type>dir</type>
          <type>dir</type>
          <type>dir</type>
-         <type>dir</type>
-         <type>dir</type>
          <type>file</type>
          <type>file</type>
          <type>dir</type>
          <type>dir</type>
          <type>dir</type>
          <type>dir</type>
-         <type>file</type>
       </type>
       <include>
          <include/>
@@ -135,14 +126,8 @@ Features:
          <include/>
          <include/>
          <include/>
-         <include/>
-         <include/>
-         <include/>
       </include>
       <ignore>
-         <ignore/>
-         <ignore/>
-         <ignore/>
          <ignore/>
          <ignore/>
          <ignore/>
