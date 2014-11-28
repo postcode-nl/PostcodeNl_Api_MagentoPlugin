@@ -1,0 +1,14 @@
+{
+    "name": "postcodenl/magentoplugin",
+    "description": "A Magento plugin that implements the Postcode.nl API.",
+    "type": "magento-module", 
+    "authors": [
+        {
+            "name": "Daan Broekhof",
+            "email": "info@postcode.nl"
+        }
+    ],
+    "require": {
+	"magento-hackathon/magento-composer-installer": "*"
+    }
+}
