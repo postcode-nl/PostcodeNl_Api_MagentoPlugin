@@ -2,6 +2,19 @@
     "name": "postcode-nl/api-magentoplugin",
     "description": "A Magento plugin that implements the Postcode.nl API.",
     "type": "magento-module",
+    "keywords": ["postcode", "netherlands", "api", "rest", "magento"],
+    "license": "BSD-2-Clause",
+    "homepage": "https://github.com/postcode-nl/PostcodeNl_Api_MagentoPlugin",
+    "support": {
+        "email": "tech@postcode.nl",
+        "issues": "https://github.com/postcode-nl/PostcodeNl_Api_MagentoPlugin/issues"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/postcode-nl/PostcodeNl_Api_MagentoPlugin"
+        }
+    ],
     "authors": [
         {
             "name": "Daan Broekhof",
