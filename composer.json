@@ -1,13 +1,14 @@
 {
     "name": "postcode-nl/api-magentoplugin",
-    "description": "A Magento plugin that implements the Postcode.nl API.",
+    "description": "A Magento extension that implements the Postcode.nl API, for both the Address (Dutch address verification) and Signal (fraud warnings & data enrichment) services. You will need to create an account at https://api.postcode.nl.",
     "type": "magento-module",
-    "keywords": ["postcode", "netherlands", "api", "rest", "magento"],
+    "keywords": ["postcode", "netherlands", "api", "rest", "magento", "fraud", "address", "webshop"],
     "license": "BSD-2-Clause",
-    "homepage": "https://github.com/postcode-nl/PostcodeNl_Api_MagentoPlugin",
+    "homepage": "https://api.postcode.nl",
     "support": {
         "email": "tech@postcode.nl",
-        "issues": "https://github.com/postcode-nl/PostcodeNl_Api_MagentoPlugin/issues"
+        "issues": "https://github.com/postcode-nl/PostcodeNl_Api_MagentoPlugin/issues",
+        "source": "https://github.com/postcode-nl/PostcodeNl_Api_MagentoPlugin"
     },
     "repositories": [
         {

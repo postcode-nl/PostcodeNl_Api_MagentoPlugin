@@ -61,6 +61,17 @@
 				</setup>
 			</postcodenl_api_setup>
 		</resources>
+		<events>
+			<checkout_submit_all_after>
+				<observers>
+					<postcodenl_signal_order_creation>
+						<type>singleton</type>
+						<class>PostcodeNl_Api_Model_Observer</class>
+						<method>signalObserveOrderCreation</method>
+					</postcodenl_signal_order_creation>
+				</observers>
+			</checkout_submit_all_after>
+		</events>
 	</global>
 	<adminhtml>
 		<layout>
@@ -86,9 +97,12 @@
 				<enabled>1</enabled>
 				<api_key></api_key>
 				<api_secret></api_secret>
+				<enabled_address_api>1</enabled_address_api>
+				<enabled_signal_api>0</enabled_signal_api>
 			</config>
 			<advanced_config>
 				<use_street2_as_housenumber>0</use_street2_as_housenumber>
+				<use_street3_as_housenumber_addition>0</use_street3_as_housenumber_addition>
 				<block_postofficeboxaddresses>0</block_postofficeboxaddresses>
 				<never_hide_country>0</never_hide_country>
 				<admin_validation_disabled>0</admin_validation_disabled>

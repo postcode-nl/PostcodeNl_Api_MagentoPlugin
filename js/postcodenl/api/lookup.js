@@ -401,7 +401,15 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 				if (PCNLAPI_CONFIG.useStreet2AsHouseNumber && $(prefix + street2))
 				{
 					$(prefix + street1).setValue((data.street).trim());
-					$(prefix + street2).setValue((data.houseNumber +' '+ (data.houseNumberAddition ? data.houseNumberAddition : housenumber_addition)).trim());
+					if (PCNLAPI_CONFIG.useStreet3AsHouseNumberAddition && $(prefix + street3))
+					{
+						$(prefix + street2).setValue(data.houseNumber);
+						$(prefix + street3).setValue((data.houseNumberAddition ? data.houseNumberAddition : housenumber_addition).trim());
+					}
+					else
+					{
+						$(prefix + street2).setValue((data.houseNumber +' '+ (data.houseNumberAddition ? data.houseNumberAddition : housenumber_addition)).trim());
+					}
 				}
 				else
 				{
@@ -970,11 +978,19 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 					var housenumber_addition = '';
 					if (PCNLAPI_CONFIG.useStreet2AsHouseNumber && $(prefix + street2))
 					{
-						housenumber_match = $(prefix + street2).getValue().match('^('+ this.REGEXP_HOUSENUMBER +')([^0-9a-zA-Z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?\\s*$');
-						if (housenumber_match)
+						if (PCNLAPI_CONFIG.useStreet3AsHouseNumberAddition && $(prefix + street3))
 						{
-							housenumber = housenumber_match[1].trim();
-							housenumber_addition = housenumber_match[3] === undefined ? '' : housenumber_match[3].trim();
+							housenumber = $(prefix + street2).getValue();
+							housenumber_addition = $(prefix + street3).getValue();
+						}
+						else
+						{
+							housenumber_match = $(prefix + street2).getValue().match('^('+ this.REGEXP_HOUSENUMBER +')([^0-9a-zA-Z]*('+ this.REGEXP_HOUSENUMBER_ADDITION +'))?\\s*$');
+							if (housenumber_match)
+							{
+								housenumber = housenumber_match[1].trim();
+								housenumber_addition = housenumber_match[3] === undefined ? '' : housenumber_match[3].trim();
+							}
 						}
 					}
 					else
