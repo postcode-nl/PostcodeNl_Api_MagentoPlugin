@@ -30,4 +30,4 @@ Installation
 Best practice for installing this extensions is to install it via the Magento Connect store:
 [Postcode.nl postcode complementation and validation](http://www.magentocommerce.com/magento-connect/catalog/product/view/id/14360/s/postcode-nl-postcode-complementation-and-validation-5609)
 
-You can also install this extension using [modman](https://github.com/colinmollenhour/modman) (.modman file is contained in this repository), or the [Magento Composer Installer](https://github.com/magento-hackathon/magento-composer-installer) (using [this packagist project](https://packagist.org/packages/postcode-nl/api-magentoplugin)).
+You can also install this extension using [modman](https://github.com/colinmollenhour/modman), or the [Magento Composer Installer](https://github.com/magento-hackathon/magento-composer-installer) (using [this packagist project](https://packagist.org/packages/postcode-nl/api-magentoplugin)).
