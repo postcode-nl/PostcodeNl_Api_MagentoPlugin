@@ -1,5 +1,5 @@
 <_>
-   <form_key>xomDTvrj8Vw3vKjB</form_key>
+   <form_key>ClqyhcK9YUPNLrOC</form_key>
    <name>PostcodeNl_Api</name>
    <channel>community</channel>
    <version_ids>
@@ -19,11 +19,12 @@ Also includes the free Postcode.nl Signal API service to validate and enrich ord
 The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-Use policy. The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions.</description>
    <license>Simplified BSD License</license>
    <license_uri/>
-   <version>1.2.0.0</version>
+   <version>1.2.0.1</version>
    <stability>stable</stability>
    <notes>Features:
 - Added the new Postcode.nl Signal API network for data checking and fraud warnings (https://api.postcode.nl/documentation/signal-api-description in Dutch)
 - Added option to enable/disable Signal and Address API separately
+- Installation bug fixed from v1.2.0.0
 </notes>
    <authors>
       <name>
@@ -53,7 +54,7 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
             <max/>
          </max>
          <files>
-            <files>                                                                                    </files>
+            <files>                                                                                         </files>
          </files>
       </package>
       <extension>
@@ -112,7 +113,7 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
          <type>dir</type>
          <type>dir</type>
          <type>dir</type>
-         <type>dir</type>
+         <type>file</type>
       </type>
       <include>
          <include/>
