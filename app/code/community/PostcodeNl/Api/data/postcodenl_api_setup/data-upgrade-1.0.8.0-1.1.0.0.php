@@ -12,7 +12,7 @@ $serviceNeverHideCountry = Mage::getStoreConfig('postcodenl/config/never_hide_co
 $serviceUseStreet2AsHousenumber = Mage::getStoreConfig('postcodenl/config/use_street2_as_housenumber');
 
 // Only do update, if we actually have old configuration (secret being most important to check)
-if ($serviceSecret !== null)
+if ($serviceSecret !== '')
 {
 	// Set new basic configuration
 	$config->saveConfig('postcodenl_api/config/enabled', $serviceEnabled, 'default', 0);
