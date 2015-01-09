@@ -8,3 +8,5 @@ app/design/adminhtml/default/default/template/postcodenl/* app/design/adminhtml/
 js/postcodenl/api/*                                        js/postcodenl/api/
 skin/adminhtml/default/default/postcodenl/*                skin/adminhtml/default/default/postcodenl/
 skin/frontend/base/default/postcodenl/*                    skin/frontend/base/default/postcodenl/
+app/locale/en_US/*                                         app/locale/en_US/
+app/locale/nl_NL/*                                         app/locale/nl_NL/
