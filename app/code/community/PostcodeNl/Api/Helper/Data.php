@@ -105,7 +105,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 
 	/**
-	 * Look information about a Dutch address by postcode, house number, and house number addition
+	 * Lookup information about a Dutch address by postcode, house number, and house number addition
 	 *
 	 * @param string $postcode
 	 * @param string $houseNumber
@@ -268,11 +268,11 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 
 	/**
-	 * Split a housenumber addition from a housenumber.
+	 * Split a house number addition from a house number.
 	 * Examples: "123 2", "123 rood", "123a", "123a4", "123-a", "123 II"
-	 * (the official notation is to separate the housenumber and addition with a single space)
+	 * (the official notation is to separate the house number and addition with a single space)
 	 *
-	 * @param string $houseNumber Housenumber input
+	 * @param string $houseNumber House number input
 	 *
 	 * @return array Split 'houseNumber' and 'houseNumberAddition'
 	 */
@@ -289,9 +289,9 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 
 	/**
-	 * Split a streename, housenumber and housenumber addition from a text lines containing a street and housenumber information.
+	 * Split a street name, house number and house number addition from a text lines containing a street and house number information.
 	 *
-	 * @param array $streetData Lines of steet data
+	 * @param array $streetData Lines of street data
 	 *
 	 * @return array Array containing 'street', 'houseNumber' and 'houseNumberAddition'
 	 */
@@ -357,6 +357,9 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		// No customer might be available if this is an order status change
 		$hasCustomer = ($order->getCustomer() !== null);
 
+		// Note if this is executed as an admin, then do not send access details, as that might muddy the customer info
+		$isAdmin = Mage::app()->getStore()->isAdmin();
+
 		// Only send phonenumber if it is at least 5 characters long
 		$phoneNumber = Mage::helper('core/string')->strlen($order->getBillingAddress()->getTelephone()) >= 5 ? $order->getBillingAddress()->getTelephone() : null;
 
@@ -374,6 +377,10 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 					'country' => $order->getBillingAddress()->getCountryId(),
 				),
 			),
+			'access' => array(
+				'ipAddress' => $isAdmin ? null : Mage::helper('core/http')->getRemoteAddr(),
+				'additionalIpAddresses' => array(),
+			),
 			'transaction' => array(
 				'internalId' => $order->getIncrementId(),
 				'deliveryAddress' =>  array(
@@ -388,7 +395,43 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			),
 		);
 
+		// Retrieve quote for registered remote IP / proxy IP (they are registered at session start)
+		$quoteId = $order->getQuoteId();
+		$quote = Mage::getModel('sales/quote')->load($quoteId);
+		if ($quote)
+		{
+			$signalCheck['access'] = $this->_addAccessIpAddress($signalCheck['access'], $quote->getRemoteIp());
+			$signalCheck['access'] = $this->_addAccessIpAddress($signalCheck['access'], $quote->getXForwardedFor());
+		}
+		// Register current forwarded-for IP address (if not admin)
+		if (!$isAdmin)
+		{
+			$forwardedFor = Mage::app()->getRequest()->getServer('HTTP_X_FORWARDED_FOR');
+			$signalCheck['access'] = $this->_addAccessIpAddress($signalCheck['access'],	$forwardedFor);
+		}
+
 		return $this->checkSignal($signalCheck);
+	}
+
+	protected function _addAccessIpAddress($access, $inputIp)
+	{
+		if ($inputIp === '' || $inputIp === null || $inputIp === false)
+			return $access;
+
+		// input might be multiple IPs (from X-Forwarded-For, for example)
+		if (strpos($inputIp, ',') !== false)
+		{
+			$inputIp = array_map('trim', explode(',', $inputIp));
+
+			foreach ($inputIp as $ip)
+				$access = $this->_addAccessIpAddress($access, $ip);
+		}
+		else if (filter_var($inputIp, FILTER_VALIDATE_IP) && $inputIp !== $access['ipAddress'] && !in_array($inputIp, $access['additionalIpAddresses']))
+		{
+			$access['additionalIpAddresses'][] = $inputIp;
+		}
+
+		return $access;
 	}
 
 	protected function _getStoreConfig($path)

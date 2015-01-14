@@ -78,6 +78,7 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 			'Quick One Page Checkout (by KAM)': 18,
 			'MAGExtended MasterCheckout': 19,
 			'Customer Address Form': 20,
+			'Lotusbreath One Step Checkout': 21
 		},
 		enrichHint: null,
 
@@ -120,16 +121,19 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 			if (advice)
 			{
 				Validation.hideAdvice($(prefix +'postcode_housenumber'), advice, 'invalid-postcode');
+				$(prefix +'postcode_housenumber').removeClassName('validation-failed');
 			}
 			var advice = Validation.getAdvice('invalid-postcode', $(prefix +'postcode_input'));
 			if (advice)
 			{
 				Validation.hideAdvice($(prefix +'postcode_input'), advice, 'invalid-postcode');
+				$(prefix +'postcode_input').removeClassName('validation-failed');
 			}
 			var advice = Validation.getAdvice('address-is-postofficebox', $(prefix +'postcode_input'));
 			if (advice)
 			{
 				Validation.hideAdvice($(prefix +'postcode_input'), advice, 'address-is-postofficebox');
+				$(prefix +'postcode_input').removeClassName('validation-failed');
 			}
 			if ($(prefix +'postcode_housenumber_addition'))
 			{
@@ -137,6 +141,7 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 				if (additionAdvice)
 				{
 					Validation.hideAdvice($(prefix +'postcode_housenumber_addition'), additionAdvice, 'invalid-addition');
+					$(prefix +'postcode_housenumber_addition').removeClassName('validation-failed');
 				}
 			}
 		},
@@ -429,6 +434,8 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 					$(prefix + 'postcode_output').update((data.street +' '+ data.houseNumber +' '+ (data.houseNumberAddition ? data.houseNumberAddition : housenumber_addition)).trim() + "<br>" + data.postcode + " " + data.city);
 				}
 
+				var hasAdvice = false;
+
 				// Handle all housenumber addition possiblities
 				if (data.houseNumberAddition == null && (housenumber_addition_select == housenumber_addition || (housenumber_addition_select == '__none__' && housenumber_addition == '')))
 				{
@@ -444,6 +451,13 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 					{
 						newAdvice = Validation.createAdvice('invalid-addition', $(prefix +'postcode_housenumber_addition'), false, (housenumber_addition != '' ? PCNLAPI_CONFIG.translations.houseNumberAdditionUnknown.replace('{addition}', housenumber_addition) : PCNLAPI_CONFIG.translations.houseNumberAdditionRequired));
 						Validation.showAdvice($(prefix +'postcode_housenumber_addition'), newAdvice, 'invalid-addition');
+						$(prefix +'postcode_housenumber_addition').removeClassName('validation-passed');
+						$(prefix +'postcode_housenumber_addition').addClassName('validation-failed');
+						hasAdvice = true;
+					}
+					else
+					{
+						$(prefix + 'postcode_housenumber_addition').addClassName('validation-passed');
 					}
 				}
 				else if (data.houseNumberAddition == null)
@@ -454,12 +468,17 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 
 					newAdvice = Validation.createAdvice('invalid-addition', $(prefix +'postcode_housenumber_addition'), false, (housenumber_addition != '' ? PCNLAPI_CONFIG.translations.houseNumberAdditionUnknown.replace('{addition}', housenumber_addition) : PCNLAPI_CONFIG.translations.houseNumberAdditionRequired));
 					Validation.showAdvice($(prefix +'postcode_housenumber_addition'), newAdvice, 'invalid-addition');
+					$(prefix +'postcode_housenumber_addition').removeClassName('validation-passed');
+					$(prefix +'postcode_housenumber_addition').addClassName('validation-failed');
+					hasAdvice = true;
 				}
 				else if (data.houseNumberAdditions.length > 1 || (data.houseNumberAdditions.length == 1 && data.houseNumberAdditions[0] != ''))
 				{
 					// Address has multiple housenumber additions
 					var additionSelect = this.createPostcodeHouseNumberAddition(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, data.houseNumberAdditions);
 					additionSelect.setValue(data.houseNumberAddition);
+
+					$(prefix + 'postcode_housenumber_addition').addClassName('validation-passed');
 				}
 				else
 				{
@@ -471,6 +490,15 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 				{
 					newAdvice = Validation.createAdvice('address-is-postofficebox', $(prefix + 'postcode_input'), false, PCNLAPI_CONFIG.translations.postOfficeBoxNotAllowed);
 					Validation.showAdvice($(prefix + postcodeFieldId), newAdvice, 'address-is-postofficebox');
+					$(prefix + postcodeFieldId).removeClassName('validation-passed');
+					$(prefix + postcodeFieldId).addClassName('validation-failed');
+					hasAdvice = true;
+				}
+
+				if (!hasAdvice)
+				{
+					$(prefix + postcodeFieldId).addClassName('validation-passed');
+					$(prefix + 'postcode_housenumber').addClassName('validation-passed');
 				}
 			}
 			else if (data.message !== undefined)
@@ -479,9 +507,12 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 				if (typeof data.useManual !== 'undefined' && data.useManual === true) {
 					$(prefix + 'postcode_input_checkbox').click();
 				}
+				var target = (data.messageTarget == 'postcode' ? 'postcode_input' : 'postcode_housenumber');
 
-				newAdvice = Validation.createAdvice('invalid-postcode', $(prefix + (data.messageTarget == 'postcode' ? 'postcode_input' : 'postcode_housenumber')), false, data.message);
-				Validation.showAdvice($(prefix +'postcode_housenumber'), newAdvice, 'invalid-postcode');
+				newAdvice = Validation.createAdvice('invalid-postcode', $(prefix + target), false, data.message);
+				Validation.showAdvice($(prefix + target), newAdvice, 'invalid-postcode');
+				$(prefix + target).removeClassName('validation-passed');
+				$(prefix + target).addClassName('validation-failed');
 
 				this.removeHousenumberAddition(prefix);
 			}
@@ -489,8 +520,12 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 			{
 				// Address check did not return an error or a postcode result (something else wrong)
 
-				newAdvice = Validation.createAdvice('invalid-postcode', $(prefix + (data.messageTarget == 'postcode' ? 'postcode_input' : 'postcode_housenumber')), false, '');
-				Validation.showAdvice($(prefix +'postcode_housenumber'), newAdvice, 'invalid-postcode');
+				var target = (data.messageTarget == 'postcode' ? 'postcode_input' : 'postcode_housenumber');
+
+				newAdvice = Validation.createAdvice('invalid-postcode', $(prefix + target), false, '');
+				Validation.showAdvice($(prefix + target), newAdvice, 'invalid-postcode');
+				$(prefix + target).removeClassName('validation-passed');
+				$(prefix + target).addClassName('validation-failed');
 
 				this.removeHousenumberAddition(prefix);
 			}
@@ -918,6 +953,7 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 						// + Fire Checkout
 						// + Quick One Page Checkout (by KAM)
 						// + MAGExtended MasterCheckout
+						// + Lotusbreath One Step Checkout
 
 						if ($(document.body).hasClassName('firecheckout-index-index'))
 							this.enrichType = 'Fire Checkout';
@@ -925,6 +961,8 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 							this.enrichType = 'Quick One Page Checkout (by KAM)';
 						else if ($(document.body).hasClassName('mastercheckout-index-index'))
 							this.enrichType = 'MAGExtended MasterCheckout';
+						else if ($(document.body).hasClassName('lotusbreath-onestepcheckout-index-index'))
+							this.enrichType = 'Lotusbreath One Step Checkout';
 						else if ($(document.body).hasClassName('checkout-onepage-index'))
 							this.enrichType = 'Basic';
 						else if ($(document.body).hasClassName('customer-address-form'))
@@ -956,6 +994,10 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 				{
 					this.showFields([prefix +'postcode_input', prefix +'postcode_housenumber', prefix +'postcode_housenumber_addition', prefix + 'postcode_input:info-text', prefix + 'postcode_input_checkbox']);
 				}
+
+				this.observeImmediate(prefix, 'postcode_input');
+				this.observeImmediate(prefix, 'postcode_housenumber');
+				this.observeImmediate(prefix, 'postcode_input_checkbox');
 
 				this.toggleAddressFields(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4);
 
@@ -1042,6 +1084,36 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 					if ($(prefix +'showcase'))
 						Element.remove($(prefix +'showcase'));
 				}
+			}
+		},
+
+		/**
+		 * Try to see if our created fields need to be observed by the billing/shipping form
+		 */
+		observeImmediate: function(prefix, formElement)
+		{
+			var form;
+			if (prefix.substring(0, 7) == 'billing' && (typeof billingForm != 'undefined'))
+				form = billingForm;
+			if (prefix.substring(0, 8) == 'shipping' && (typeof shippingForm != 'undefined'))
+				form = shippingForm;
+
+			if (!form || !form.validator.options.immediate)
+				return;
+
+			var input = $(prefix + formElement);
+
+			if (input.tagName.toLowerCase() == 'select')
+			{
+				Event.observe(input, 'blur', form.validator.onChange.bindAsEventListener(form.validator));
+			}
+			if (input.type.toLowerCase() == 'radio' || input.type.toLowerCase() == 'checkbox')
+			{
+				Event.observe(input, 'click', form.validator.onChange.bindAsEventListener(form.validator));
+			}
+			else
+			{
+				Event.observe(input, 'change', form.validator.onChange.bindAsEventListener(form.validator));
 			}
 		},
 
@@ -1165,6 +1237,8 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 			}
 
 			$(prefix +'postcode_housenumber_addition').observe('change', function(e) { pcnlapi.lookupPostcode(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, e); });
+
+			this.observeImmediate(prefix, 'postcode_housenumber_addition');
 
 			return $(prefix +'postcode_housenumber_addition');
 		},
