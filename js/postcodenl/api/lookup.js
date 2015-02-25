@@ -553,7 +553,10 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 			if ($(prefix + countryFieldId).getValue() == '')
 			{
 				$(prefix + countryFieldId).setValue('NL');
-				pcnlFireEvent($(prefix + countryFieldId), 'change');
+				if ($F(prefix + countryFieldId) == 'NL') {
+					// only fire the event if the value has actually changed (i.e. the 'NL' value exists)
+					pcnlFireEvent($(prefix + countryFieldId), 'change');
+				}
 			}
 
 			if ($(prefix + countryFieldId).getValue() == 'NL')
