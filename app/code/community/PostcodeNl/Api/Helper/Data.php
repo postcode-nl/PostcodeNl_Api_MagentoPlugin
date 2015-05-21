@@ -303,12 +303,22 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 
 		if (preg_match('~^(?<street>'. $regexpStreet .')\s+(?<houseNumber>'. $regexpHouseNumber .')([^0-9a-zA-Z]*(?<houseNumberAddition>'. $regexpHouseNumberAddition .'))?\s*$~', $streetData[0], $match))
 		{
-			// Found housenumber contained in first street line
-			return array(
-				'street' => $match['street'],
-				'houseNumber' => $match['houseNumber'],
-				'houseNumberAddition' => $match['houseNumberAddition'],
+			$return = array(
+				'street' => '',
+				'houseNumber' => '',
+				'houseNumberAddition' => '',
 			);
+			if(isset($match['street'])){
+				$return['street'] = $match['street'];
+			}
+			if(isset($match['houseNumber'])){
+				$return['houseNumber'] = $match['houseNumber'];
+			}
+			if(isset($match['houseNumberAddition'])){
+				$return['houseNumberAddition'] = $match['houseNumberAddition'];
+			}
+			// Found housenumber contained in first street line
+			return $return;
 		}
 		else if (isset($streetData[1]))
 		{
