@@ -126,7 +126,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		$postcode = preg_replace('~[^a-z0-9]~i', '', $postcode);
 
 		// Basic postcode format checking
-		if (!preg_match('~^[0-9]{4}[a-z]{2}$~i', $postcode))
+		if (!preg_match('~^[1-9][0-9]{3}[a-z]{2}$~i', $postcode))
 		{
 			$response['message'] = $this->__('Invalid postcode format, use `1234AB` format.');
 			$response['messageTarget'] = 'postcode';
@@ -282,7 +282,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		if (preg_match('~^(?<number>[0-9]+)(?:[^0-9a-zA-Z]+(?<addition1>[0-9a-zA-Z ]+)|(?<addition2>[a-zA-Z](?:[0-9a-zA-Z ]*)))?$~', $houseNumber, $match))
 		{
 			$houseNumber = $match['number'];
-			$houseNumberAddition = isset($match['addition2']) ? $match['addition2'] : (isset($match['addition1']) ? $match['addition1'] : '');
+			$houseNumberAddition = isset($match['addition2']) ? $match['addition2'] : (isset($match['addition1']) ? $match['addition1'] : null);
 		}
 
 		return array($houseNumber, $houseNumberAddition);
@@ -307,7 +307,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			return array(
 				'street' => $match['street'],
 				'houseNumber' => $match['houseNumber'],
-				'houseNumberAddition' => $match['houseNumberAddition'],
+				'houseNumberAddition' => isset($match['houseNumberAddition']) ? $match['houseNumberAddition'] : null,
 			);
 		}
 		else if (isset($streetData[1]))

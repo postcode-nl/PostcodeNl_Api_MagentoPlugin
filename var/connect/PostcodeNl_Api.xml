@@ -1,5 +1,5 @@
 <_>
-   <form_key>8BumU2wooTj1RLGy</form_key>
+   <form_key>zaJKCi5TPZvqI4KN</form_key>
    <name>PostcodeNl_Api</name>
    <channel>community</channel>
    <version_ids>
@@ -19,15 +19,13 @@ Also includes the free Postcode.nl Signal API service to validate and enrich ord
 The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-Use policy. The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions.</description>
    <license>Simplified BSD License</license>
    <license_uri/>
-   <version>1.2.1.0</version>
+   <version>1.2.2.0</version>
    <stability>stable</stability>
    <notes>Features:
-- Add support for IP address checking and Dutch address checking with the Postcode.nl Signal API
-- Added &apos;validation-passed&apos; and &apos;validation-failed&apos; css classes to checkout input fields, support for &apos;validate-immediate&apos;
-- Added provisional support for the Lotusbreath One Step Checkout extension
+- Improved postcode matching
 
 Fixes:
-- Fix for language files installation via modman/composer
+- Fixed issues with splitting street data for Postcode.nl Signal
 </notes>
    <authors>
       <name>
@@ -57,7 +55,7 @@ Fixes:
             <max/>
          </max>
          <files>
-            <files>                                                                                             </files>
+            <files>                                                                                              </files>
          </files>
       </package>
       <extension>
@@ -147,4 +145,8 @@ Fixes:
          <ignore/>
       </ignore>
    </contents>
+   <page>1</page>
+   <limit>200</limit>
+   <folder/>
+   <package/>
 </_>
