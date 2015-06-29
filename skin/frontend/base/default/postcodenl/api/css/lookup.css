@@ -70,15 +70,6 @@ dl.pcnl-showcase, dl.pcnl-debug {
 	position: relative;
 }
 
-dl.pcnl-showcase iframe {
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	width: 300px;
-	height: 300px;
-	border: 1px solid grey;
-}
-
 dl.pcnl-showcase dt, dl.pcnl-debug dt {
 	font-weight: bold;
 }
@@ -102,14 +93,6 @@ div.checkoutcontainer div.pcnl-input-housenumber select.pcnl-input-text-half {
 }
 div.checkoutcontainer .pcnl-info-text {
 	width: 85%;
-}
-div.checkoutcontainer dl.pcnl-showcase iframe {
-	position: relative;
-	float: right;
-	width: 260px;
-	height: 260px;
-	margin-bottom: 15px;
-	border: 1px solid grey;
 }
 
 /* OneStepCheckout.com */

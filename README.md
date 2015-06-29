@@ -15,7 +15,7 @@ The postcode Magento plugin from Postcode.nl is free of charge, based on a Fair-
 Data
 =============
 
-This plugin uses the [Postcode.nl Address API](https://api.postcode.nl/documentation/address-api-description) to validate en enrich Dutch address data, and the [Postcode.nl Signal API](https://api.postcode.nl/documentation/signal-api-description) to do additional validations and fraud risk checks.
+This plugin uses the [Postcode.nl Address API](https://api.postcode.nl/documentation/address-api-description) to validate and enrich Dutch address data, and the [Postcode.nl Signal API](https://api.postcode.nl/documentation/signal-api-description) to do additional validations and fraud risk checks.
 As a webshop owner, you can obtain a free account for the Postcode.nl API [here](https://api.postcode.nl).
 
 

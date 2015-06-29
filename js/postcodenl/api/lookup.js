@@ -196,6 +196,10 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 					else {
 						html += '<dt>'+ name.escapeHTML() +'</dt><dd>'+ this.getFieldListHtml(data[prop]) +'</dd>';
 					}
+
+					if (prop == 'longitude') {
+						html += '<dt>See in map</dt><dd><a href="https://www.google.nl/maps/?q=loc:'+ data.latitude +','+ data.longitude +'">Google maps</a></dd>';
+					}
 				}
 				html += '</dl>';
 			} else {
@@ -325,24 +329,18 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 		 */
 		updatePostcodeLookup: function(data, housenumber_addition, housenumber_addition_select, prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, event)
 		{
-			if (PCNLAPI_CONFIG.showcase)
+			if (PCNLAPI_CONFIG.showcase && data.showcaseResponse)
 			{
 				if ($(prefix +'showcase'))
 					$(prefix +'showcase').remove();
 
 				var info = this.getFieldListHtml(data.showcaseResponse, 'pcnl-showcase');
 
-				var map = '';
-				if (data.showcaseResponse.longitude && data.showcaseResponse.latitude)
-				{
-					map = '<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" class="map" src="http://maps.google.com/maps?t=h&amp;q='+ data.showcaseResponse.latitude +','+ data.showcaseResponse.longitude +'+(Location found)&amp;z=19&amp;output=embed&amp;iwloc=near"></iframe>';
-				}
-
 				if ($(prefix + street1).up(this.parentElementType))
 				{
 					if (this.parentElementType == 'li')
 					{
-						$(prefix + street1).up(this.parentElementType).insert({before: '<li id="' + prefix +'showcase" class="wide"><div class="input-box"><h4 class="pcnl-showcase">'+ PCNLAPI_CONFIG.translations.apiShowcase.escapeHTML() +'</h4>'+ map + info + '</div></li>'});
+						$(prefix + street1).up(this.parentElementType).insert({before: '<li id="' + prefix +'showcase" class="wide"><div class="input-box"><h4 class="pcnl-showcase">'+ PCNLAPI_CONFIG.translations.apiShowcase.escapeHTML() +'</h4>'+ info + '</div></li>'});
 					}
 					else if (this.parentElementType == 'tr')
 					{
@@ -553,10 +551,7 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 			if ($(prefix + countryFieldId).getValue() == '')
 			{
 				$(prefix + countryFieldId).setValue('NL');
-				if ($F(prefix + countryFieldId) == 'NL') {
-					// only fire the event if the value has actually changed (i.e. the 'NL' value exists)
-					pcnlFireEvent($(prefix + countryFieldId), 'change');
-				}
+				pcnlFireEvent($(prefix + countryFieldId), 'change');
 			}
 
 			if ($(prefix + countryFieldId).getValue() == 'NL')

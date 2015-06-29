@@ -12,6 +12,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	protected $_httpResponseCode = null;
 	protected $_httpResponseCodeClass = null;
 	protected $_httpClientError = null;
+	protected $_debuggingOverride = false;
 
 	/**
 	 * Get the html for initializing validation script.
@@ -37,7 +38,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 					blockPostOfficeBoxAddresses: '. $this->_getConfigBoolString('postcodenl_api/advanced_config/block_postofficeboxaddresses') . ',
 					neverHideCountry: ' . $this->_getConfigBoolString('postcodenl_api/advanced_config/never_hide_country') . ',
 					showcase: ' . $this->_getConfigBoolString('postcodenl_api/development_config/api_showcase') . ',
-					debug: ' . $this->_getConfigBoolString('postcodenl_api/development_config/api_debug') . ',
+					debug: ' . ($this->isDebugging() ? 'true' : 'false') . ',
 					translations: {
 						defaultError: "' . htmlspecialchars($this->__('Unknown postcode + housenumber combination.')) . '",
 						postcodeInputLabel: "' . htmlspecialchars($this->__('Postcode')) . '",
@@ -79,7 +80,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	public function isApiEnabled($service)
 	{
 		// If we're debugging, assume all services are enabled, to get feedback on all levels.
-		if ($this->_getStoreConfig('postcodenl_api/development_config/api_debug'))
+		if ($this->isDebugging())
 			return true;
 
 		if (!$this->_getStoreConfig('postcodenl_api/config/enabled'))
@@ -95,13 +96,26 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 
 	/**
-	 * Check if we're currently in debug mode.
+	 * Check if we're currently in debug mode, and if the current user may see dev info.
 	 *
 	 * @return bool
 	 */
 	public function isDebugging()
 	{
-		return (bool)$this->_getStoreConfig('postcodenl_api/development_config/api_debug');
+		if ($this->_debuggingOverride)
+			return true;
+		else
+			return (bool)$this->_getStoreConfig('postcodenl_api/development_config/api_debug') && Mage::helper('core')->isDevAllowed();
+	}
+
+	/**
+	 * Set the debugging override flag.
+	 *
+	 * @param bool $toggle
+	 */
+	public function setDebuggingOverride($toggle = true)
+	{
+		$this->_debuggingOverride = $toggle;
 	}
 
 	/**
@@ -137,31 +151,11 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 
 		$jsonData = $this->_callApiUrlGet($url);
 
-		$serviceShowcase = $this->_getStoreConfig('postcodenl_api/development_config/api_showcase');
-		$serviceDebug = $this->isDebugging();
-
-		if ($serviceShowcase)
+		if ($this->_getStoreConfig('postcodenl_api/development_config/api_showcase'))
 			$response['showcaseResponse'] = $jsonData;
 
-		if ($serviceDebug)
-		{
-			$response['debugInfo'] = array(
-				'requestUrl' => $url,
-				'rawResponse' => $this->_httpResponseRaw,
-				'parsedResponse' => $jsonData,
-				'httpClientError' => $this->_httpClientError,
-				'configuration' => array(
-					'url' => $this->_getServiceUrl(),
-					'key' => $this->_getKey(),
-					'secret' => substr($this->_getSecret(), 0, 6) .'[hidden]',
-					'showcase' => $serviceShowcase,
-					'debug' => $serviceDebug,
-				),
-				'magentoVersion' => $this->_getMagentoVersion(),
-				'extensionVersion' => $this->_getExtensionVersion(),
-				'modules' => $this->_getMagentoModules(),
-			);
-		}
+		if ($this->isDebugging())
+			$response['debugInfo'] = $this->_getDebugInfo($url, $jsonData);
 
 		if ($this->_httpResponseCode == 200 && is_array($jsonData) && isset($jsonData['postcode']))
 		{
@@ -234,7 +228,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	 *
 	 * @return array Signal result
 	 */
-	public function checkSignal($signalCheck)
+	public function checkSignal(array $signalCheck)
 	{
 		// Check if we are we enabled, configured & capable of handling an API request
 		$message = $this->_checkApiReady('Signal');
@@ -264,6 +258,10 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		{
 			$response['message'] = $this->__('Signal API response not understood, service unavailable.') . 'HTTP status code: `'. $this->_httpResponseCode .'`';
 		}
+
+		if ($this->isDebugging())
+			$response['debugInfo'] = $this->_getDebugInfo($url, $jsonData);
+
 		return $response;
 	}
 
@@ -295,7 +293,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	 *
 	 * @return array Array containing 'street', 'houseNumber' and 'houseNumberAddition'
 	 */
-	public function splitStreetData($streetData)
+	public function splitStreetData(array $streetData)
 	{
 		$regexpStreet = '[^0-9].*?|.*?[^0-9]';
 		$regexpHouseNumber = '[0-9]+';
@@ -434,6 +432,149 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		return $access;
 	}
 
+	protected function _getDebugInfo($url, $jsonData)
+	{
+		return array(
+			'requestUrl' => $url,
+			'rawResponse' => $this->_httpResponseRaw,
+			'responseCode' => $this->_httpResponseCode,
+			'responseCodeClass' => $this->_httpResponseCodeClass,
+			'parsedResponse' => $jsonData,
+			'httpClientError' => $this->_httpClientError,
+			'configuration' => array(
+				'url' => $this->_getServiceUrl(),
+				'key' => $this->_getKey(),
+				'secret' => substr($this->_getSecret(), 0, 6) .'[hidden]',
+				'showcase' => $this->_getStoreConfig('postcodenl_api/development_config/api_showcase'),
+				'debug' => $this->_getStoreConfig('postcodenl_api/development_config/api_debug'),
+			),
+			'magentoVersion' => $this->_getMagentoVersion(),
+			'extensionVersion' => $this->_getExtensionVersion(),
+			'modules' => $this->_getMagentoModules(),
+		);
+	}
+
+	public function testConnection()
+	{
+		// Default is not OK
+		$message = $this->__('The test connection could not be successfully completed.');
+		$status = 'error';
+		$info = array();
+
+		// Do a test address lookup
+		$this->setDebuggingOverride(true);
+		$addressData = $this->lookupAddress('2012ES', '30', '');
+		$this->setDebuggingOverride(false);
+
+		if (!isset($addressData['debugInfo']) && isset($addressData['message']))
+		{
+			// Client-side error
+			$message = $addressData['message'];
+			if (isset($addressData['info']))
+				$info = $addressData['info'];
+		}
+		else if ($addressData['debugInfo']['httpClientError'])
+		{
+			// We have a HTTP connection error
+			$message = $this->__('Your server could not connect to the Postcode.nl server.');
+
+			// Do some common SSL CA problem detection
+			if (strpos($addressData['debugInfo']['httpClientError'], 'SSL certificate problem, verify that the CA cert is OK') !== false)
+			{
+				$info[] = $this->__('Your servers\' \'cURL SSL CA bundle\' is missing or outdated. Further information:');
+				$info[] = '- <a href="http://stackoverflow.com/questions/6400300/https-and-ssl3-get-server-certificatecertificate-verify-failed-ca-is-ok" target="_blank">'. $this->__('How to update/fix your CA cert bundle') .'</a>';
+				$info[] = '- <a href="http://curl.haxx.se/docs/sslcerts.html" target="_blank">'. $this->__('About cURL SSL CA certificates') .'</a>';
+				$info[] = '';
+			}
+			else if (strpos($addressData['debugInfo']['httpClientError'], 'unable to get local issuer certificate') !== false)
+			{
+				$info[] = $this->__('cURL cannot read/access the CA cert file:');
+				$info[] = '- <a href="http://curl.haxx.se/docs/sslcerts.html" target="_blank">'. $this->__('About cURL SSL CA certificates') .'</a>';
+				$info[] = '';
+			}
+			else
+			{
+				$info[] = $this->__('Connection error.');
+			}
+			$info[] = $this->__('Error message:') . ' "'. $addressData['debugInfo']['httpClientError'] .'"';
+			$info[] = '- <a href="https://www.google.com/search?q='. urlencode($addressData['debugInfo']['httpClientError'])  .'" target="_blank">'. $this->__('Google the error message') .'</a>';
+			$info[] = '- '. $this->__('Contact your hosting provider if problems persist.');
+
+		}
+		else if (!is_array($addressData['debugInfo']['parsedResponse']))
+		{
+			// We have not received a valid JSON response
+
+			$message = $this->__('The response from the Postcode.nl service could not be understood.');
+			$info[] = '- '. $this->__('The service might be temporarily unavailable, if problems persist, please contact <a href=\'mailto:info@postcode.nl\'>info@postcode.nl</a>.');
+			$info[] = '- '. $this->__('Technical reason: No valid JSON was returned by the request.');
+		}
+		else if (is_array($addressData['debugInfo']['parsedResponse']) && isset($addressData['debugInfo']['parsedResponse']['exceptionId']))
+		{
+			// We have an exception message from the service itself
+
+			if ($addressData['debugInfo']['responseCode'] == 401)
+			{
+				if ($addressData['debugInfo']['parsedResponse']['exceptionId'] == 'PostcodeNl_Controller_Plugin_HttpBasicAuthentication_NotAuthorizedException')
+					$message = $this->__('`API Key` specified is incorrect.');
+				else if ($addressData['debugInfo']['parsedResponse']['exceptionId'] == 'PostcodeNl_Controller_Plugin_HttpBasicAuthentication_PasswordNotCorrectException')
+					$message = $this->__('`API Secret` specified is incorrect.');
+				else
+					$message = $this->__('Authentication is incorrect.');
+			}
+			else if ($addressData['debugInfo']['responseCode'] == 403)
+			{
+				$message = $this->__('Access is denied.');
+			}
+			else
+			{
+				$message = $this->__('Service reported an error.');
+			}
+			$info[] = $this->__('Postcode.nl service message:') .' "'. $addressData['debugInfo']['parsedResponse']['exception'] .'"';
+		}
+		else if (is_array($addressData['debugInfo']['parsedResponse']) && !isset($addressData['debugInfo']['parsedResponse']['postcode']))
+		{
+			// This message is thrown when the JSON returned did not contain the data expected.
+
+			$message = $this->__('The response from the Postcode.nl service could not be understood.');
+			$info[] = '- '. $this->__('The service might be temporarily unavailable, if problems persist, please contact <a href=\'mailto:info@postcode.nl\'>info@postcode.nl</a>.');
+			$info[] = '- '. $this->__('Technical reason: Received JSON data did not contain expected data.');
+		}
+		else
+		{
+			$message = $this->__('A test connection to the API was successfully completed.');
+			$status = 'success';
+		}
+
+		if ($status == 'success' && $this->isApiEnabled('Signal'))
+		{
+			$this->setDebuggingOverride(true);
+			$signalData = $this->checkSignal(array('customer' => array('firstName' => 'Magento', 'lastName' => 'Tester')));
+			$this->setDebuggingOverride(false);
+
+			if (!is_array($signalData['debugInfo']['parsedResponse']))
+			{
+				// Signal service failed, but in an unexpected way
+				$status = 'error';
+				$message = $this->__('Address API service has no problems, but the Signal API service reported an error.');
+				$info[] = '- '. $this->__('The Signal service might be temporarily unavailable, if problems persist, please contact <a href=\'mailto:info@postcode.nl\'>info@postcode.nl</a>.');
+			}
+			else if (isset($signalData['debugInfo']['parsedResponse']['exceptionId']))
+			{
+				// We have an exception message from the service itself
+				$status = 'error';
+				$message = $this->__('Address API service has no problems, but the Signal API service reported an error.');
+				$info[] = $this->__('Postcode.nl service message:') .' "'. $signalData['debugInfo']['parsedResponse']['exception'] .'"';
+			}
+		}
+
+		return array(
+			'message' => $message,
+			'status' => $status,
+			'info' => $info,
+		);
+	}
+
 	protected function _getStoreConfig($path)
 	{
 		return Mage::getStoreConfig($path);
@@ -511,16 +652,16 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 
 	protected function _checkApiReady($service = null)
 	{
-		if (!$this->_getStoreConfig('postcodenl_api/config/enabled'))
+		if (!$this->_getStoreConfig('postcodenl_api/config/enabled') && !$this->_debuggingOverride)
 			return array('message' => $this->__('Postcode.nl API not enabled.'));;
 
 		if ($this->_getServiceUrl() === '' || $this->_getKey() === '' || $this->_getSecret() === '')
-			return array('message' => $this->__('Postcode.nl API not configured.'));
+			return array('message' => $this->__('Postcode.nl API not configured.'), 'info' => array($this->__('Configure your `API key` and `API secret`.')));
 
-		if ($service === 'Address' && !$this->_getStoreConfig('postcodenl_api/config/enabled_address_api'))
+		if ($service === 'Address' && !$this->_getStoreConfig('postcodenl_api/config/enabled_address_api') && !$this->_debuggingOverride)
 			return array('message' => $this->__('Postcode.nl Address API not enabled.'));;
 
-		if ($service === 'Signal' && !$this->_getStoreConfig('postcodenl_api/config/enabled_signal_api'))
+		if ($service === 'Signal' && !$this->_getStoreConfig('postcodenl_api/config/enabled_signal_api') && !$this->_debuggingOverride)
 			return array('message' => $this->__('Postcode.nl Signal API not enabled.'));;
 
 		return $this->_checkCapabilities();
@@ -553,14 +694,14 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		$this->_httpResponseRaw = curl_exec($ch);
 		$this->_httpResponseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$this->_httpResponseCodeClass = (int)floor($this->_httpResponseCode / 100) * 100;
-		$this->_httpClientError = curl_error($ch);
+		$this->_httpClientError = curl_errno($ch) ? sprintf('cURL error %s: %s', curl_errno($ch), curl_error($ch)) : null;
 
 		curl_close($ch);
 
 		return json_decode($this->_httpResponseRaw, true);
 	}
 
-	protected function _callApiUrlPostJson($url, $data)
+	protected function _callApiUrlPostJson($url, array $data)
 	{
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -575,7 +716,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		$this->_httpResponseRaw = curl_exec($ch);
 		$this->_httpResponseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$this->_httpResponseCodeClass = (int)floor($this->_httpResponseCode / 100) * 100;
-		$this->_httpClientError = curl_error($ch);
+		$this->_httpClientError = curl_errno($ch) ? sprintf('cURL error %s: %s', curl_errno($ch), curl_error($ch)) : null;
 		curl_close($ch);
 
 		return json_decode($this->_httpResponseRaw, true);

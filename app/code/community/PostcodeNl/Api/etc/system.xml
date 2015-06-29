@@ -45,10 +45,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<validate>validate-length minimum-length-10</validate>
-							<comment>
-							<![CDATA[
-								To get your Postcode.nl API key and secret, please register at <a href="https://api.postcode.nl" target="_blank">Postcode.nl API</a>.
-							]]></comment>
+							<comment><![CDATA[To get your Postcode.nl API key and secret, please register at <a href='https://api.postcode.nl' target='_blank'>Postcode.nl API</a>.]]></comment>
 						</api_secret>
 						<enabled_address_api translate="label">
 							<label>Address API Enabled?</label>
@@ -58,10 +55,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment>
-							<![CDATA[
-								Dutch address validation via <a href="https://api.postcode.nl/documentation/address-api-description" target="_blank">Postcode.nl Address API</a> is available by default when you create an account.
-							]]></comment>
+							<comment><![CDATA[Dutch address validation via <a href='https://api.postcode.nl/documentation/address-api-description' target='_blank'>Postcode.nl Address API</a> is available by default when you create an account.]]></comment>
 						</enabled_address_api>
 						<enabled_signal_api translate="label">
 							<label>Signal API Enabled?</label>
@@ -71,10 +65,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment>
-							<![CDATA[
-								To use the <a href="https://api.postcode.nl/documentation/signal-api-description" target="_blank">Postcode.nl Signal API</a>, sign up for the service during registration, or at your <a href="https://api.postcode.nl">Postcode.nl API dashboard</a>. Then, enable this option.
-							]]></comment>
+							<comment><![CDATA[To use the <a href='https://api.postcode.nl/documentation/signal-api-description' target='_blank'>Postcode.nl Signal API</a>, sign up for the service during registration, or at your <a href='https://api.postcode.nl'>Postcode.nl API dashboard</a>. Then, enable this option.]]></comment>
 						</enabled_signal_api>
 					</fields>
 				</config>
@@ -95,10 +86,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment>
-							<![CDATA[
-								If you use the second 'street' field as a separate house-number field, enable this option.
-							]]></comment>
+							<comment><![CDATA[If you use the second 'street' field as a separate house-number field, enable this option.]]></comment>
 						</use_street2_as_housenumber>
 						<use_street3_as_housenumber_addition translate="label">
 							<label>Separate housenumber addition</label>
@@ -108,10 +96,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment>
-							<![CDATA[
-								If you use the third 'street' field as a separate house-number addition field, enable this option. (requires 'Separate housenumber' option to be enabled too)
-							]]></comment>
+							<comment><![CDATA[If you use the third 'street' field as a separate house-number addition field, enable this option. (requires 'Separate housenumber' option to be enabled too)]]></comment>
 						</use_street3_as_housenumber_addition>
 						<block_postofficeboxaddresses translate="label">
 							<label>Block post office box addresses</label>
@@ -121,11 +106,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment>
-							<![CDATA[
-								This will consider 'post office box' (postbus) addresses invalid for all validated address fields.<br />
-								<em>(though still allowed if address is added with 'manual' checkbox)</em>
-							]]></comment>
+							<comment><![CDATA[This will consider 'post office box' (postbus) addresses invalid for all validated address fields.<br /><em>(though still allowed if address is added with 'manual' checkbox)</em>]]></comment>
 						</block_postofficeboxaddresses>
 						<never_hide_country translate="label">
 							<label>Always show country selector</label>
@@ -135,11 +116,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment>
-							<![CDATA[
-								For webshops with a more international audience, always show the country selection box.<br />
-								<b>Developer Note</b>: If there are other fields next to the country selector, they will be disabled.
-							]]></comment>
+							<comment><![CDATA[For webshops with a more international audience, always show the country selection box.<br /><b>Developer Note</b>: If there are other fields next to the country selector, they will be disabled.]]></comment>
 						</never_hide_country>
 						<admin_validation_disabled translate="label">
 							<label>Disable validation in admin</label>
@@ -149,10 +126,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment>
-							<![CDATA[
-								You can use this option if you encounter problems in the admin address validation, or want to allow all addresses in the admin.
-							]]></comment>
+							<comment><![CDATA[You can use this option if you encounter problems in the admin address validation, or want to allow all addresses in the admin.]]></comment>
 						</admin_validation_disabled>
 					</fields>
 				</advanced_config>
@@ -191,11 +165,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment>
-							<![CDATA[
-								By enabling this option, you will see what additional information the Postcode.nl API has to offer, every time your information is enriched.<br />
-								<em>(this is not recommended in production environments!)</em>
-							]]></comment>
+							<comment><![CDATA[By enabling this option, you will see what additional information the Postcode.nl API has to offer, every time your information is enriched.<br /><em>(this is not recommended in production environments!)</em>]]></comment>
 						</api_showcase>
 						<api_debug translate="label">
 							<label>Show API Debug info</label>
@@ -205,11 +175,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment>
-							<![CDATA[
-								Additional debug information used for trouble-shooting will be sent by the Postcode.nl API extension. Signal API will log to 'var/log/postcodenl-signal.log'.<br />
-								<em>(this is not recommended in production environments!)</em>
-							]]></comment>
+							<comment><![CDATA[Additional debug information used for trouble-shooting will be sent by the Postcode.nl API extension. Signal API will log to 'var/log/postcodenl-signal.log'.<br /><em>(this is not recommended in production environments!)</em>]]></comment>
 						</api_debug>
 					</fields>
 				</development_config>
