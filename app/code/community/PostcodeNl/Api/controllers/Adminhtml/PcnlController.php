@@ -15,4 +15,11 @@ class PostcodeNl_Api_Adminhtml_PcnlController extends Mage_Adminhtml_Controller_
 			$this->getRequest()->getParam('houseNumberAddition')
 		)));
 	}
+
+	protected function _isAllowed()
+	{
+		// We allow all admins (regardless of specific rights) access, because we do not return any user data or
+		// other potentially restricted data.
+		return true;
+	}
 }
