@@ -118,7 +118,7 @@
 							<show_in_store>1</show_in_store>
 							<comment><![CDATA[For webshops with a more international audience, always show the country selection box.<br /><b>Developer Note</b>: If there are other fields next to the country selector, they will be disabled.]]></comment>
 						</never_hide_country>
-						<admin_validation_disabled translate="label">
+						<admin_validation_enabled translate="label">
 							<label>Disable validation in admin</label>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_yesno</source_model>
@@ -127,7 +127,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<comment><![CDATA[You can use this option if you encounter problems in the admin address validation, or want to allow all addresses in the admin.]]></comment>
-						</admin_validation_disabled>
+						</admin_validation_enabled>
 					</fields>
 				</advanced_config>
 				<advanced_config_signal translate="label">

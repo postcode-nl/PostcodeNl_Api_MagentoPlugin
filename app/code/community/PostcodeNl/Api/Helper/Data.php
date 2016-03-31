@@ -23,7 +23,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	 */
 	public function getJsinit($getAdminConfig = false)
 	{
-		if ($getAdminConfig && $this->_getStoreConfig('postcodenl_api/advanced_config/admin_validation_disabled'))
+		if ($getAdminConfig && !$this->_getStoreConfig('postcodenl_api/advanced_config/admin_validation_enabled'))
 			return '';
 
 		$baseUrl = $this->_getMagentoLookupUrl($getAdminConfig);
