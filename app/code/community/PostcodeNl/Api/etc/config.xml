@@ -116,7 +116,7 @@
 				<use_street3_as_housenumber_addition>0</use_street3_as_housenumber_addition>
 				<block_postofficeboxaddresses>0</block_postofficeboxaddresses>
 				<never_hide_country>0</never_hide_country>
-				<admin_validation_disabled>0</admin_validation_disabled>
+				<admin_validation_enabled>1</admin_validation_enabled>
 			</advanced_config>
 			<development_config>
 				<api_url>https://api.postcode.nl</api_url>
