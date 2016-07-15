@@ -105,7 +105,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	public function lookupAddress($postcode, $houseNumber, $houseNumberAddition)
 	{
 		// Check if we are we enabled, configured & capable of handling an API request
-		$message = $this->_checkApiReady('Address');
+		$message = $this->_checkApiReady();
 		if ($message)
 			return $message;
 
@@ -478,16 +478,13 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		return $curlVersion['features'] & CURL_VERSION_SSL;
 	}
 
-	protected function _checkApiReady($service = null)
+	protected function _checkApiReady()
 	{
-		if (!$this->_getStoreConfig('postcodenl_api/config/enabled') && !$this->_debuggingOverride)
-			return array('message' => $this->__('Postcode.nl API not enabled.'));;
+		if (!$this->_debuggingOverride && !($this->_getStoreConfig('postcodenl_api/config/enabled') || $this->_getStoreConfig('postcodenl_api/advanced_config/admin_validation_enabled')))
+			return array('message' => $this->__('Postcode.nl API not enabled.'));
 
 		if ($this->_getServiceUrl() === '' || $this->_getKey() === '' || $this->_getSecret() === '')
 			return array('message' => $this->__('Postcode.nl API not configured.'), 'info' => array($this->__('Configure your `API key` and `API secret`.')));
-
-		if ($service === 'Address' && !$this->_getStoreConfig('postcodenl_api/config/enabled_address_api') && !$this->_debuggingOverride)
-			return array('message' => $this->__('Postcode.nl Address API not enabled.'));;
 
 		return $this->_checkCapabilities();
 	}
@@ -499,12 +496,6 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			return array('message' => $this->__('Cannot connect to Postcode.nl API: Server is missing SSL (https) support for CURL.'));
 
 		return false;
-	}
-
-	protected function _checkAddressApiReady()
-	{
-		if (!$this->_getStoreConfig('postcodenl_api/config/enabled_address_api'))
-			return array('message' => $this->__('Postcode.nl Address API not enabled.'));;
 	}
 
 	protected function _callApiUrlGet($url)

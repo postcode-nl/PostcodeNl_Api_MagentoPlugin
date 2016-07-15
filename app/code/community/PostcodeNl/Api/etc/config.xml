@@ -86,7 +86,6 @@
 				<enabled>1</enabled>
 				<api_key></api_key>
 				<api_secret></api_secret>
-				<enabled_address_api>1</enabled_address_api>
 			</config>
 			<advanced_config>
 				<use_street2_as_housenumber>0</use_street2_as_housenumber>
