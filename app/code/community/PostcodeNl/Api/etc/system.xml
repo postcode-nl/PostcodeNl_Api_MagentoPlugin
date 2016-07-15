@@ -45,7 +45,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<validate>validate-length minimum-length-10</validate>
-							<comment><![CDATA[To get your Postcode.nl API key and secret, please register at <a href='https://api.postcode.nl' target='_blank'>Postcode.nl API</a>.]]></comment>
+							<comment><![CDATA[To get your Postcode.nl API key and secret, please register at <a href='https://services.postcode.nl/adresdata/adres-validatie' target='_blank'>Postcode.nl API</a>.]]></comment>
 						</api_secret>
 						<enabled_address_api translate="label">
 							<label>Address API Enabled?</label>
@@ -55,7 +55,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Dutch address validation via <a href='https://api.postcode.nl/documentation/address-api-description' target='_blank'>Postcode.nl Address API</a> is available by default when you create an account.]]></comment>
+							<comment><![CDATA[Dutch address validation via <a href='https://services.postcode.nl/adresdata/adres-validatie' target='_blank'>Postcode.nl Address API</a> is available by default when you create an account.]]></comment>
 						</enabled_address_api>
 					</fields>
 				</config>

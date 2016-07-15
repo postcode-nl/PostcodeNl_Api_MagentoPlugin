@@ -57,7 +57,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 						apiDebug: "' . htmlspecialchars($this->__('API Debug')) . '",
 						disabledText: "' . htmlspecialchars($this->__('- disabled -')) . '",
 						infoLabel: "' . htmlspecialchars($this->__('Address validation')) . '",
-						infoText: "' . htmlspecialchars($this->__('Fill out your postcode and housenumber to auto-complete your address. You can also manually set your address information.')) . '",
+						infoText: "' . htmlspecialchars($this->__('Fill out your postcode and housenumber to auto-complete your address.')) . '",
 						manualInputLabel: "' . htmlspecialchars($this->__('Manual input')) . '",
 						manualInputText: "' . htmlspecialchars($this->__('Fill out address information manually')) . '",
 						outputLabel: "' . htmlspecialchars($this->__('Validated address')) . '",
@@ -332,14 +332,14 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			if (strpos($addressData['debugInfo']['httpClientError'], 'SSL certificate problem, verify that the CA cert is OK') !== false)
 			{
 				$info[] = $this->__('Your servers\' \'cURL SSL CA bundle\' is missing or outdated. Further information:');
-				$info[] = '- <a href="http://stackoverflow.com/questions/6400300/https-and-ssl3-get-server-certificatecertificate-verify-failed-ca-is-ok" target="_blank">'. $this->__('How to update/fix your CA cert bundle') .'</a>';
-				$info[] = '- <a href="http://curl.haxx.se/docs/sslcerts.html" target="_blank">'. $this->__('About cURL SSL CA certificates') .'</a>';
+				$info[] = '- <a href="https://stackoverflow.com/questions/6400300/https-and-ssl3-get-server-certificatecertificate-verify-failed-ca-is-ok" target="_blank">'. $this->__('How to update/fix your CA cert bundle') .'</a>';
+				$info[] = '- <a href="https://curl.haxx.se/docs/sslcerts.html" target="_blank">'. $this->__('About cURL SSL CA certificates') .'</a>';
 				$info[] = '';
 			}
 			else if (strpos($addressData['debugInfo']['httpClientError'], 'unable to get local issuer certificate') !== false)
 			{
 				$info[] = $this->__('cURL cannot read/access the CA cert file:');
-				$info[] = '- <a href="http://curl.haxx.se/docs/sslcerts.html" target="_blank">'. $this->__('About cURL SSL CA certificates') .'</a>';
+				$info[] = '- <a href="https://curl.haxx.se/docs/sslcerts.html" target="_blank">'. $this->__('About cURL SSL CA certificates') .'</a>';
 				$info[] = '';
 			}
 			else

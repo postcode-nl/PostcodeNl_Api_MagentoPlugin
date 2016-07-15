@@ -1,10 +1,10 @@
 {
     "name": "postcode-nl/api-magentoplugin",
-    "description": "A Magento extension that implements the Postcode.nl Address API. You will need to create an account at https://api.postcode.nl.",
+    "description": "A Magento extension that implements the Postcode.nl Address API. You will need to create an account at https://services.postcode.nl/adresdata/adres-validatie",
     "type": "magento-module",
     "keywords": ["postcode", "netherlands", "api", "rest", "magento", "address", "webshop"],
     "license": "BSD-2-Clause",
-    "homepage": "https://api.postcode.nl",
+    "homepage": "https://services.postcode.nl/adresdata/adres-validatie",
     "support": {
         "email": "tech@postcode.nl",
         "issues": "https://github.com/postcode-nl/PostcodeNl_Api_MagentoPlugin/issues",
