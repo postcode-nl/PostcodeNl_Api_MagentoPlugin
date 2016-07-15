@@ -71,31 +71,6 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 
 	/**
-	 * Check if a specific service is enabled or not.
-	 *
-	 * @param string $service
-	 *
-	 * @return bool
-	 */
-	public function isApiEnabled($service)
-	{
-		// If we're debugging, assume all services are enabled, to get feedback on all levels.
-		if ($this->isDebugging())
-			return true;
-
-		if (!$this->_getStoreConfig('postcodenl_api/config/enabled'))
-			return false;
-
-		if ($service === 'Address' && !$this->_getStoreConfig('postcodenl_api/config/enabled_address_api'))
-			return false;
-
-		if ($service === 'Signal' && !$this->_getStoreConfig('postcodenl_api/config/enabled_signal_api'))
-			return false;
-
-		return true;
-	}
-
-	/**
 	 * Check if we're currently in debug mode, and if the current user may see dev info.
 	 *
 	 * @return bool
@@ -104,8 +79,8 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		if ($this->_debuggingOverride)
 			return true;
-		else
-			return (bool)$this->_getStoreConfig('postcodenl_api/development_config/api_debug') && Mage::helper('core')->isDevAllowed();
+
+		return (bool)$this->_getStoreConfig('postcodenl_api/development_config/api_debug') && Mage::helper('core')->isDevAllowed();
 	}
 
 	/**
@@ -222,50 +197,6 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 
 	/**
-	 * Perform a Signal API check.
-	 *
-	 * @param array $signalCheck
-	 *
-	 * @return array Signal result
-	 */
-	public function checkSignal(array $signalCheck)
-	{
-		// Check if we are we enabled, configured & capable of handling an API request
-		$message = $this->_checkApiReady('Signal');
-		if ($message)
-			return $message;
-
-		$response = array();
-
-		$url = $this->_getServiceUrl() . '/rest/signal/check';
-
-		$jsonData = $this->_callApiUrlPostJson($url, $signalCheck);
-
-		if ($this->_httpResponseCodeClass == 200 && is_array($jsonData))
-		{
-			$response = $jsonData;
-		}
-		else if (is_array($jsonData) && isset($jsonData['exceptionId']))
-		{
-			if ($this->_httpResponseCode == 401 || $this->_httpResponseCode == 403)
-				$response['message'] = $this->__('Invalid Signal API authentication:') .' (`'. $this->_httpResponseCode .'`): ' . $jsonData['exception'];
-			else if ($this->_httpResponseCodeClass == 400)
-				$response['message'] = $this->__('Invalid Signal API input:') .' (`'. $this->_httpResponseCode .'`): ' . $jsonData['exception'];
-			else
-				$response['message'] = $this->__('Signal API error:') .' (`'. $this->_httpResponseCode .'`): '. $jsonData['exception'];
-		}
-		else
-		{
-			$response['message'] = $this->__('Signal API response not understood, service unavailable.') . 'HTTP status code: `'. $this->_httpResponseCode .'`';
-		}
-
-		if ($this->isDebugging())
-			$response['debugInfo'] = $this->_getDebugInfo($url, $jsonData);
-
-		return $response;
-	}
-
-	/**
 	 * Split a house number addition from a house number.
 	 * Examples: "123 2", "123 rood", "123a", "123a4", "123-a", "123 II"
 	 * (the official notation is to separate the house number and addition with a single space)
@@ -328,87 +259,6 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 				'houseNumberAddition' => null,
 			);
 		}
-	}
-
-	/**
-	 * Do a Postcode.nl Signal API check on a (newly created) Magento order.
-	 * (called by hook class PostcodeNl_Api_Model_Observer)
-	 * Will pass any information that can be used by the MijnPolitie.nl MIO Fraud Warning system
-	 * (email, phonenumber), or Postcode.nl address validation (billing and delivery address).
-	 * Also includes the order number, to be able to reference the Signal Check later.
-	 *
-	 * @param Mage_Sales_Model_Order $order
-	 *
-	 * @return array Signal data, or error with 'message' entry.
-	 */
-	public function checkOrderViaSignal($order)
-	{
-		// Check if we are we are enabled, configured & capable of handling an API request
-		$message = $this->_checkApiReady('Signal');
-		if ($message)
-			return $message;
-
-		// Housenumber data is often contained within the 'street' lines of the address.
-		$billingStreetData = $this->splitStreetData($order->getBillingAddress()->getStreet());
-		$shippingStreetData = $this->splitStreetData($order->getShippingAddress()->getStreet());
-
-		// No customer might be available if this is an order status change
-		$hasCustomer = ($order->getCustomer() !== null);
-
-		// Note if this is executed as an admin, then do not send access details, as that might muddy the customer info
-		$isAdmin = Mage::app()->getStore()->isAdmin();
-
-		// Only send phonenumber if it is at least 5 characters long
-		$phoneNumber = Mage::helper('core/string')->strlen($order->getBillingAddress()->getTelephone()) >= 5 ? $order->getBillingAddress()->getTelephone() : null;
-
-		$signalCheck = array(
-			'customer' => array(
-				'email' => $hasCustomer ? $order->getCustomer()->getEmail() : null,
-				'phoneNumber' => $phoneNumber,
-				'address' => array(
-					'postcode' => $order->getBillingAddress()->getPostcode(),
-					'houseNumber' => $billingStreetData['houseNumber'],
-					'houseNumberAddition' => $billingStreetData['houseNumberAddition'],
-					'street' => $billingStreetData['street'],
-					'city' => $order->getBillingAddress()->getCity(),
-					'region' => $order->getBillingAddress()->getRegion(),
-					'country' => $order->getBillingAddress()->getCountryId(),
-				),
-			),
-			'access' => array(
-				'ipAddress' => $isAdmin ? null : Mage::helper('core/http')->getRemoteAddr(),
-				'additionalIpAddresses' => array(),
-			),
-			'transaction' => array(
-				'internalId' => $order->getIncrementId(),
-				'deliveryAddress' =>  array(
-					'postcode' => $order->getShippingAddress()->getPostcode(),
-					'houseNumber' => $shippingStreetData['houseNumber'],
-					'houseNumberAddition' => $shippingStreetData['houseNumberAddition'],
-					'street' => $shippingStreetData['street'],
-					'city' => $order->getShippingAddress()->getCity(),
-					'region' => $order->getShippingAddress()->getRegion(),
-					'country' => $order->getShippingAddress()->getCountryId(),
-				),
-			),
-		);
-
-		// Retrieve quote for registered remote IP / proxy IP (they are registered at session start)
-		$quoteId = $order->getQuoteId();
-		$quote = Mage::getModel('sales/quote')->load($quoteId);
-		if ($quote)
-		{
-			$signalCheck['access'] = $this->_addAccessIpAddress($signalCheck['access'], $quote->getRemoteIp());
-			$signalCheck['access'] = $this->_addAccessIpAddress($signalCheck['access'], $quote->getXForwardedFor());
-		}
-		// Register current forwarded-for IP address (if not admin)
-		if (!$isAdmin)
-		{
-			$forwardedFor = Mage::app()->getRequest()->getServer('HTTP_X_FORWARDED_FOR');
-			$signalCheck['access'] = $this->_addAccessIpAddress($signalCheck['access'],	$forwardedFor);
-		}
-
-		return $this->checkSignal($signalCheck);
 	}
 
 	protected function _addAccessIpAddress($access, $inputIp)
@@ -546,28 +396,6 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			$status = 'success';
 		}
 
-		if ($status == 'success' && $this->isApiEnabled('Signal'))
-		{
-			$this->setDebuggingOverride(true);
-			$signalData = $this->checkSignal(array('customer' => array('firstName' => 'Magento', 'lastName' => 'Tester')));
-			$this->setDebuggingOverride(false);
-
-			if (!is_array($signalData['debugInfo']['parsedResponse']))
-			{
-				// Signal service failed, but in an unexpected way
-				$status = 'error';
-				$message = $this->__('Address API service has no problems, but the Signal API service reported an error.');
-				$info[] = '- '. $this->__('The Signal service might be temporarily unavailable, if problems persist, please contact <a href=\'mailto:info@postcode.nl\'>info@postcode.nl</a>.');
-			}
-			else if (isset($signalData['debugInfo']['parsedResponse']['exceptionId']))
-			{
-				// We have an exception message from the service itself
-				$status = 'error';
-				$message = $this->__('Address API service has no problems, but the Signal API service reported an error.');
-				$info[] = $this->__('Postcode.nl service message:') .' "'. $signalData['debugInfo']['parsedResponse']['exception'] .'"';
-			}
-		}
-
 		return array(
 			'message' => $message,
 			'status' => $status,
@@ -660,9 +488,6 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 
 		if ($service === 'Address' && !$this->_getStoreConfig('postcodenl_api/config/enabled_address_api') && !$this->_debuggingOverride)
 			return array('message' => $this->__('Postcode.nl Address API not enabled.'));;
-
-		if ($service === 'Signal' && !$this->_getStoreConfig('postcodenl_api/config/enabled_signal_api') && !$this->_debuggingOverride)
-			return array('message' => $this->__('Postcode.nl Signal API not enabled.'));;
 
 		return $this->_checkCapabilities();
 	}
