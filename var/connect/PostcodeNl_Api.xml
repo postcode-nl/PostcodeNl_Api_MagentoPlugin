@@ -1,5 +1,5 @@
 <_>
-   <form_key>fWGBVraAv04fPRuY</form_key>
+   <form_key>rOA3SgcYcQIoVLBV</form_key>
    <name>PostcodeNl_Api</name>
    <channel>community</channel>
    <version_ids>
@@ -16,10 +16,13 @@
 The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions.</description>
    <license>Simplified BSD License</license>
    <license_uri/>
-   <version>1.2.4.0</version>
+   <version>1.2.5.0</version>
    <stability>stable</stability>
    <notes>Fixes:
-- Fix for admin access issue related to SUPEE-6285 patch
+- Marked compatible with PHP7
+- Simpler config for enabling addon in frontend and backend
+- Updated readme texts and links
+- Removed signal api
 </notes>
    <authors>
       <name>
@@ -49,7 +52,7 @@ The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions
             <max/>
          </max>
          <files>
-            <files>                                                                                                </files>
+            <files>                                                                                                      </files>
          </files>
       </package>
       <extension>
