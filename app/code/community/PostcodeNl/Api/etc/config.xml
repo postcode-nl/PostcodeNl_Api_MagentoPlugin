@@ -79,6 +79,17 @@
 				</postcodenl_api>
 			</modules>
 		</translate>
+		<events>
+			<admin_system_config_changed_section_postcodenl_api>
+				<observers>
+					<postcodenl_admin_change>
+						<type>singleton</type>
+						<class>PostcodeNl_Api_Model_Observer</class>
+						<method>adminConfigurationChanged</method>
+					</postcodenl_admin_change>
+				</observers>
+			</admin_system_config_changed_section_postcodenl_api>
+		</events>		
 	</adminhtml>
 	<default>
 		<postcodenl_api>

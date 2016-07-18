@@ -14,6 +14,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	protected $_httpClientError = null;
 	protected $_debuggingOverride = false;
 
+
 	/**
 	 * Get the html for initializing validation script.
 	 *
@@ -88,7 +89,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	 *
 	 * @param bool $toggle
 	 */
-	public function setDebuggingOverride($toggle = true)
+	protected function _setDebuggingOverride($toggle)
 	{
 		$this->_debuggingOverride = $toggle;
 	}
@@ -196,92 +197,6 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			$this->_enrichType = substr($this->_enrichType, 0, 40);
 	}
 
-	/**
-	 * Split a house number addition from a house number.
-	 * Examples: "123 2", "123 rood", "123a", "123a4", "123-a", "123 II"
-	 * (the official notation is to separate the house number and addition with a single space)
-	 *
-	 * @param string $houseNumber House number input
-	 *
-	 * @return array Split 'houseNumber' and 'houseNumberAddition'
-	 */
-	public function splitHouseNumber($houseNumber)
-	{
-		$houseNumberAddition = '';
-		if (preg_match('~^(?<number>[0-9]+)(?:[^0-9a-zA-Z]+(?<addition1>[0-9a-zA-Z ]+)|(?<addition2>[a-zA-Z](?:[0-9a-zA-Z ]*)))?$~', $houseNumber, $match))
-		{
-			$houseNumber = $match['number'];
-			$houseNumberAddition = isset($match['addition2']) ? $match['addition2'] : (isset($match['addition1']) ? $match['addition1'] : null);
-		}
-
-		return array($houseNumber, $houseNumberAddition);
-	}
-
-	/**
-	 * Split a street name, house number and house number addition from a text lines containing a street and house number information.
-	 *
-	 * @param array $streetData Lines of street data
-	 *
-	 * @return array Array containing 'street', 'houseNumber' and 'houseNumberAddition'
-	 */
-	public function splitStreetData(array $streetData)
-	{
-		$regexpStreet = '[^0-9].*?|.*?[^0-9]';
-		$regexpHouseNumber = '[0-9]+';
-		$regexpHouseNumberAddition = '[^\\s]+|[^\\s]\\s+[^\\s]{1,4}';
-
-		if (preg_match('~^(?<street>'. $regexpStreet .')\s+(?<houseNumber>'. $regexpHouseNumber .')([^0-9a-zA-Z]*(?<houseNumberAddition>'. $regexpHouseNumberAddition .'))?\s*$~', $streetData[0], $match))
-		{
-			// Found housenumber contained in first street line
-			return array(
-				'street' => $match['street'],
-				'houseNumber' => $match['houseNumber'],
-				'houseNumberAddition' => isset($match['houseNumberAddition']) ? $match['houseNumberAddition'] : null,
-			);
-		}
-		else if (isset($streetData[1]))
-		{
-			// Find housenumber contained in second street line
-
-			$houseNumberData = $this->splitHouseNumber($streetData[1]);
-
-			return array(
-				'street' => $streetData[0],
-				'houseNumber' => $houseNumberData[0],
-				'houseNumberAddition' => $houseNumberData[1],
-			);
-		}
-		else
-		{
-			return array(
-				'street' => $streetData[0],
-				'houseNumber' => null,
-				'houseNumberAddition' => null,
-			);
-		}
-	}
-
-	protected function _addAccessIpAddress($access, $inputIp)
-	{
-		if ($inputIp === '' || $inputIp === null || $inputIp === false)
-			return $access;
-
-		// input might be multiple IPs (from X-Forwarded-For, for example)
-		if (strpos($inputIp, ',') !== false)
-		{
-			$inputIp = array_map('trim', explode(',', $inputIp));
-
-			foreach ($inputIp as $ip)
-				$access = $this->_addAccessIpAddress($access, $ip);
-		}
-		else if (filter_var($inputIp, FILTER_VALIDATE_IP) && $inputIp !== $access['ipAddress'] && !in_array($inputIp, $access['additionalIpAddresses']))
-		{
-			$access['additionalIpAddresses'][] = $inputIp;
-		}
-
-		return $access;
-	}
-
 	protected function _getDebugInfo($url, $jsonData)
 	{
 		return array(
@@ -312,9 +227,9 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		$info = array();
 
 		// Do a test address lookup
-		$this->setDebuggingOverride(true);
+		$this->_setDebuggingOverride(true);
 		$addressData = $this->lookupAddress('2012ES', '30', '');
-		$this->setDebuggingOverride(false);
+		$this->_setDebuggingOverride(false);
 
 		if (!isset($addressData['debugInfo']) && isset($addressData['message']))
 		{
@@ -439,11 +354,8 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			// Detect professional
 			return 'MagentoProfessional/'. Mage::getVersion();
 		}
-		else
-		{
-			// Rest
-			return 'Magento/'. Mage::getVersion();
-		}
+
+		return 'Magento/'. Mage::getVersion();
 	}
 
 	protected function _getModuleInfo($moduleName)
@@ -468,8 +380,8 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		if ($inAdmin)
 			return Mage::helper('adminhtml')->getUrl('*/pcnl/lookup', array('_secure' => true));
-		else
-			return Mage::getUrl('postcodenl_api/json', array('_secure' => true));
+
+		return Mage::getUrl('postcodenl_api/json', array('_secure' => true));
 	}
 
 	protected function _curlHasSsl()
@@ -507,32 +419,12 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_getKey() .':'. $this->_getSecret());
 		curl_setopt($ch, CURLOPT_USERAGENT, $this->_getUserAgent());
+
 		$this->_httpResponseRaw = curl_exec($ch);
 		$this->_httpResponseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$this->_httpResponseCodeClass = (int)floor($this->_httpResponseCode / 100) * 100;
 		$this->_httpClientError = curl_errno($ch) ? sprintf('cURL error %s: %s', curl_errno($ch), curl_error($ch)) : null;
 
-		curl_close($ch);
-
-		return json_decode($this->_httpResponseRaw, true);
-	}
-
-	protected function _callApiUrlPostJson($url, array $data)
-	{
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::API_TIMEOUT);
-		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		curl_setopt($ch, CURLOPT_USERPWD, $this->_getKey() .':'. $this->_getSecret());
-		curl_setopt($ch, CURLOPT_USERAGENT, $this->_getUserAgent());
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-		$this->_httpResponseRaw = curl_exec($ch);
-		$this->_httpResponseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		$this->_httpResponseCodeClass = (int)floor($this->_httpResponseCode / 100) * 100;
-		$this->_httpClientError = curl_errno($ch) ? sprintf('cURL error %s: %s', curl_errno($ch), curl_error($ch)) : null;
 		curl_close($ch);
 
 		return json_decode($this->_httpResponseRaw, true);
