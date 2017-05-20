@@ -152,3 +152,27 @@ body.onestepcheckout-index-index .onepage .form-list .pcnl-apptha-checkbox label
 body.onepagecheckout-index-index .pcnl-manual-checkbox {
 	clear: both; /* IE 7/9 fix */
 }
+
+/* IWD Checkout Suite */
+
+body.iwd-opc-index-index .pcnl-info {
+    margin-bottom: 5px;
+}
+
+body.iwd-opc-index-index div.input-postcode {
+	width: 50%;
+        float: left;
+}
+
+body.iwd-opc-index-index div.pcnl-input-housenumber {
+	width: 45%;
+        float: right;
+}
+
+body.iwd-opc-index-index .pcnl-manual-checkbox {
+	clear: both;
+}
+
+body.iwd-opc-index-index .iwd_opc_universal_wrapper input.pcnl-readonly {
+    background-color: #EEE;
+}
