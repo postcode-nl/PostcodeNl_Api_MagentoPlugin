@@ -171,22 +171,16 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 				}
 				else
 				{
-					$response['message'] = $this->__('Validation error, please use manual input.');
-					$response['messageTarget'] = 'housenumber';
-					$response['useManual'] = true;
+					$response = array_merge($response, $this->_errorResponse());
 				}
 			}
 			else
 			{
-				$response['message'] = $this->__('Validation unavailable, please use manual input.');
-				$response['messageTarget'] = 'housenumber';
-				$response['useManual'] = true;
+				$response = array_merge($response, $this->_errorResponse());
 			}
 
 		} catch (Exception $e) {
-			$response['message'] = $this->__('Validation unavailable, please use manual input.');
-			$response['messageTarget'] = 'housenumber';
-			$response['useManual'] = true;
+			$response = array_merge($response, $this->_errorResponse());
 		}
 
 		return $response;
@@ -466,5 +460,14 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			}
 		}
 		return $this->_modules;
+	}
+
+	protected function _errorResponse()
+	{
+		return [
+			'message' => $this->__('Validation error, please use manual input.'),
+			'messageTarget' => 'housenumber',
+			'useManual' => true,
+		];
 	}
 }
