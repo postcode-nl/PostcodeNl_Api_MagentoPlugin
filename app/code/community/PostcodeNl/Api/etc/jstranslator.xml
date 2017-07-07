@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<jstranslator>
+    <postcode_use_manual translate="message" module="core">
+        <message>Validation error, please use manual input.</message>
+    </postcode_use_manual>
+</jstranslator>
