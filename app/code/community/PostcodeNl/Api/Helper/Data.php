@@ -168,7 +168,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 						break;
 				}
 			}
-			else if (is_array($jsonData) && isset($jsonData['exceptionId']))
+			else
 			{
 				$response['message'] = $this->__('Validation error, please use manual input.');
 				$response['messageTarget'] = 'housenumber';
