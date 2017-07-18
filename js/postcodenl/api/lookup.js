@@ -78,7 +78,8 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 			'Quick One Page Checkout (by KAM)': 18,
 			'MAGExtended MasterCheckout': 19,
 			'Customer Address Form': 20,
-			'Lotusbreath One Step Checkout': 21
+			'Lotusbreath One Step Checkout': 21,
+                        'IWD Checkout Suite': 22,
 		},
 		enrichHint: null,
 
@@ -945,6 +946,37 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 						}
 						$(prefix + street1).up('li').insert({before: '<li id="' + prefix + 'postcode_input:output" class="wide pcnl-hidden-field"><div><label>'+ PCNLAPI_CONFIG.translations.outputLabel +'</label><div id="' + prefix + 'postcode_output" class="pcnl-address-text"></div></div></li>'});
 					}
+                                        else if ($(document.body).hasClassName('iwd-opc-index-index'))
+					{
+                                            // IWD Checkout Suite
+                                            this.enrichType = 'IWD Checkout Suite';
+
+                                            type = prefix.replace(":", "");
+                                            street_lines = $$('input[name="' + type + '[street][]"');
+                                            var i = 1;
+                                            street_lines.each(function (element) {
+                                                $(element).writeAttribute("id", type + ":street" + i);
+                                                i++;
+                                            });
+
+                                            $$('input[name="' + type + '[city]"')[0].writeAttribute("id", type + ":city");
+                                            $$('input[name="' + type + '[postcode]"')[0].writeAttribute("id", type + ":postcode");
+
+                                            if (!$(prefix + 'postcode_input:info'))
+                                            {
+                                                $(prefix + street1).up('div').insert({before: '<div id="' + prefix + 'postcode_input:info" class="wide pcnl-info"><div><label class="pcnl-info-label">' + PCNLAPI_CONFIG.translations.infoLabel + '</label><div class="pcnl-info-text" id="' + prefix + 'postcode_input:info-text">' + PCNLAPI_CONFIG.translations.infoText + '</div></div></div>'});
+                                            }
+                                            $(prefix + street1).up('div').insert({before: '<div id="' + prefix + 'postcode_input:wrapper" class="fields "><div class="field input-postcode pcnl-wrapper-half"><label for="' + prefix + 'postcode_input" class="required">' + PCNLAPI_CONFIG.translations.postcodeInputLabel + '<em class="required">*</em></label><div class="iwd_opc_universal_wrapper"><input type="text" title="' + PCNLAPI_CONFIG.translations.postcodeInputTitle + '" name="' + prefix + 'postcode_input" id="' + prefix + 'postcode_input" value="" class="input-text required-entry iwd_opc_field iwd_opc_input" /></div></div><div class="field input-postcode pcnl-input-housenumber"><label for="' + prefix + 'postcode_housenumber" class="required">' + PCNLAPI_CONFIG.translations.houseNumberLabel + ' <em class="required">*</em></label><div class="input-box"><div class="iwd_opc_universal_wrapper"><input type="text" title="' + PCNLAPI_CONFIG.translations.houseNumberTitle + '" name="' + prefix + 'postcode_housenumber" id="' + prefix + 'postcode_housenumber" value="" class="input-text pcnl-input-text-half required-entry iwd_opc_field iwd_opc_input" /></div></div></div></div>'});
+                                            if (!$(prefix + 'postcode_input:checkbox'))
+                                            {
+                                                $(prefix + street1).up('div').insert({before: '<div id="' + prefix + 'postcode_input:checkbox" class="wide control pcnl-manual-checkbox"><div class="fields"><input type="checkbox" title="' + PCNLAPI_CONFIG.translations.postcodeInputTitle + '" id="' + prefix + 'postcode_input_checkbox" value="" class="checkbox " /><label for="' + prefix + 'postcode_input_checkbox">' + PCNLAPI_CONFIG.translations.manualInputText + '</label></div></div>'});
+
+                                                $(prefix + 'postcode_input_checkbox').observe('click', function () {
+                                                    pcnlapi.toggleCountryPostcode(prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4);
+                                                });
+                                            }
+                                            $(prefix + street1).up('div').insert({before: '<div id="' + prefix + 'postcode_input:output" class="wide pcnl-hidden-field"><div><label>'+ PCNLAPI_CONFIG.translations.outputLabel +'</label><div id="' + prefix + 'postcode_output" class="pcnl-address-text"></div></div></div>'});
+                                        }
 					else
 					{
 						// Support for regular Magento 'one page' checkout

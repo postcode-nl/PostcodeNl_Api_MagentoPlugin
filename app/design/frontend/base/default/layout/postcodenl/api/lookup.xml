@@ -135,7 +135,17 @@
 		<reference name="content">
 			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
 		</reference>
-    </opc_index_index>
+        </opc_index_index>
+        <!-- For `IWD Checkout Suite` -->
+        <iwd_opc_index_index>
+		<reference name="head">
+			<action method="addCss" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/css/lookup.css</script></action>
+			<action method="addJs" ifconfig="postcodenl_api/config/enabled"><script>postcodenl/api/lookup.js</script></action>
+		</reference>
+		<reference name="content">
+			<block type="postcodenl_api/jsinit" name="postcodenl.jsinit" template="postcodenl/api/jsinit.phtml" />
+		</reference>
+        </iwd_opc_index_index>
 	<!-- For `AheadWorks One Step Checkout` -->
 	<aw_onestepcheckout_index_index>
 		<reference name="head">
