@@ -111,75 +111,76 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			return $message;
 
 		$response = array();
+		
+		try {
+			// Some basic user data 'fixing', remove any not-letter, not-number characters
+			$postcode = preg_replace('~[^a-z0-9]~i', '', $postcode);
 
-		// Some basic user data 'fixing', remove any not-letter, not-number characters
-		$postcode = preg_replace('~[^a-z0-9]~i', '', $postcode);
-
-		// Basic postcode format checking
-		if (!preg_match('~^[1-9][0-9]{3}[a-z]{2}$~i', $postcode))
-		{
-			$response['message'] = $this->__('Invalid postcode format, use `1234AB` format.');
-			$response['messageTarget'] = 'postcode';
-			return $response;
-		}
-
-		$url = $this->_getServiceUrl() . '/rest/addresses/' . rawurlencode($postcode). '/'. rawurlencode($houseNumber) . '/'. rawurlencode($houseNumberAddition);
-
-		$jsonData = $this->_callApiUrlGet($url);
-
-		if ($this->_getStoreConfig('postcodenl_api/development_config/api_showcase'))
-			$response['showcaseResponse'] = $jsonData;
-
-		if ($this->isDebugging())
-			$response['debugInfo'] = $this->_getDebugInfo($url, $jsonData);
-
-		if ($this->_httpResponseCode == 200 && is_array($jsonData) && isset($jsonData['postcode']))
-		{
-			$response = array_merge($response, $jsonData);
-		}
-		else if (is_array($jsonData) && isset($jsonData['exceptionId']))
-		{
-			if ($this->_httpResponseCode == 400 || $this->_httpResponseCode == 404)
+			// Basic postcode format checking
+			if (!preg_match('~^[1-9][0-9]{3}[a-z]{2}$~i', $postcode))
 			{
-				switch ($jsonData['exceptionId'])
-				{
-					case 'PostcodeNl_Controller_Address_PostcodeTooShortException':
-					case 'PostcodeNl_Controller_Address_PostcodeTooLongException':
-					case 'PostcodeNl_Controller_Address_NoPostcodeSpecifiedException':
-					case 'PostcodeNl_Controller_Address_InvalidPostcodeException':
-						$response['message'] = $this->__('Invalid postcode format, use `1234AB` format.');
-						$response['messageTarget'] = 'postcode';
-						break;
-					case 'PostcodeNl_Service_PostcodeAddress_AddressNotFoundException':
-						$response['message'] = $this->__('Unknown postcode + housenumber combination.');
-						$response['messageTarget'] = 'housenumber';
-						break;
-					case 'PostcodeNl_Controller_Address_InvalidHouseNumberException':
-					case 'PostcodeNl_Controller_Address_NoHouseNumberSpecifiedException':
-					case 'PostcodeNl_Controller_Address_NegativeHouseNumberException':
-					case 'PostcodeNl_Controller_Address_HouseNumberTooLargeException':
-					case 'PostcodeNl_Controller_Address_HouseNumberIsNotAnIntegerException':
-						$response['message'] = $this->__('Housenumber format is not valid.');
-						$response['messageTarget'] = 'housenumber';
-						break;
-					default:
-						$response['message'] = $this->__('Incorrect address.');
-						$response['messageTarget'] = 'housenumber';
-						break;
-				}
+				$response['message'] = $this->__('Invalid postcode format, use `1234AB` format.');
+				$response['messageTarget'] = 'postcode';
+				return $response;
+			}
+
+			$url = $this->_getServiceUrl() . '/rest/addresses/' . rawurlencode($postcode). '/'. rawurlencode($houseNumber) . '/'. rawurlencode($houseNumberAddition);
+
+			$jsonData = $this->_callApiUrlGet($url);
+
+			if ($this->_getStoreConfig('postcodenl_api/development_config/api_showcase'))
+				$response['showcaseResponse'] = $jsonData;
+
+			if ($this->isDebugging())
+				$response['debugInfo'] = $this->_getDebugInfo($url, $jsonData);
+
+			if ($this->_httpResponseCode == 200 && is_array($jsonData) && isset($jsonData['postcode']))
+			{
+				$response = array_merge($response, $jsonData);
 			}
 			else if (is_array($jsonData) && isset($jsonData['exceptionId']))
 			{
-				$response['message'] = $this->__('Validation error, please use manual input.');
-				$response['messageTarget'] = 'housenumber';
-				$response['useManual'] = true;
+				if ($this->_httpResponseCode == 400 || $this->_httpResponseCode == 404)
+				{
+					switch ($jsonData['exceptionId'])
+					{
+						case 'PostcodeNl_Controller_Address_PostcodeTooShortException':
+						case 'PostcodeNl_Controller_Address_PostcodeTooLongException':
+						case 'PostcodeNl_Controller_Address_NoPostcodeSpecifiedException':
+						case 'PostcodeNl_Controller_Address_InvalidPostcodeException':
+							$response['message'] = $this->__('Invalid postcode format, use `1234AB` format.');
+							$response['messageTarget'] = 'postcode';
+							break;
+						case 'PostcodeNl_Service_PostcodeAddress_AddressNotFoundException':
+							$response['message'] = $this->__('Unknown postcode + housenumber combination.');
+							$response['messageTarget'] = 'housenumber';
+							break;
+						case 'PostcodeNl_Controller_Address_InvalidHouseNumberException':
+						case 'PostcodeNl_Controller_Address_NoHouseNumberSpecifiedException':
+						case 'PostcodeNl_Controller_Address_NegativeHouseNumberException':
+						case 'PostcodeNl_Controller_Address_HouseNumberTooLargeException':
+						case 'PostcodeNl_Controller_Address_HouseNumberIsNotAnIntegerException':
+							$response['message'] = $this->__('Housenumber format is not valid.');
+							$response['messageTarget'] = 'housenumber';
+							break;
+						default:
+							$response['message'] = $this->__('Incorrect address.');
+							$response['messageTarget'] = 'housenumber';
+							break;
+					}
+				}
+				else
+				{
+					$response = array_merge($response, $this->_errorResponse());
+				}
 			}
-		}
-		else
-		{
-			$response['message'] = $this->__('Validation unavailable, please use manual input.');
-			$response['messageTarget'] = 'housenumber';
-			$response['useManual'] = true;
+			else
+			{
+				$response = array_merge($response, $this->_errorResponse());
+			}
+
+		} catch (Exception $e) {
+			$response = array_merge($response, $this->_errorResponse());
 		}
 
 		return $response;
@@ -459,5 +460,14 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 			}
 		}
 		return $this->_modules;
+	}
+
+	protected function _errorResponse()
+	{
+		return [
+			'message' => $this->__('Validation error, please use manual input.'),
+			'messageTarget' => 'housenumber',
+			'useManual' => true,
+		];
 	}
 }

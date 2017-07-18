@@ -307,7 +307,12 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 					method: 'get',
 					onException: function(transport, e)
 					{
-						throw e;
+						var json = {
+							'useManual' : true,
+							'messageTarget' : 'housenumber',
+							'message' : Translator.translate('Validation error, please use manual input.')
+						};
+						pcnlapi.updatePostcodeLookup(json, housenumber_addition, housenumber_addition_select, prefix, postcodeFieldId, countryFieldId, street1, street2, street3, street4, event);
 					},
 					onComplete: function(transport)
 					{
