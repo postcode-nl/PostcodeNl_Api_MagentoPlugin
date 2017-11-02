@@ -27,7 +27,6 @@
 "API Showcase","API Showcase"
 "API Debug Info","API Debug Info"
 "Post office box not allowed.","Post office box not allowed."
-"A test connection could not be successfully completed.","The test connection could not be successfully completed."
 "A test connection to the API was successfully completed.","A test connection to the API was successfully completed."
 "Your server could not connect to the Postcode.nl server.","Your server could not connect to the Postcode.nl server."
 "Your servers' \"cURL SSL CA bundle\" is missing or outdated. Further information:", "Your servers' \"cURL SSL CA bundle\" is missing or outdated. Further information:"

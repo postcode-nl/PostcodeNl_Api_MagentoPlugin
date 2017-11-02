@@ -101,7 +101,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $houseNumber
      * @param string $houseNumberAddition
      *
-     * @return string
+     * @return array
      */
     public function lookupAddress($postcode, $houseNumber, $houseNumberAddition)
     {
@@ -110,20 +110,32 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
         if ($message)
             return $message;
 
+        // Some basic user data 'fixing', remove any not-letter, not-number characters
+        $postcode = preg_replace('~[^a-z0-9]~i', '', $postcode);
+
+        // Basic postcode format checking
+        if (!preg_match('~^[1-9][0-9]{3}[a-z]{2}$~i', $postcode)) {
+            $response['message'] = $this->__('Invalid postcode format, use `1234AB` format.');
+            $response['messageTarget'] = 'postcode';
+            return $response;
+        }
+
+        return $this->_lookupAddress($postcode, $houseNumber, $houseNumberAddition);
+    }
+
+
+    /**
+     * @param string $postcode
+     * @param string $houseNumber
+     * @param string $houseNumberAddition
+     *
+     * @return array
+     */
+    public function _lookupAddress($postcode, $houseNumber, $houseNumberAddition)
+    {
         $response = array();
-        
+
         try {
-            // Some basic user data 'fixing', remove any not-letter, not-number characters
-            $postcode = preg_replace('~[^a-z0-9]~i', '', $postcode);
-
-            // Basic postcode format checking
-            if (!preg_match('~^[1-9][0-9]{3}[a-z]{2}$~i', $postcode))
-            {
-                $response['message'] = $this->__('Invalid postcode format, use `1234AB` format.');
-                $response['messageTarget'] = 'postcode';
-                return $response;
-            }
-
             $url = $this->_getServiceUrl() . '/rest/addresses/' . rawurlencode($postcode). '/'. rawurlencode($houseNumber) . '/'. rawurlencode($houseNumberAddition);
 
             $jsonData = $this->_callApiUrlGet($url);
@@ -134,14 +146,12 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
             if ($this->isDebugging())
                 $response['debugInfo'] = $this->_getDebugInfo($url, $jsonData);
 
-            if ($this->_httpResponseCode == 200 && is_array($jsonData) && isset($jsonData['postcode']))
-            {
-                $response = array_merge($response, $jsonData);
+            if ($this->_httpResponseCode == 200 && is_array($jsonData) && isset($jsonData['postcode'])) {
+                return array_merge($response, $jsonData);
             }
-            else if (is_array($jsonData) && isset($jsonData['exceptionId']))
-            {
-                if ($this->_httpResponseCode == 400 || $this->_httpResponseCode == 404)
-                {
+
+            if (isset($jsonData['exceptionId'])) {
+                if ($this->_httpResponseCode == 400 || $this->_httpResponseCode == 404) {
                     switch ($jsonData['exceptionId'])
                     {
                         case 'PostcodeNl_Controller_Address_PostcodeTooShortException':
@@ -168,21 +178,15 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
                             $response['messageTarget'] = 'housenumber';
                             break;
                     }
-                }
-                else
-                {
-                    $response = array_merge($response, $this->_errorResponse());
-                }
-            }
-            else
-            {
-                $response = array_merge($response, $this->_errorResponse());
-            }
-        } catch (Exception $e) {
-            $response = array_merge($response, $this->_errorResponse());
-        }
 
-        return $response;
+                    return $response;
+                }
+            }
+
+            return array_merge($response, $this->_errorResponse());
+        } catch (Exception $e) {
+            return array_merge($response, $this->_errorResponse());
+        }
     }
 
     /**
@@ -222,7 +226,6 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
     public function testConnection()
     {
         // Default is not OK
-        $message = $this->__('The test connection could not be successfully completed.');
         $status = 'error';
         $info = array();
 
@@ -231,83 +234,62 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
         $addressData = $this->lookupAddress('2012ES', '30', '');
         $this->_setDebuggingOverride(false);
 
-        if (!isset($addressData['debugInfo']) && isset($addressData['message']))
-        {
+        if (!isset($addressData['debugInfo']) && isset($addressData['message'])) {
             // Client-side error
             $message = $addressData['message'];
             if (isset($addressData['info']))
                 $info = $addressData['info'];
-        }
-        else if ($addressData['debugInfo']['httpClientError'])
-        {
+        } else if ($addressData['debugInfo']['httpClientError']) {
             // We have a HTTP connection error
             $message = $this->__('Your server could not connect to the Postcode.nl server.');
 
             // Do some common SSL CA problem detection
-            if (strpos($addressData['debugInfo']['httpClientError'], 'SSL certificate problem, verify that the CA cert is OK') !== false)
-            {
+            if (strpos($addressData['debugInfo']['httpClientError'], 'SSL certificate problem, verify that the CA cert is OK') !== false) {
                 $info[] = $this->__('Your servers\' \'cURL SSL CA bundle\' is missing or outdated. Further information:');
                 $info[] = '- <a href="https://stackoverflow.com/questions/6400300/https-and-ssl3-get-server-certificatecertificate-verify-failed-ca-is-ok" target="_blank">'. $this->__('How to update/fix your CA cert bundle') .'</a>';
                 $info[] = '- <a href="https://curl.haxx.se/docs/sslcerts.html" target="_blank">'. $this->__('About cURL SSL CA certificates') .'</a>';
                 $info[] = '';
-            }
-            else if (strpos($addressData['debugInfo']['httpClientError'], 'unable to get local issuer certificate') !== false)
-            {
+            } else if (strpos($addressData['debugInfo']['httpClientError'], 'unable to get local issuer certificate') !== false) {
                 $info[] = $this->__('cURL cannot read/access the CA cert file:');
                 $info[] = '- <a href="https://curl.haxx.se/docs/sslcerts.html" target="_blank">'. $this->__('About cURL SSL CA certificates') .'</a>';
                 $info[] = '';
-            }
-            else
-            {
+            } else {
                 $info[] = $this->__('Connection error.');
             }
 
             $info[] = $this->__('Error message:') . ' "'. $addressData['debugInfo']['httpClientError'] .'"';
             $info[] = '- <a href="https://www.google.com/search?q='. urlencode($addressData['debugInfo']['httpClientError'])  .'" target="_blank">'. $this->__('Google the error message') .'</a>';
             $info[] = '- '. $this->__('Contact your hosting provider if problems persist.');
-        }
-        else if (!is_array($addressData['debugInfo']['parsedResponse']))
-        {
+        } else if (!is_array($addressData['debugInfo']['parsedResponse'])) {
             // We have not received a valid JSON response
 
             $message = $this->__('The response from the Postcode.nl service could not be understood.');
             $info[] = '- '. $this->__('The service might be temporarily unavailable, if problems persist, please contact <a href=\'mailto:info@postcode.nl\'>info@postcode.nl</a>.');
             $info[] = '- '. $this->__('Technical reason: No valid JSON was returned by the request.');
-        }
-        else if (is_array($addressData['debugInfo']['parsedResponse']) && isset($addressData['debugInfo']['parsedResponse']['exceptionId']))
-        {
+        } else if (is_array($addressData['debugInfo']['parsedResponse']) && isset($addressData['debugInfo']['parsedResponse']['exceptionId'])) {
             // We have an exception message from the service itself
 
-            if ($addressData['debugInfo']['responseCode'] == 401)
-            {
+            if ($addressData['debugInfo']['responseCode'] == 401) {
                 if ($addressData['debugInfo']['parsedResponse']['exceptionId'] == 'PostcodeNl_Controller_Plugin_HttpBasicAuthentication_NotAuthorizedException')
                     $message = $this->__('`API Key` specified is incorrect.');
                 else if ($addressData['debugInfo']['parsedResponse']['exceptionId'] == 'PostcodeNl_Controller_Plugin_HttpBasicAuthentication_PasswordNotCorrectException')
                     $message = $this->__('`API Secret` specified is incorrect.');
                 else
                     $message = $this->__('Authentication is incorrect.');
-            }
-            else if ($addressData['debugInfo']['responseCode'] == 403)
-            {
+            } else if ($addressData['debugInfo']['responseCode'] == 403) {
                 $message = $this->__('Access is denied.');
-            }
-            else
-            {
+            } else {
                 $message = $this->__('Service reported an error.');
             }
 
             $info[] = $this->__('Postcode.nl service message:') .' "'. $addressData['debugInfo']['parsedResponse']['exception'] .'"';
-        }
-        else if (is_array($addressData['debugInfo']['parsedResponse']) && !isset($addressData['debugInfo']['parsedResponse']['postcode']))
-        {
+        } else if (is_array($addressData['debugInfo']['parsedResponse']) && !isset($addressData['debugInfo']['parsedResponse']['postcode'])) {
             // This message is thrown when the JSON returned did not contain the data expected.
 
             $message = $this->__('The response from the Postcode.nl service could not be understood.');
             $info[] = '- '. $this->__('The service might be temporarily unavailable, if problems persist, please contact <a href=\'mailto:info@postcode.nl\'>info@postcode.nl</a>.');
             $info[] = '- '. $this->__('Technical reason: Received JSON data did not contain expected data.');
-        }
-        else
-        {
+        } else {
             $message = $this->__('A test connection to the API was successfully completed.');
             $status = 'success';
         }
@@ -345,16 +327,13 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 
     protected function _getMagentoVersion()
     {
+        // Detect enterprise
         if ($this->_getModuleInfo('Enterprise_CatalogPermissions') !== null)
-        {
-            // Detect enterprise
             return 'MagentoEnterprise/'. Mage::getVersion();
-        }
-        elseif ($this->_getModuleInfo('Enterprise_Enterprise') !== null)
-        {
-            // Detect professional
+
+        // Detect professional
+        if ($this->_getModuleInfo('Enterprise_Enterprise') !== null)
             return 'MagentoProfessional/'. Mage::getVersion();
-        }
 
         return 'Magento/'. Mage::getVersion();
     }
@@ -448,11 +427,9 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
             return $this->_modules;
 
         $this->_modules = array();
-        foreach (Mage::getConfig()->getNode('modules')->children() as $name => $module)
-        {
+        foreach (Mage::getConfig()->getNode('modules')->children() as $name => $module) {
             $this->_modules[$name] = array();
-            foreach ($module as $key => $value)
-            {
+            foreach ($module as $key => $value) {
                 if (in_array((string)$key, array('active')))
                     $this->_modules[$name][$key] = (string)$value == 'true' ? true : false;
                 else if (in_array((string)$key, array('codePool', 'version')))

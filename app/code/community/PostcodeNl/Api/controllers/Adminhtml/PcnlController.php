@@ -3,7 +3,7 @@ class PostcodeNl_Api_Adminhtml_PcnlController extends Mage_Adminhtml_Controller_
 {
     public function lookupAction()
     {
-        /* @var $helper PostcodeNl_Api_Helper_Data */
+        /** @var PostcodeNl_Api_Helper_Data $helper */
         $helper = Mage::helper('postcodenl_api');
 
         if ($this->getRequest()->getParam('et'))
