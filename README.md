@@ -1,7 +1,7 @@
 Postcode.nl API Magento Plugin
 =============
 
-Look up and validate Dutch addresses at Checkout with this Magento extension from [Postcode.nl](https://services.postcode.nl).
+Look up and validate Dutch addresses at Checkout with this Magento extension from [Postcode.nl](https://www.postcode.nl).
 
 - Reduce address errors
 - Reduce costs from undelivered mail and packages
@@ -13,8 +13,8 @@ The use of the Postcode.nl Magento plugin is subject to our Terms and Conditions
 Data
 =============
 
-This plugin uses the [Postcode.nl Address API](https://services.postcode.nl/adresdata/adres-validatie) to validate and enrich Dutch address data.
-You can obtain an account for the Postcode.nl API [here](https://services.postcode.nl/adresdata/adres-validatie).
+This plugin uses the [Postcode.nl Address API](https://www.postcode.nl/en/services/adresdata/api) to validate and enrich Dutch address data.
+You can obtain an account for the Postcode.nl API [here](https://www.postcode.nl/en/services/adresdata/producten-overzicht).
 
 
 Licence
