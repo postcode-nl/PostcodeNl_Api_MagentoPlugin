@@ -2,7 +2,7 @@
 class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 {
     const API_TIMEOUT = 3;
-    const API_URL = 'https://api.postcode.nl';
+    const API_URL = 'https://api.postcode.eu';
 
     protected $_modules = null;
 
@@ -136,7 +136,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
         $response = array();
 
         try {
-            $url = $this->_getServiceUrl() . '/rest/addresses/' . rawurlencode($postcode). '/'. rawurlencode($houseNumber) . '/'. rawurlencode($houseNumberAddition);
+            $url = $this->_getServiceUrl() . '/nl/v1/addresses/' . rawurlencode($postcode). '/'. rawurlencode($houseNumber) . '/'. rawurlencode($houseNumberAddition);
 
             $jsonData = $this->_callApiUrlGet($url);
 
@@ -318,11 +318,7 @@ class PostcodeNl_Api_Helper_Data extends Mage_Core_Helper_Abstract
 
     protected function _getServiceUrl()
     {
-        $serviceUrl = trim($this->_getStoreConfig('postcodenl_api/development_config/api_url'));
-        if (empty($serviceUrl))
-            $serviceUrl = self::API_URL;
-
-        return $serviceUrl;
+        return self::API_URL;
     }
 
     protected function _getMagentoVersion()
