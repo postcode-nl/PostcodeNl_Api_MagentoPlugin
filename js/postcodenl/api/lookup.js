@@ -1477,7 +1477,7 @@ document.observe("dom:loaded", PCNL_START_FUNCTION = function()
 		{
 			var pcnlapi = this;
 			// Shipping
-			if (!$('order-shipping_same_as_billing').checked)
+			if (!$('order-shipping_as_billing').checked)
 			{
 				$('order-shipping_address_postcode').observe('change', function(e)
 				{
